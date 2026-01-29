@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanson Zheng | Home</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Zheng Yumin</a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="highlights.html">Highlights</a></li>
+                <li><a href="life.html">Life</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1 id="profile-name">Loading...</h1>
+                <p class="subtitle" id="profile-title"></p>
+                <div class="intro" id="profile-intro"></div>
+                <div class="hero-buttons">
+                    <a href="#about" class="btn btn-primary">More About Me</a>
+                    <a href="publications.html" class="btn btn-secondary">Publications</a>
+                    <div class="social-links" id="social-links">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+            </div>
+            <!-- Avatar -->
+            <div class="hero-image" id="hero-image-container">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content" id="profile-about">
+                Loading...
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-padding bg-light">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <div class="contact-box">
+                <p>Feel free to reach out for collaborations or just a chat.</p>
+                <a href="#" class="email-link" id="contact-email">Loading...</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p id="footer-text"></p>
+        </div>
+    </footer>
+
+    <!-- Load Data -->
+    <script src="data/config.js"></script>
+    <!-- No publications.js needed on home unless we show recent pubs -->
+    <script src="js/main.js"></script>
+</body>
+</html>
