@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const aboutEl = document.getElementById('profile-about');
 
         // Common Header Info
-        if (nameEl) nameEl.innerHTML = `Hello, I'm <span class="highlight">${configData.name}</span>.`;
+        if (nameEl) nameEl.innerHTML = `Hello,<br>this is <span class="highlight">${configData.name}</span>.`;
         if (titleEl) titleEl.textContent = configData.title;
         if (introEl) introEl.innerHTML = configData.introduction;
         
@@ -225,31 +225,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- 3. Highlights/News Rendering (highlights.html) ---
-    const highlightsContainer = document.getElementById('highlights-list');
-    if (highlightsContainer && typeof highlightsData !== 'undefined') {
-        renderHighlights(highlightsData);
-    } else if(highlightsContainer) {
-        highlightsContainer.innerHTML = '<p>No highlights loaded.</p>';
-    }
+    // --- 3. News/Highlights/Life Rendering (Generic System) ---
+    
+    // Initialize Highlights Section
+    setupFilterableGrid('highlights-list', 'highlights-filter', (typeof highlightsData !== 'undefined' ? highlightsData : []));
+    
+    // Initialize Life Section
+    setupFilterableGrid('life-list', 'life-filter', (typeof lifeData !== 'undefined' ? lifeData : []));
 
-    function renderHighlights(newsItems) {
-        highlightsContainer.innerHTML = '';
-        if(newsItems.length === 0) {
-            highlightsContainer.innerHTML = '<p>No news yet.</p>';
+    function setupFilterableGrid(containerId, filterId, dataItems) {
+        const container = document.getElementById(containerId);
+        const filterContainer = document.getElementById(filterId);
+
+        if (!container) return; // This page doesn't have this grid
+
+        if (!dataItems || dataItems.length === 0) {
+            container.innerHTML = '<p>No content loaded.</p>';
             return;
         }
 
-        // Sort by date desc (assuming ISO date strings)
-        // const sortedNews = [...newsItems].sort((a, b) => new Date(b.date) - new Date(a.date));
-        // Use declared order or sort if needed. Let's rely on data order for now to keep it simple, or sort.
-        const sortedNews = newsItems; // Keep order
+        // Initial Render (Show All)
+        renderGridItems(container, dataItems);
 
-        sortedNews.forEach(item => {
+        // Generate Filters if filter container exists
+        if (filterContainer) {
+            filterContainer.innerHTML = '';
+            // Extract years from YYYY-MM-DD
+            const years = [...new Set(dataItems.map(item => item.date.substring(0, 4)))].sort().reverse();
+            
+            // "All" button
+            const allBtn = document.createElement('button');
+            allBtn.className = 'filter-btn active';
+            allBtn.textContent = 'All';
+            allBtn.onclick = () => {
+                setActiveBtn(filterContainer, allBtn);
+                renderGridItems(container, dataItems);
+            };
+            filterContainer.appendChild(allBtn);
+
+            // Year buttons
+            years.forEach(year => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.textContent = year;
+                btn.onclick = () => {
+                    setActiveBtn(filterContainer, btn);
+                    const filtered = dataItems.filter(item => item.date.startsWith(year));
+                    renderGridItems(container, filtered);
+                };
+                filterContainer.appendChild(btn);
+            });
+        }
+    }
+
+    function setActiveBtn(container, targetBtn) {
+        const btns = container.querySelectorAll('.filter-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        targetBtn.classList.add('active');
+    }
+
+    function renderGridItems(container, items) {
+        container.innerHTML = '';
+        if(items.length === 0) {
+            container.innerHTML = '<p>No items for this period.</p>';
+            return;
+        }
+
+        items.forEach(item => {
             const card = document.createElement('div');
             card.className = 'news-card';
             
-            // Image handling
+            // Image
             let imageHtml = '';
             if(item.image && item.image.trim() !== "") {
                 imageHtml = `<div class="news-image"><img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'"></div>`;
@@ -263,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="news-desc">${item.description}</div>
                 </div>
             `;
-            highlightsContainer.appendChild(card);
+            container.appendChild(card);
         });
     }
 

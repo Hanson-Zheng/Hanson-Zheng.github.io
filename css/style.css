@@ -102,7 +102,7 @@ ul {
 .logo {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--accent-color);
 }
 
 .nav-links {
@@ -423,7 +423,7 @@ footer {
  /* Blog/Highlights Styles */
 .highlights-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 40px;
     margin: 0 auto;
 }
@@ -486,7 +486,70 @@ footer {
     line-height: 1.6;
 }
 
+/* Responsive Card Layout: Desktop Side-by-Side, Mobile Stacked */
+@media (min-width: 769px) {
+    .highlights-grid {
+        grid-template-columns: 1fr; /* Single column list view */
+    }
+
+    .news-card {
+        flex-direction: row; /* Image Left, Content Right */
+        min-height: 280px; /* Ensure card has substantial height even with short text */
+    }
+
+    .news-image {
+        width: 40%;
+        height: auto; /* Stretch to match card height */
+        aspect-ratio: unset; /* Remove fixed ratio */
+        flex-shrink: 0; /* Prevent image from shrinking */
+    }
+}
+
 @media (max-width: 768px) {
     /* Mobile styles default to column naturally */
+}
+
+
+/* Mobile Menu Active State */
+@media (max-width: 768px) {
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        z-index: 1000;
+        text-align: center;
+    }
+}
+
+
+/* Filter Styles */
+.filter-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--light-text);
+    transition: all 0.2s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
 }
 
