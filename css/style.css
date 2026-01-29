@@ -494,7 +494,7 @@ footer {
 
     .news-card {
         flex-direction: row; /* Image Left, Content Right */
-        min-height: 280px; /* Ensure card has substantial height even with short text */
+        min-height: 200px; /* Ensure card has substantial height even with short text */
     }
 
     .news-image {
