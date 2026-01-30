@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let authorHtml = pub.authors.join(', ');
                 const highlightNames = ["Hanson Zheng", "Zheng Yumin", "Yumin Zheng"];
                 highlightNames.forEach(name => {
-                    authorHtml = authorHtml.split(name).join(`<b>${name}</b>`);
+                    authorHtml = authorHtml.split(name).join(`<u><b>${name}</b></u>`);
                 });
                 let linksHtml = '';
                 if (pub.links) {

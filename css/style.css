@@ -407,15 +407,29 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .container { padding: 0 30px; } /* Increase mobile padding to prevent edge sticking */
+    
     .nav-links { display: none; } /* Simplified for now */
     .mobile-menu-btn { display: block; }
     
     .hero { margin-top: 20px; height: auto; padding: 60px 0; }
     .hero-content { flex-direction: column-reverse; text-align: center; }
     .hero-text h1 { font-size: 2.5rem; } /* Reduced from 3rem */
-    .hero-buttons { justify-content: center; }
+    .hero-buttons { 
+        flex-direction: column; 
+        width: 100%;
+        gap: 15px;
+    }
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 280px; /* Keep them neat */
+    }
     
-    .email-link { font-size: 1.1rem; word-break: break-all; } /* Fix large email */
+    .email-link { 
+        font-size: 0.95rem; /* Smaller font to fit */
+        word-break: normal; /* Don't force break mid-word */
+        overflow-wrap: break-word; /* Soft break if needed */
+    }
     
     .pub-layout { flex-direction: column; }
     .pub-sidebar { width: 100%; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); }
