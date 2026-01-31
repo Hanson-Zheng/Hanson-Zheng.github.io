@@ -1,9 +1,15 @@
 const highlightsData = [
     {
+        "date": "2026-01-31",
+        "title": "Paper Accepted in ICRA 2026",
+        "image": "images/ICRA2026.png",
+        "description": "We proposed a vision-servoed micro-manipulation system that enables intuitive, one-step operation for the delivery of nanoscale implantable devices."
+    },
+    {
         "date": "2026-01-16",
         "title": "Paper Accepted in ICASSP 2026",
         "image": "images/ICASSP2026.jpg",
-        "description": "We propose a closed-loop, data-driven method for robust detection and decoding of pulse-position modulation (PPM) signals over an optical link in implanted devices."
+        "description": "We proposed a closed-loop, data-driven method for robust detection and decoding of pulse-position modulation (PPM) signals over an optical link in implanted devices."
     },
     {
         "date": "2025-12-24",
