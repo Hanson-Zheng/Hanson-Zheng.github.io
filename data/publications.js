@@ -122,5 +122,22 @@ const publicationsData = [
       "doi": "https://doi.org/10.1109/TBCAS.2026.3652195"
     },
     "abstract": ""
+  },
+  {
+    "id": "11462355",
+    "title": "A Closed-Loop and Data-Driven Decoding Algorithm for Optical Pulse Position Modulated Uplinks in Neural Implants",
+    "authors": [
+      "Yumin Zheng",
+      "Rui Jiao",
+      "Sunwoo Lee"
+    ],
+    "venue": "ICASSP 2026 - 2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)",
+    "year": 2026,
+    "type": "Inproceedings",
+    "links": {
+      "pdf": "https://doi.org/10.1109/ICASSP55912.2026.11462355",
+      "doi": "https://doi.org/10.1109/ICASSP55912.2026.11462355"
+    },
+    "abstract": ""
   }
 ];
