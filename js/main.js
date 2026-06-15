@@ -1,5 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- 0.0 Theme Toggle (Light/Dark) ---
+    const navLinksContainer = document.querySelector('.nav-links');
+    const savedTheme = localStorage.getItem('site-theme') || 'light';
+
+    function applyTheme(theme) {
+        const normalizedTheme = theme === 'dark' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', normalizedTheme);
+        localStorage.setItem('site-theme', normalizedTheme);
+    }
+
+    applyTheme(savedTheme);
+
+    function setupThemeToggle() {
+        if (!navLinksContainer) return;
+
+        const themeToggleItem = document.createElement('li');
+        themeToggleItem.className = 'theme-toggle-item';
+
+        const themeToggleBtn = document.createElement('button');
+        themeToggleBtn.type = 'button';
+        themeToggleBtn.className = 'theme-toggle-btn';
+
+        const updateToggleUi = () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            themeToggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            themeToggleBtn.innerHTML = isDark
+                ? '<i class="fas fa-sun"></i><span>Light</span>'
+                : '<i class="fas fa-moon"></i><span>Dark</span>';
+        };
+
+        updateToggleUi();
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            applyTheme(isDark ? 'light' : 'dark');
+            updateToggleUi();
+        });
+
+        themeToggleItem.appendChild(themeToggleBtn);
+        navLinksContainer.appendChild(themeToggleItem);
+    }
+
+    setupThemeToggle();
+
     // --- 0. Shared Logic (Navbar Active State) ---
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     const navLinks = document.querySelectorAll('.nav-links a');
@@ -19,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mobile Menu Toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinksContainer = document.querySelector('.nav-links');
     if(mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', () => {
              navLinksContainer.classList.toggle('active');
@@ -106,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 2. Publications Rendering (publications.html) ---
     const pubListContainer = document.getElementById('pub-list');
     const yearFiltersContainer = document.getElementById('year-filters');
+    let citationChartInstance = null;
 
     if (pubListContainer && typeof publicationsData !== 'undefined') {
         initPublications(publicationsData);
@@ -116,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initPublications(data) {
         const sortedData = [...data].sort((a, b) => b.year - a.year);
         renderPublications(sortedData);
+        renderCitationChart(sortedData);
         if(yearFiltersContainer) { // Only if sidebar exists
             generateYearBookmarks(sortedData);
             setupScrollSpy();
@@ -151,6 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pubsByYear[year].forEach(pub => {
                 const pubItem = document.createElement('div');
                 pubItem.className = 'pub-item';
+                const hasCitation = Object.prototype.hasOwnProperty.call(pub, 'citations');
+                const citationCount = Number.isFinite(Number(pub.citations)) ? Number(pub.citations) : 0;
                 
                 let authorHtml = pub.authors.join(', ');
                 const highlightNames = ["Hanson Zheng", "Zheng Yumin", "Yumin Zheng"];
@@ -168,16 +216,117 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="pub-title">${pub.title} <span class="tag-badge">${pub.type}</span></div>
                     <div class="pub-authors">${authorHtml}</div>
                     <div class="pub-venue">${pub.venue}, ${pub.year}</div>
-                    <div class="pub-abstract" style="display:none; margin-top:10px; font-size: 0.9rem; color:#666;">${pub.abstract}</div>
+                    <div class="pub-abstract" style="display:none;">${pub.abstract}</div>
                     <div class="pub-links">
-                        ${linksHtml}
-                        <a href="javascript:void(0)" class="pub-link toggle-abstract" onclick="this.parentElement.previousElementSibling.style.display = this.parentElement.previousElementSibling.style.display === 'none' ? 'block' : 'none'">Abstract</a>
+                        <div class="pub-links-left">
+                            ${linksHtml}
+                            <a href="javascript:void(0)" class="pub-link toggle-abstract" onclick="this.parentElement.parentElement.previousElementSibling.style.display = this.parentElement.parentElement.previousElementSibling.style.display === 'none' ? 'block' : 'none'">Abstract</a>
+                        </div>
+                        ${hasCitation ? `<span class="pub-citations"><i class="fas fa-quote-right"></i> Cited by ${citationCount}</span>` : ''}
                     </div>
                 `;
                 yearGroup.appendChild(pubItem);
             });
 
             pubListContainer.appendChild(yearGroup);
+        });
+
+        const citationSection = document.createElement('section');
+        citationSection.id = 'citation-metrics';
+        citationSection.className = 'citation-card';
+        citationSection.setAttribute('aria-label', 'Citation metrics');
+        citationSection.innerHTML = `
+            <div class="citation-card-header">
+                <h3>Citation Metrics</h3>
+                <p id="citation-summary">Add citation data to publication entries to visualize yearly citations.</p>
+            </div>
+            <div class="citation-chart-wrap">
+                <canvas id="citation-chart" aria-label="Yearly citation bar chart" role="img"></canvas>
+            </div>
+        `;
+        pubListContainer.appendChild(citationSection);
+    }
+
+    function renderCitationChart(pubs) {
+        const citationChartCanvas = document.getElementById('citation-chart');
+        const citationSummary = document.getElementById('citation-summary');
+        if (!citationChartCanvas) return;
+
+        const citationsByYear = {};
+        let totalCitations = 0;
+
+        pubs.forEach(pub => {
+            if (pub.citationsByYear && typeof pub.citationsByYear === 'object') {
+                Object.entries(pub.citationsByYear).forEach(([year, count]) => {
+                    const y = String(year);
+                    const c = Number(count) || 0;
+                    citationsByYear[y] = (citationsByYear[y] || 0) + c;
+                    totalCitations += c;
+                });
+            } else if (Number.isFinite(Number(pub.citations)) && pub.year) {
+                const y = String(pub.year);
+                const c = Number(pub.citations) || 0;
+                citationsByYear[y] = (citationsByYear[y] || 0) + c;
+                totalCitations += c;
+            }
+        });
+
+        const years = Object.keys(citationsByYear).sort((a, b) => Number(a) - Number(b));
+        const values = years.map(year => citationsByYear[year]);
+
+        if (citationChartInstance) {
+            citationChartInstance.destroy();
+            citationChartInstance = null;
+        }
+
+        if (years.length === 0) {
+            if (citationSummary) {
+                citationSummary.textContent = 'No citation data yet. Add "citations" or "citationsByYear" in data/publications.js.';
+            }
+            return;
+        }
+
+        if (citationSummary) {
+            citationSummary.textContent = `Total citations: ${totalCitations}`;
+        }
+
+        if (typeof Chart === 'undefined') {
+            if (citationSummary) {
+                citationSummary.textContent += ' (Chart.js failed to load)';
+            }
+            return;
+        }
+
+        citationChartInstance = new Chart(citationChartCanvas, {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Citations',
+                    data: values,
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    maxBarThickness: 36
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
+            }
         });
     }
 
@@ -203,10 +352,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             yearFiltersContainer.appendChild(li);
         });
+
+        const citationLi = document.createElement('li');
+        citationLi.textContent = 'Citation Metrics';
+        citationLi.dataset.year = 'citation-metrics';
+        citationLi.addEventListener('click', () => {
+            const target = document.getElementById('citation-metrics');
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }
+        });
+        yearFiltersContainer.appendChild(citationLi);
     }
 
     function setupScrollSpy() {
-        const yearHeaders = document.querySelectorAll('.pub-year-group');
+        const yearHeaders = document.querySelectorAll('.pub-year-group, #citation-metrics');
         const bookmarks = document.querySelectorAll('.bookmark-list li');
         
         window.addEventListener('scroll', () => {
@@ -214,7 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
             yearHeaders.forEach(section => {
                 const sectionTop = section.offsetTop;
                 if (pageYOffset >= (sectionTop - 150)) {
-                    current = section.getAttribute('id').replace('year-', '');
+                    const sectionId = section.getAttribute('id');
+                    current = sectionId.startsWith('year-') ? sectionId.replace('year-', '') : sectionId;
                 }
             });
             bookmarks.forEach(li => {
