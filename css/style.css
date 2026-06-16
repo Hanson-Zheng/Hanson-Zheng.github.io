@@ -556,9 +556,51 @@ footer {
  /* Blog/Highlights Styles */
 .highlights-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 40px;
     margin: 0 auto;
+}
+
+.highlights-sections {
+    display: block;
+}
+
+/* Ensure each year section uses an explicit 2-column grid on desktop. */
+.highlights-sections .year-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.year-section {
+    margin-bottom: 48px;
+}
+
+.year-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0 24px;
+}
+
+.year-divider::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+.year-divider span {
+    position: relative;
+    z-index: 1;
+    padding: 0 14px;
+    background: var(--bg-color);
+    color: var(--light-text);
+    font-size: 0.92rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .news-card {
@@ -566,14 +608,15 @@ footer {
     flex-direction: column;
     background: var(--bg-color);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .news-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
 }
 
 .news-image {
@@ -582,21 +625,39 @@ footer {
     aspect-ratio: 4/3; /* Standard photo ratio, much taller than before */
     background: var(--bg-alt);
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
 }
 
-.news-image img {
+.news-image-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
+.news-image-img.img-landscape {
+    width: 100%;
+    height: auto;
+}
+
+.news-image-img.img-portrait {
+    width: auto;
+    height: 100%;
+}
+
+.news-image-img.img-square {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .news-content {
     padding: 25px;
     display: flex;
     flex-direction: column;
+    border-top: 1px solid var(--border-color);
 }
 
 .news-date {
@@ -619,27 +680,70 @@ footer {
     line-height: 1.6;
 }
 
+/* Fixed card sizing for Highlights page only */
+.highlights-sections .year-grid .news-card {
+    aspect-ratio: 5 / 6;
+    height: auto;
+    display: grid;
+    grid-template-rows: 50% 50%;
+}
+
+.highlights-sections .year-grid .news-image {
+    height: 100%;
+    aspect-ratio: auto;
+}
+
+.highlights-sections .year-grid .news-content {
+    padding: 16px 18px 18px;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--bg-color) 0%, var(--bg-alt) 100%);
+}
+
+.highlights-sections .year-grid .news-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.highlights-sections .year-grid .news-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+}
+
 /* Responsive Card Layout: Desktop Side-by-Side, Mobile Stacked */
 @media (min-width: 769px) {
-    .highlights-grid {
-        grid-template-columns: 1fr; /* Single column list view */
-    }
-
     .news-card {
-        flex-direction: row; /* Image Left, Content Right */
-        min-height: 200px; /* Ensure card has substantial height even with short text */
+        flex-direction: column;
+        min-height: 100%;
     }
 
     .news-image {
-        width: 40%;
-        height: auto; /* Stretch to match card height */
-        aspect-ratio: unset; /* Remove fixed ratio */
-        flex-shrink: 0; /* Prevent image from shrinking */
+        width: 100%;
+        aspect-ratio: 16 / 10;
     }
 }
 
 @media (max-width: 768px) {
-    /* Mobile styles default to column naturally */
+    .highlights-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .highlights-sections .year-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .highlights-sections .year-grid .news-card {
+        height: auto;
+    }
+
+    .highlights-sections .year-grid .news-image {
+        height: auto;
+        aspect-ratio: 16 / 10;
+    }
 }
 
 
@@ -681,8 +785,8 @@ footer {
 }
 
 .filter-btn:hover, .filter-btn.active {
-    background: var(--primary-color);
-    color: #fff;
-    border-color: var(--primary-color);
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
 }
 

@@ -9,7 +9,8 @@ const configData = {
         // { "icon": "fab fa-github", "url": "#" },
         // { "icon": "fab fa-linkedin", "url": "#" },
         { "icon": "fas fa-envelope", "url": "mailto:consummatezym@vip.qq.com" },
-        { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967" }
+        { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967" },
+        { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/" }
     ],
     "aboutMe": [
         "A beginner at Robotics, Signal Processing, Micro Electronics.",

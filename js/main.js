@@ -400,6 +400,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupFilterableGrid(containerId, filterId, dataItems) {
         const container = document.getElementById(containerId);
         const filterContainer = document.getElementById(filterId);
+        const isHighlightsPage = containerId === 'highlights-list';
+
+        if (isHighlightsPage) {
+            container.classList.remove('highlights-grid');
+            container.classList.add('highlights-sections');
+        }
 
         if (!container) return; // This page doesn't have this grid
 
@@ -408,8 +414,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Initial Render (Show All)
-        renderGridItems(container, dataItems);
+        // Initial Render
+        if (isHighlightsPage) {
+            renderHighlightsByYear(container, dataItems);
+        } else {
+            renderGridItems(container, dataItems);
+        }
 
         // Generate Filters if filter container exists
         if (filterContainer) {
@@ -423,7 +433,12 @@ document.addEventListener('DOMContentLoaded', () => {
             allBtn.textContent = 'All';
             allBtn.onclick = () => {
                 setActiveBtn(filterContainer, allBtn);
-                renderGridItems(container, dataItems);
+                if (isHighlightsPage) {
+                    renderHighlightsByYear(container, dataItems);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    renderGridItems(container, dataItems);
+                }
             };
             filterContainer.appendChild(allBtn);
 
@@ -434,8 +449,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.textContent = year;
                 btn.onclick = () => {
                     setActiveBtn(filterContainer, btn);
-                    const filtered = dataItems.filter(item => item.date.startsWith(year));
-                    renderGridItems(container, filtered);
+                    if (isHighlightsPage) {
+                        // Keep all sections and jump to selected year section.
+                        renderHighlightsByYear(container, dataItems);
+                        const yearSection = document.getElementById(`highlights-year-${year}`);
+                        if (yearSection) {
+                            const headerOffset = 90;
+                            const elementPosition = yearSection.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                        }
+                    } else {
+                        const filtered = dataItems.filter(item => item.date.startsWith(year));
+                        renderGridItems(container, filtered);
+                    }
                 };
                 filterContainer.appendChild(btn);
             });
@@ -456,24 +483,95 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         items.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            
-            // Image
-            let imageHtml = '';
-            if(item.image && item.image.trim() !== "") {
-                imageHtml = `<div class="news-image"><img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'"></div>`;
-            }
-
-            card.innerHTML = `
-                ${imageHtml}
-                <div class="news-content">
-                    <div class="news-date">${item.date}</div>
-                    <div class="news-title">${item.title}</div>
-                    <div class="news-desc">${item.description}</div>
-                </div>
-            `;
+            const card = createNewsCard(item);
             container.appendChild(card);
+        });
+    }
+
+    function createNewsCard(item) {
+        const card = document.createElement('div');
+        card.className = 'news-card';
+
+        let imageHtml = '';
+        if(item.image && item.image.trim() !== '') {
+            imageHtml = `<div class="news-image"><img class="news-image-img" src="${item.image}" alt="${item.title}"></div>`;
+        }
+
+        card.innerHTML = `
+            ${imageHtml}
+            <div class="news-content">
+                <div class="news-date">${item.date}</div>
+                <div class="news-title">${item.title}</div>
+                <div class="news-desc">${item.description}</div>
+            </div>
+        `;
+
+        const imageEl = card.querySelector('.news-image-img');
+        if (imageEl) {
+            imageEl.addEventListener('load', () => {
+                applySmartImageFit(imageEl);
+            });
+            imageEl.addEventListener('error', () => {
+                const wrapper = imageEl.closest('.news-image');
+                if (wrapper) wrapper.style.display = 'none';
+            });
+            if (imageEl.complete && imageEl.naturalWidth > 0) {
+                applySmartImageFit(imageEl);
+            }
+        }
+
+        return card;
+    }
+
+    function applySmartImageFit(imageEl) {
+        imageEl.classList.remove('img-landscape', 'img-portrait', 'img-square');
+        const ratio = imageEl.naturalWidth / imageEl.naturalHeight;
+
+        if (ratio > 1.1) {
+            imageEl.classList.add('img-landscape');
+        } else if (ratio < 0.9) {
+            imageEl.classList.add('img-portrait');
+        } else {
+            imageEl.classList.add('img-square');
+        }
+    }
+
+    function renderHighlightsByYear(container, items) {
+        container.innerHTML = '';
+        if(items.length === 0) {
+            container.innerHTML = '<p>No items for this period.</p>';
+            return;
+        }
+
+        const itemsByYear = items.reduce((acc, item) => {
+            const year = (item.date || '').substring(0, 4) || 'Unknown';
+            acc[year] = acc[year] || [];
+            acc[year].push(item);
+            return acc;
+        }, {});
+
+        const years = Object.keys(itemsByYear).sort((a, b) => b.localeCompare(a));
+
+        years.forEach(year => {
+            const section = document.createElement('section');
+            section.className = 'year-section';
+            section.id = `highlights-year-${year}`;
+
+            const divider = document.createElement('div');
+            divider.className = 'year-divider';
+            divider.innerHTML = `<span>${year}</span>`;
+            section.appendChild(divider);
+
+            const grid = document.createElement('div');
+            grid.className = 'highlights-grid year-grid';
+
+            itemsByYear[year].forEach(item => {
+                const card = createNewsCard(item);
+                grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            container.appendChild(section);
         });
     }
 
