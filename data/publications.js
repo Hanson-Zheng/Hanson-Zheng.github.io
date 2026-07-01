@@ -1,3 +1,4 @@
+const publicationsUpdatedOn = "2026-Jun-30";
 const publicationsData = [
   {
     "title": "A 43 μm × 269 μm Light-Adaptive Optoelectronic Autonomous Microsystem for Neural Recording",
@@ -155,11 +156,11 @@ const publicationsData = [
       "doi": "https://doi.org/10.1109/TRO.2024.3354161"
     },
     "abstract": "Various quadrotor drones have been developed in recent years, mainly focusing on either improving maximum thrust per platform area or flight maneuverability. Evidently, achieving both advantages simultaneously is a challenging task, since they call for opposing rotor requirements. Specifically, improving the drone's maximum thrust per platform area mainly requires reducing the number of rotors to make way for larger and more powerful rotors. While this can be an effective method to increase overall thrust, improving flight maneuverability requires a greater number of rotors to generate larger rotating torques or to increase the thrust vectoring capability. To address this challenge, we design a novel coaxial drone with two contra-rotating rotors for high thrust efficiency while enabling independent dual-axis rotor rotation to maintain maneuverability along the roll and pitch axes. The thrust vectoring capability is provided by two dedicated servomotors connected vertically in series with the coaxial propellers to produce a compact and elongated fuselage frame. A nonlinear flight model in six degrees of freedom is developed for the underactuated system, incorporating four control inputs from the two propellers and servos, respectively. Consequently, a nonlinear control allocation approach is proposed such that the drone can produce a desired control force and yaw torque to stabilize the drone's position and yaw angle. For the uncontrolled roll and pitch dynamics, a damping component is added such that the roll and pitch angular velocities can also be stabilized. Both numerical simulations and real experiments are conducted to validate the design of the drone and the effectiveness of the proposed control strategy.",
-    "citations": 58,
+    "citations": 60,
     "citationsByYear": {
       "2024": 10,
       "2025": 39,
-      "2026": 9
+      "2026": 11
     },
     "id": "10399791_TRO2024"
   }

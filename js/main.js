@@ -243,8 +243,19 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="citation-chart-wrap">
                 <canvas id="citation-chart" aria-label="Yearly citation bar chart" role="img"></canvas>
             </div>
+            <div class="citation-card-footer">
+                <span id="citation-updated-on">Updated on ${getCitationUpdateStamp()}</span>
+            </div>
         `;
         pubListContainer.appendChild(citationSection);
+    }
+
+    function getCitationUpdateStamp() {
+        if (typeof publicationsUpdatedOn !== 'undefined' && publicationsUpdatedOn) {
+            return publicationsUpdatedOn;
+        }
+
+        return 'Unknown';
     }
 
     function renderCitationChart(pubs) {

@@ -372,6 +372,19 @@ ul {
     min-height: 260px;
 }
 
+.citation-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+    color: var(--light-text);
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+}
+
+#citation-updated-on {
+    white-space: nowrap;
+}
+
 /* Publication Item */
 .pub-year-group {
     margin-bottom: 40px;
