@@ -1,4 +1,4 @@
-const publicationsUpdatedOn = "2026-Aug-22";
+const publicationsUpdatedOn = "2026-Oct-01";
 const publicationsData = [
   {
     "title": "A 43 μm × 269 μm Light-Adaptive Optoelectronic Autonomous Microsystem for Neural Recording",
@@ -43,6 +43,24 @@ const publicationsData = [
     },
     "abstract": "Advanced implantable microsystems (IMs) employ pulse position modulation (PPM) for data transmission. However, identifying PPM pulses whose signal-to-noise ratios (SNRs) have been heavily attenuated and fluctuating within biological media is challenging. An efficient decoding algorithm can not only relax the IM design equirements, but also increase its operational depth. We present one such PPM decoding algorithm that is adaptive and closed-loop, utilizing a proportional-integral feedback control, and leverages a microsystem’s periodic clock for reference enhancement. For verification, we model a PPM channel based on experimental data from a neural recording autonomous microsystem, microscale optoelectric tetherless electrode (MOTE). Across test datasets with low and varying SNRs, the algorithm provides higher recall and F1 scores compared to the traditional Otsu’s Method and Otsu-based thresholding. This enhanced pulse detectability translates to a 24 % reduction in total power requirement, demonstrating how our algorithmic improvement directly translates into improved system performance.",
     "id": "11462355_ICASSP2026"
+  },
+  {
+    "title": "An Autonomous and Hardware-Agnostic Vision-Servoed System for Microdevice Injection",
+    "authors": [
+      "Yumin Zheng",
+      "Runjia Tan",
+      "Rui Jiao",
+      "Sunwoo Lee"
+    ],
+    "venue": "2026 IEEE International Conference on Robotics and Automation (ICRA)",
+    "year": 2026,
+    "type": "Inproceedings",
+    "links": {
+      "pdf": "https://doi.org/10.1109/ICRA57385.2026.11697121",
+      "doi": "https://doi.org/10.1109/ICRA57385.2026.11697121"
+    },
+    "abstract": "Automated manipulation of nanoliter-scale implantable microdevices (IMDs) typically relies on complex, custom-built robotic setups that are difficult to reproduce and require extensive manual calibration. To address this challenge, this paper proposes an easily deployable and highly reproducible vision-servoed manipulation system for IMDs. Based on standard commercial off-the-shelf devices, the proposed platform is hardware-agnostic and eliminates the need for tedious manual calibration. The automated workflow seamlessly integrates coarse positioning, auto-focus, and marker-aided centering to achieve robust precision. The system is validated using a sub-nanoliter IMD, the microscale optoelectronic tetherless electrode (MOTE). Experimental results demonstrate that the proposed framework requires minimal manual intervention and significantly reduces operating time by 47.2 % compared to manual injection performed by an experienced user. These results pave the way for economical, high-throughput, and automated IMD-based in vitro and in vivo experiments, and beyond.",
+    "id": "11697121_ICRA2026"
   },
   {
     "title": "A 43 µm × 269 µm, Light-Tolerant and Power-Adaptive Forward-Bulk Optoelectrical Microsystem for Tetherless Neural Recording",
@@ -133,9 +151,9 @@ const publicationsData = [
       "doi": "https://doi.org/10.1038/s41928-025-01484-1"
     },
     "abstract": "The long-term recording of neural activity could be used to understand complex behaviours and disorders. However, the development of technology capable of such measurements faces a variety of technical challenges, including the relative motion between recording electrodes and tissue and the excessive displaced volume from implanted electronics. Here we report a subnanolitre-volume tetherless optoelectronic microsystem for neural recording. The system relies on light for photovoltaic power and data transfer, through a light-emitting diode, eliminating the need for wires or other tethers. It uses a single AlGaAs diode as both photovoltaic and light-emitting diode. Complementary metal–oxide–semiconductor circuits provide low-noise amplification, pulse-position-modulated encoding and electro-optical transduction. Two-dimensional materials processing techniques, vacuum annealing and atomic layer deposition, in conjunction with a standard complementary metal–oxide–semiconductor fabrication process, provide compact encapsulation against the corrosive conditions of biological media. We show that the subnanolitre neural implant is capable of chronic (365 days) in vivo recordings in awake mice.",
-    "citations": 5,
+    "citations": 6,
     "citationsByYear": {
-      "2026": 5
+      "2026": 6
     },
     "id": "NE2025"
   },
@@ -156,11 +174,11 @@ const publicationsData = [
       "doi": "https://doi.org/10.1109/TRO.2024.3354161"
     },
     "abstract": "Various quadrotor drones have been developed in recent years, mainly focusing on either improving maximum thrust per platform area or flight maneuverability. Evidently, achieving both advantages simultaneously is a challenging task, since they call for opposing rotor requirements. Specifically, improving the drone's maximum thrust per platform area mainly requires reducing the number of rotors to make way for larger and more powerful rotors. While this can be an effective method to increase overall thrust, improving flight maneuverability requires a greater number of rotors to generate larger rotating torques or to increase the thrust vectoring capability. To address this challenge, we design a novel coaxial drone with two contra-rotating rotors for high thrust efficiency while enabling independent dual-axis rotor rotation to maintain maneuverability along the roll and pitch axes. The thrust vectoring capability is provided by two dedicated servomotors connected vertically in series with the coaxial propellers to produce a compact and elongated fuselage frame. A nonlinear flight model in six degrees of freedom is developed for the underactuated system, incorporating four control inputs from the two propellers and servos, respectively. Consequently, a nonlinear control allocation approach is proposed such that the drone can produce a desired control force and yaw torque to stabilize the drone's position and yaw angle. For the uncontrolled roll and pitch dynamics, a damping component is added such that the roll and pitch angular velocities can also be stabilized. Both numerical simulations and real experiments are conducted to validate the design of the drone and the effectiveness of the proposed control strategy.",
-    "citations": 65,
+    "citations": 69,
     "citationsByYear": {
       "2024": 10,
       "2025": 39,
-      "2026": 16
+      "2026": 20
     },
     "id": "10399791_TRO2024"
   }
