@@ -15,7 +15,7 @@ const configData = {
     ],
     "aboutMe": [
         "A beginner at Robotics, Signal Processing, Micro Electronics.",
-        "Currently pursuing a Ph.D. at Nanyang Technological University (NTU), Singapore."
+        // "Currently pursuing a Ph.D. at Nanyang Technological University (NTU), Singapore."
     ],
     "education": [
         {
@@ -39,5 +39,5 @@ const configData = {
             "institution": "Harbin Institute of Technology (HIT)"
         }
     ],
-    "avatar": "images/profile.jpg" // Ensure you have this image, or leave as placeholder
+    // "avatar": ""
 };
