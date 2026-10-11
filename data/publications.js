@@ -1,4 +1,4 @@
-const publicationsUpdatedOn = "2026-Oct-01";
+const publicationsUpdatedOn = "2026-Oct-11";
 const publicationsData = [
   {
     "title": "A 43 μm × 269 μm Light-Adaptive Optoelectronic Autonomous Microsystem for Neural Recording",
@@ -21,9 +21,9 @@ const publicationsData = [
       "doi": "https://doi.org/10.1109/TBCAS.2026.3652195"
     },
     "abstract": "We present a 43 µm × 269 µm tetherless neural recording microsystem in which the CMOS bulk is forward-biased to utilize silicon junctions as a photovoltaic source. Our microsystem, forward-bulk microscale optoelectronic tetherless electrode (FB-MOTE), can operate with as low as 0.2 µA at 0.317 V and can withstand light intensity up to 1200 µW/mm2, and is power-adaptive: the higher available power increases the system bandwidth while maintaining the input-referred integrated noise. To balance adaptability and stability, we have designed our amplifier to take up most of the additional power, hence acting like a regulator, while the other circuit blocks are PTAT-biased to remain relatively stable across available power levels. The amplified neural signals are pulse position modulated (PPM) and optically transmitted through an AlGaAs microscale light emitting diode (µLED) for its information-per-photon efficiency, where the µLED driver is designed to maximize the emission-to-area ratio. Finally, we discuss various light-induced effects observed in measurements and introduce a simulation methodology to account for such effects and its limitations. Our forward-bulk CMOS microsystem provides an approach that can effectively harness and account for the available light in optoelectronic systems design.",
-    "citations": 1,
+    "citations": 2,
     "citationsByYear": {
-      "2026": 1
+      "2026": 2
     },
     "id": "11339461_TBCAS2026"
   },
@@ -82,9 +82,9 @@ const publicationsData = [
       "doi": "https://doi.org/10.1109/ISCAS56072.2025.11044230"
     },
     "abstract": "A sub-nanoliter, light-tolerant (780 µW/mm2), and power-adaptive forward-bulk optoelectronic microsystem for tetherless neural recording is presented. The CMOS bulk is used as a power harvester to utilize photogenerated carriers and a lower transistor threshold voltage for low power design (~0.3 µA at ~0.32 V). Increasing optical power boosts the system bandwidth to 14 kHz and the sampling frequency to 18.2 kHz, while maintaining the integrated input-referred noise (~10 µVRMS) stable, with an NEF of 2.34.",
-    "citations": 1,
+    "citations": 2,
     "citationsByYear": {
-      "2026": 1
+      "2026": 2
     },
     "id": "11044230_ISCAS2025"
   },
@@ -151,9 +151,9 @@ const publicationsData = [
       "doi": "https://doi.org/10.1038/s41928-025-01484-1"
     },
     "abstract": "The long-term recording of neural activity could be used to understand complex behaviours and disorders. However, the development of technology capable of such measurements faces a variety of technical challenges, including the relative motion between recording electrodes and tissue and the excessive displaced volume from implanted electronics. Here we report a subnanolitre-volume tetherless optoelectronic microsystem for neural recording. The system relies on light for photovoltaic power and data transfer, through a light-emitting diode, eliminating the need for wires or other tethers. It uses a single AlGaAs diode as both photovoltaic and light-emitting diode. Complementary metal–oxide–semiconductor circuits provide low-noise amplification, pulse-position-modulated encoding and electro-optical transduction. Two-dimensional materials processing techniques, vacuum annealing and atomic layer deposition, in conjunction with a standard complementary metal–oxide–semiconductor fabrication process, provide compact encapsulation against the corrosive conditions of biological media. We show that the subnanolitre neural implant is capable of chronic (365 days) in vivo recordings in awake mice.",
-    "citations": 6,
+    "citations": 8,
     "citationsByYear": {
-      "2026": 6
+      "2026": 8
     },
     "id": "NE2025"
   },
