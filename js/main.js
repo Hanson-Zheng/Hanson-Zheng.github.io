@@ -51,15 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Simple active state logic based on filename
     navLinks.forEach(link => {
-        const linkPath = link.getAttribute('href').split('#')[0]; 
-        const isCurrentIndex = (currentPage === "index.html" || currentPage === "");
-        const isLinkIndex = (linkPath === "index.html" || linkPath === "");
+        const href = link.getAttribute('href');
+        const linkPath = href.split('#')[0];
+        const isCurrentPage = !href.startsWith('#') && linkPath === currentPage;
 
-        if (linkPath === currentPage || (isCurrentIndex && isLinkIndex)) {
+        if (isCurrentPage) {
             link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
         } else {
             link.classList.remove('active');
+            link.removeAttribute('aria-current');
         }
+
+        // Close the mobile menu before following a page or section link.
+        link.addEventListener('click', () => navLinksContainer.classList.remove('active'));
     });
 
     // Mobile Menu Toggle
@@ -71,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- 1. Profile Rendering (Index & About Pages) ---
+    // --- 1. Home Profile & Shared Contact ---
     if (typeof configData !== 'undefined') {
         const nameEl = document.getElementById('profile-name');
         const titleEl = document.getElementById('profile-title');
@@ -81,42 +86,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const contactEmailEl = document.getElementById('contact-email');
         const footerTextEl = document.getElementById('footer-text');
         const aboutEl = document.getElementById('profile-about');
+        const educationEl = document.getElementById('profile-education');
 
         // Common Header Info
-        if (nameEl) nameEl.innerHTML = `Hello,<br>this is <span class="highlight">${configData.name}</span>.`;
+        if (nameEl) nameEl.innerHTML = `Hello,<br>this is <span class="hero-name"><span class="highlight">${configData.name}</span>.</span>`;
         if (titleEl) titleEl.textContent = configData.title;
         if (introEl) introEl.innerHTML = configData.introduction;
         
-        // About & Education (Rendered on about.html or index.html if present)
+        // Biography below the welcome text
         if (aboutEl) {
-            let contentHtml = '';
-            
-            // Render About Me Text
-            if (configData.aboutMe) {
-                if (Array.isArray(configData.aboutMe)) {
-                    contentHtml += configData.aboutMe.map(para => `<p style="margin-bottom: 1em;">${para}</p>`).join('');
-                } else {
-                    contentHtml += `<p style="margin-bottom: 1em;">${configData.aboutMe}</p>`;
-                }
-            }
+            const paragraphs = Array.isArray(configData.aboutMe)
+                ? configData.aboutMe
+                : configData.aboutMe ? [configData.aboutMe] : [];
+            aboutEl.innerHTML = paragraphs.map(para => `<p>${para}</p>`).join('');
+        }
 
-            // Render Education List
-            if (configData.education && Array.isArray(configData.education)) {
-                contentHtml += `<h3 style="font-size: 1.2rem; margin-top: 30px; margin-bottom: 15px; color: var(--primary-color);">Education</h3>`;
-                contentHtml += configData.education.map(item => `
-                    <div style="display: flex; gap: 20px; margin-bottom: 15px; align-items: baseline;">
-                        <div style="flex: 0 0 140px; font-weight: 600; color: #64748B; font-size: 0.95rem;">${item.year}</div>
-                        <div>
-                            <div style="font-weight: 600; color: var(--primary-color); font-size: 1.05rem;">
-                                ${item.degree} 
-                                ${item.thesis ? `<a href="${item.thesis}" target="_blank" style="margin-left:5px; font-size:0.9rem; font-weight:400; color:var(--accent-color);"><i class="fas fa-link"></i> Thesis</a>` : ''}
-                            </div>
-                            <div style="color: #64748B; font-size: 0.95rem;">${item.institution}</div>
+        // Compact education timeline on Home
+        if (educationEl && Array.isArray(configData.education)) {
+            educationEl.innerHTML = configData.education.map(item => `
+                <li class="education-item">
+                    <div class="education-year">${item.year}</div>
+                    <div class="education-details">
+                        <div class="education-degree">
+                            ${item.degree}
+                            ${item.thesis ? `<a href="${item.thesis}" target="_blank" rel="noopener noreferrer" class="education-thesis"><i class="fas fa-link"></i> Thesis</a>` : ''}
                         </div>
+                        <div class="education-institution">${item.institution}</div>
                     </div>
-                `).join('');
-            }
-            aboutEl.innerHTML = contentHtml;
+                </li>
+            `).join('');
         }
         
         // Contact
@@ -207,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 let linksHtml = '';
                 if (pub.links) {
-                    if (pub.links.pdf) linksHtml += `<a href="${pub.links.pdf}" target="_blank" class="pub-link"><i class="far fa-file-pdf"></i> PDF</a>`;
                     if (pub.links.code) linksHtml += `<a href="${pub.links.code}" target="_blank" class="pub-link"><i class="fab fa-github"></i> Code</a>`;
                     if (pub.links.doi) linksHtml += `<a href="${pub.links.doi}" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i> DOI</a>`;
                 }
@@ -413,12 +410,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterContainer = document.getElementById(filterId);
         const isHighlightsPage = containerId === 'highlights-list';
 
+        if (!container) return; // This page doesn't have this grid
+
         if (isHighlightsPage) {
             container.classList.remove('highlights-grid');
             container.classList.add('highlights-sections');
         }
-
-        if (!container) return; // This page doesn't have this grid
 
         if (!dataItems || dataItems.length === 0) {
             container.innerHTML = '<p>No content loaded.</p>';

@@ -1,6 +1,6 @@
 const configData = {
     "name": "Zheng Yumin",
-    "title": "PhD Student | Nanyang Technological University",
+    "title": "Ph.D. Candidate | Nanyang Technological University",
     "introduction": "Welcome to my homepage!",
     "email": "consummatezym@vip.qq.com",
     "copyrightYear": 2026,
