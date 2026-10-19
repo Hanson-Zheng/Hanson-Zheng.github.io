@@ -1,6 +1,7 @@
 # Local-only source and tooling (do not publish)
 scripts/
 data/publications/
-
+data/project/
+data/local/
 # Optional: local merged/backup artifacts
 # data/publications_generated.js

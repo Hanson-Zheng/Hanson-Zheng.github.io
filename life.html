@@ -6,13 +6,14 @@
     <title>Life & Interests | Hanson Zheng</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/life.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Zheng Yumin</a>
+            <a href="index.html" class="logo">Yumin's Site</a>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="publications.html">Publications</a></li>
@@ -33,7 +34,31 @@
 
         <!-- Reuse Highlights Grid Styles -->
         <div class="highlights-grid" id="life-list">
-            <div class="loading">Brewing stories and snapshots... coming soon!</div>
+            <section class="life-empty" data-life-empty aria-labelledby="life-empty-title">
+                <div class="life-brewing-art">
+                    <svg class="life-cup" viewBox="0 0 200 160" fill="none" aria-hidden="true">
+                        <g class="life-steam-lines">
+                            <path class="life-steam" d="M78 59C64 45 88 39 77 24" />
+                            <path class="life-steam" d="M100 57C85 42 113 33 101 15" />
+                            <path class="life-steam" d="M121 59C108 47 130 40 120 29" />
+                        </g>
+                        <ellipse class="life-cup-shadow" cx="98" cy="141" rx="51" ry="3" />
+                        <path class="life-cup-handle" d="M132 85C162 79 162 114 131 113" />
+                        <path class="life-cup-body" d="M57 76V101C57 118 71 130 89 130H100C118 130 132 118 132 101V76" />
+                        <ellipse class="life-cup-rim" cx="94.5" cy="76" rx="37.5" ry="7" />
+                        <ellipse class="life-tea" cx="94.5" cy="76" rx="31" ry="3.5" />
+                        <path class="life-saucer" d="M40 134C68 144 130 144 158 134" />
+                    </svg>
+                    <button class="life-animation-toggle" type="button" data-life-motion aria-pressed="false" aria-label="Pause animation" title="Pause animation" hidden>
+                        <svg viewBox="0 0 16 16" aria-hidden="true">
+                            <g class="life-motion-pause"><path d="M5.5 4V12M10.5 4V12" /></g>
+                            <path class="life-motion-play" d="M6 4L12 8L6 12Z" />
+                        </svg>
+                    </button>
+                </div>
+                <h3 id="life-empty-title">Stories are still brewing.</h3>
+                <p>Slow mornings, small adventures,<br>and the little things worth keeping.</p>
+            </section>
         </div>
     </main>
 

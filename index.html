@@ -7,6 +7,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -14,7 +15,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Zheng Yumin</a>
+            <a href="index.html" class="logo">Yumin's Site</a>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="publications.html">Publications</a></li>
@@ -42,9 +43,23 @@
                     <div class="social-links" id="social-links">
                         <!-- JS populated -->
                     </div>
+                    <div class="project-controls" data-project-controls aria-label="Project carousel controls" hidden>
+                        <button type="button" class="project-control" data-project-prev aria-label="Previous project" aria-controls="project-track">&#8592;</button>
+                        <button type="button" class="project-control project-playback" data-project-playback aria-label="Pause automatic scrolling" aria-pressed="false" aria-controls="project-track"><span aria-hidden="true">&#10074;&#10074;</span></button>
+                        <button type="button" class="project-control" data-project-next aria-label="Next project" aria-controls="project-track">&#8594;</button>
+                    </div>
                 </div>
+                <section class="project-showcase" id="selected-work" aria-label="Projects" aria-roledescription="carousel" hidden>
+                    <div class="project-film">
+                        <div class="project-viewport" aria-label="Project previews" aria-live="off">
+                            <div class="project-track" id="project-track"></div>
+                        </div>
+                    </div>
+                    <div class="project-pagination" aria-label="Choose a project"></div>
+                    <p class="project-status visually-hidden" aria-live="polite" aria-atomic="true"></p>
+                </section>
                 <section class="education" aria-labelledby="education-title">
-                    <h2 id="education-title">Education</h2>
+                    <h2 class="home-section-title" id="education-title">Education</h2>
                     <ol class="education-list" id="profile-education"></ol>
                 </section>
             </div>
@@ -71,7 +86,9 @@
 
     <!-- Load Data -->
     <script src="data/config.js"></script>
-    <!-- No publications.js needed on home unless we show recent pubs -->
+    <script src="data/projects.js"></script>
+    <script src="js/project-data.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/projects.js"></script>
 </body>
 </html>

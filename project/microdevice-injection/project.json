@@ -1,0 +1,105 @@
+{
+  "featured": true,
+  "card": {
+    "title": "Vision-servoed microdevice injection",
+    "category": "IEEE ICRA",
+    "year": "2026",
+    "image": "ICRA_Project_Card.png",
+    "imageAlt": "Concept illustration of microscope-guided microdevice delivery"
+  },
+  "title": "An Autonomous and Hardware-Agnostic Vision-Servoed System for Microdevice Injection",
+  "venue": "2026 IEEE International Conference on Robotics and Automation (ICRA)",
+  "year": 2026,
+  "authors": [
+    "Yumin Zheng",
+    "Runjia Tan",
+    "Rui Jiao",
+    "Sunwoo Lee"
+  ],
+  "summary": "A vision-servoed manipulation system for delivering implantable microdevices, built around standard commercial hardware and an automated positioning workflow.",
+  "links": {
+    "doi": "https://doi.org/10.1109/ICRA57385.2026.11697121"
+  },
+  "topics": [
+    "Visual servoing",
+    "Micromanipulation",
+    "Automation"
+  ],
+  "sections": [
+    {
+      "heading": "Overview",
+      "paragraphs": [
+        "A vision-servoed manipulation system for delivering implantable microdevices, built around standard commercial hardware and an automated positioning workflow.",
+        "The workflow combines coarse positioning, autofocus, and marker-aided centering to reduce manual calibration and intervention. The system is evaluated using the microscale optoelectronic tetherless electrode (MOTE)."
+      ],
+      "images": [
+        {
+          "src": "ICRA_Project_Card.png",
+          "alt": "Concept illustration of microscope-guided microdevice delivery",
+          "caption": ""
+        }
+      ]
+    },
+    {
+      "heading": "Automated workflow",
+      "imagePosition": "right",
+      "paragraphs": [
+        "Two commercial micromanipulators move the sample and the nanoinjector independently. Three contextual cameras cover the workspace, while a stereoscope-mounted camera provides the close-up view needed for final positioning. Motion is guided by visual feedback rather than relying on manipulator coordinate readback.",
+        "After the operator places the sample holder and mounts a preloaded pipette, the workflow proceeds through four stages:"
+      ],
+      "steps": [
+        "Coarse positioning brings the sample holder into the stereoscope's field of view using tracked ArUco markers.",
+        "Autofocus adjusts the stage height by maximizing a Laplacian-based image sharpness score.",
+        "Marker-aided centering estimates the holder center from a stitched microscope view and aligns it with the field of view.",
+        "Image-guided alignment positions the loaded pipette at the sample surface before the nanoinjector delivers the microdevice."
+      ],
+      "images": [
+        {
+          "src": "images/fig-01-automated-workflow.png",
+          "alt": "Four-stage microinjection workflow showing coarse positioning, autofocus, marker-aided centering, and device injection",
+          "caption": "The automated workflow combines workspace-scale camera guidance with microscope-scale alignment."
+        }
+      ]
+    },
+    {
+      "heading": "Marker-aided localization",
+      "imagePosition": "left",
+      "paragraphs": [
+        "The 3D-printed sample holder carries 24 asymmetric markers around a central sample cavity. Each marker combines a cross with an offset circle, providing an inward-pointing direction that identifies the holder center even when only part of the holder is visible.",
+        "A 5 × 5 image scan is stitched into a wider view. Contour matching identifies the markers, and a least-squares intersection of their inward directions estimates the sample center. At the workspace scale, bundle adjustment and Kalman filtering combine the contextual camera observations to reduce localization noise."
+      ],
+      "bullets": [
+        "In the reported trajectory test, the fused estimate reduced per-axis error by 21.2% relative to the marker-based Perspective-n-Point baseline.",
+        "The reported jitter measure decreased from 10.5% to 2.7%, reducing chatter in the stage guidance signal."
+      ],
+      "images": [
+        {
+          "src": "images/fig-04-marker-localization.png",
+          "alt": "Asymmetric cross-and-circle markers on a circular sample holder, with a scan grid and stitched microscope image used to estimate its center",
+          "caption": "Holder geometry, directional markers, and image stitching for center estimation."
+        }
+      ]
+    },
+    {
+      "heading": "Image-guided injection",
+      "imagePosition": "right",
+      "paragraphs": [
+        "Grounding DINO detections guide Segment Anything masks to locate the pipette and the agarose target. The estimated tip position provides the alignment correction. During the final approach, frame differencing detects surface deformation at contact and stops the pipette motion.",
+        "A silver wire then advances the MOTE from the pulled glass pipette into the gel. The wire retracts before the pipette is withdrawn. This separates device insertion from pipette penetration; loading a MOTE into the pipette remains a preparation step outside the automated sequence.",
+        "In the agarose experiments, automated delivery reduced operating time by 47.2% compared with experienced manual injection. Post-delivery optical pulse readout confirmed that the implanted MOTE remained functional."
+      ],
+      "images": [
+        {
+          "src": "images/poster-vision-guidance.png",
+          "alt": "Microscope views showing segmentation of the agarose sample, localization of the glass pipette tip, and frame-difference feedback at contact",
+          "caption": "Visual feedback locates the sample and pipette tip, then detects contact during the final approach."
+        },
+        {
+          "src": "images/fig-07-injection-sequence.png",
+          "alt": "Microscope sequence showing a MOTE pushed from a pipette into agarose, followed by wire retraction and pipette withdrawal, with magnified implant views",
+          "caption": "Automated delivery into agarose, with 100× and depth-composited 200× microscope views."
+        }
+      ]
+    }
+  ]
+}

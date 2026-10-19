@@ -1,0 +1,61 @@
+/* Let highlight text determine card height, including on narrow screens. */
+.highlights-sections .year-grid .news-card {
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.highlights-sections .year-grid .news-image {
+    flex: none;
+    height: auto;
+    aspect-ratio: 16 / 10;
+}
+
+.highlights-sections .year-grid .news-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.highlights-sections .year-grid .news-content {
+    flex: 1;
+    overflow: visible;
+}
+
+.highlights-sections .news-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-bottom: 10px;
+}
+
+.highlights-sections .news-meta .news-date {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.highlights-sections .news-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 100%;
+    margin-left: auto;
+}
+
+.highlights-sections .news-links .pub-link {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+.highlights-sections .year-grid .news-title,
+.highlights-sections .year-grid .news-desc {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}

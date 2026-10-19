@@ -1,0 +1,145 @@
+{
+  "sourcePdf": "Design_Modeling_and_Control_of_a_Coaxial_Drone.pdf",
+  "sourceSha256": "e9c61b79702cbbbefdabbf31f4ca59e67b1e4194943515df4fe3eff882d739f7",
+  "notes": "Figure captions are rewritten in project.json. PDF page numbers are 1-based. Crop coordinates are PDF points from the top-left. Vector artwork and overlaid labels are rendered at 600 dpi; embedded raster detail remains limited by the original PDF. Native raster figures are extracted without resizing.",
+  "figures": [
+    {
+      "file": "fig-01-mechanical-structure.png",
+      "figure": 1,
+      "pdfPage": 2,
+      "method": "native-raster-extraction",
+      "cropPdfPoints": [
+        310.95,
+        66.243,
+        542.31,
+        194.523
+      ],
+      "pixels": [
+        1928,
+        1069
+      ],
+      "bytes": 343667
+    },
+    {
+      "file": "fig-02-thrust-vectoring.png",
+      "figure": 2,
+      "pdfPage": 2,
+      "method": "native-raster-extraction",
+      "cropPdfPoints": [
+        306.954,
+        236.88,
+        545.994,
+        374.64
+      ],
+      "pixels": [
+        1992,
+        1148
+      ],
+      "bytes": 527808
+    },
+    {
+      "file": "fig-09-flight-hardware.png",
+      "figure": 9,
+      "pdfPage": 10,
+      "method": "native-raster-extraction",
+      "cropPdfPoints": [
+        71.442,
+        66.123,
+        255.762,
+        185.523
+      ],
+      "pixels": [
+        1536,
+        995
+      ],
+      "bytes": 1248632
+    },
+    {
+      "file": "fig-10-flight-electronics.png",
+      "figure": 10,
+      "pdfPage": 10,
+      "method": "pdf-crop-render",
+      "cropPdfPoints": [
+        38,
+        224,
+        289,
+        405
+      ],
+      "pixels": [
+        2093,
+        1509
+      ],
+      "bytes": 255465,
+      "renderDpi": 600
+    },
+    {
+      "file": "fig-14-thrust-power.png",
+      "figure": 14,
+      "pdfPage": 11,
+      "method": "native-raster-extraction",
+      "cropPdfPoints": [
+        89.649,
+        417.309,
+        245.649,
+        526.389
+      ],
+      "pixels": [
+        1300,
+        909
+      ],
+      "bytes": 104337
+    },
+    {
+      "file": "fig-15-propulsion-platforms.png",
+      "figure": 15,
+      "pdfPage": 11,
+      "method": "native-raster-extraction",
+      "cropPdfPoints": [
+        317.16,
+        66.36,
+        543.72,
+        197.52
+      ],
+      "pixels": [
+        1888,
+        1093
+      ],
+      "bytes": 1455379
+    },
+    {
+      "file": "fig-18-ascending-flight.png",
+      "figure": 18,
+      "pdfPage": 12,
+      "method": "native-raster-extraction",
+      "cropPdfPoints": [
+        312.948,
+        66.477,
+        540.348,
+        227.517
+      ],
+      "pixels": [
+        1895,
+        1342
+      ],
+      "bytes": 168465
+    },
+    {
+      "file": "fig-19-hover-flight.png",
+      "figure": 19,
+      "pdfPage": 12,
+      "method": "pdf-crop-render",
+      "cropPdfPoints": [
+        301,
+        260,
+        550,
+        416
+      ],
+      "pixels": [
+        2076,
+        1301
+      ],
+      "bytes": 303379,
+      "renderDpi": 600
+    }
+  ]
+}

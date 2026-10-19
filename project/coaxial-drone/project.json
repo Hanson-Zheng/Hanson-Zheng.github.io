@@ -1,0 +1,123 @@
+{
+  "featured": true,
+  "card": {
+    "title": "Design & control of a coaxial drone",
+    "category": "IEEE Transactions on Robotics",
+    "year": "2024",
+    "image": "TRO_Project_Card.png",
+    "imageAlt": "Coaxial drone prototype during an indoor flight test"
+  },
+  "title": "Design, Modeling, and Control of a Coaxial Drone",
+  "venue": "IEEE Transactions on Robotics",
+  "year": 2024,
+  "authors": [
+    "Liangming Chen",
+    "Jiaping Xiao",
+    "Yumin Zheng",
+    "N Arun Alagappan",
+    "Mir Feroskhan"
+  ],
+  "summary": "A coaxial drone design combining two counter-rotating rotors with dual-axis thrust vectoring, supported by a nonlinear flight model and control strategy.",
+  "links": {
+    "doi": "https://doi.org/10.1109/TRO.2024.3354161"
+  },
+  "topics": [
+    "Aerial robotics",
+    "Dynamics",
+    "Nonlinear control"
+  ],
+  "sections": [
+    {
+      "heading": "Overview",
+      "paragraphs": [
+        "A coaxial drone design combining two counter-rotating rotors with dual-axis thrust vectoring, supported by a nonlinear flight model and control strategy.",
+        "The compact platform uses two propellers and two servomotors. Its six-degree-of-freedom model and nonlinear control allocation are evaluated through numerical simulations and flight experiments."
+      ],
+      "images": [
+        {
+          "src": "TRO_Project_Card.png",
+          "alt": "Coaxial drone prototype flying in an indoor test space",
+          "caption": "The coaxial prototype during an indoor flight test."
+        }
+      ]
+    },
+    {
+      "heading": "Airframe and thrust vectoring",
+      "imagePosition": "bottom",
+      "imageColumns": 2,
+      "paragraphs": [
+        "Two counter-rotating propellers share a common axis. Below them, two servomotors connected in series tilt the propulsion assembly about orthogonal axes, directing thrust for roll and pitch maneuvers without a cyclic swashplate.",
+        "The battery and electronics occupy the lower fuselage, placing the center of gravity below the tilting assembly. The structure view shows how the components connect; the three poses illustrate independent and combined servo motion."
+      ],
+      "images": [
+        {
+          "src": "images/fig-01-mechanical-structure.png",
+          "alt": "Mechanical structure and coordinate frames of the coaxial drone, showing the rotor assembly, two serial servomotors, center of gravity, and lower fuselage",
+          "caption": "Airframe layout: coaxial rotors, two serial servos, and the lower fuselage."
+        },
+        {
+          "src": "images/fig-02-thrust-vectoring.png",
+          "alt": "Three poses of the coaxial drone illustrating positive roll, combined roll and pitch, and positive pitch through its two servomotors",
+          "caption": "Thrust vectoring through roll, combined roll and pitch, and pitch motion."
+        }
+      ]
+    },
+    {
+      "heading": "Modeling and control",
+      "imagePosition": "right",
+      "paragraphs": [
+        "A nonlinear six-degree-of-freedom model captures the coupled position and attitude dynamics. Control allocation converts the desired force and yaw torque into two rotor-speed commands and two servo angles. Position and yaw are regulated, with damping added to the remaining roll and pitch dynamics.",
+        "The controller runs at 250 Hz on an STM32F405. A 9-axis IMU and time-of-flight sensor provide attitude and distance measurements for height estimation, while Bluetooth carries setup commands and telemetry."
+      ],
+      "images": [
+        {
+          "src": "images/fig-09-flight-hardware.png",
+          "alt": "Coaxial drone prototype beside close-up views of its STM32 flight controller, IMU, and time-of-flight sensor",
+          "caption": "Custom flight hardware with the STM32 controller, IMU, and distance sensor."
+        }
+      ]
+    },
+    {
+      "heading": "Propulsion performance",
+      "imagePosition": "bottom",
+      "imageColumns": 2,
+      "paragraphs": [
+        "Bench measurements compare the 10-inch coaxial propulsion system with a quadrotor using 5-inch propellers. The platform comparison establishes the tested geometry, while the power–thrust curves show its measured performance.",
+        "Within these tested configurations, the coaxial system requires less electrical power at the same thrust over the overlapping measurement range."
+      ],
+      "images": [
+        {
+          "src": "images/fig-15-propulsion-platforms.png",
+          "alt": "Side-by-side photographs of the 10-inch coaxial drone and the quadrotor with 5-inch propellers used in propulsion testing",
+          "caption": "Test platforms: 10-inch coaxial rotors and a quadrotor with 5-inch propellers."
+        },
+        {
+          "src": "images/fig-14-thrust-power.png",
+          "alt": "Measured electrical power versus thrust for the tested coaxial drone and quadrotor, with fitted trends",
+          "caption": "Measured electrical power versus thrust for the two propulsion systems."
+        }
+      ]
+    },
+    {
+      "heading": "Flight validation",
+      "imagePosition": "bottom",
+      "imageColumns": 2,
+      "paragraphs": [
+        "The custom STM32 platform demonstrates vertical ascent toward a commanded height using the proposed controller and combined distance/attitude feedback. The ascent logs show position error, attitude, actuator commands, and trajectory. Accumulated state-estimation errors limit stability during longer operation on this platform.",
+        "A separate hover trial uses a Pixhawk 4 mini with its embedded sensor fusion and existing control allocation. The hover logs provide an additional demonstration of the airframe, with approximately maintained position and attitude."
+      ],
+      "images": [
+        {
+          "src": "images/fig-18-ascending-flight.png",
+          "alt": "Vertical ascent flight logs showing position tracking error, attitude, motor and servo commands, and the measured three-dimensional trajectory",
+          "caption": "Custom controller: vertical ascent with position, attitude, actuator, and trajectory logs."
+        },
+        {
+          "src": "images/fig-19-hover-flight.png",
+          "alt": "Hover logs showing position, pitch roll and yaw, motor and servo outputs, and battery voltage over time",
+          "caption": "Pixhawk 4 mini: a separate hover trial using its existing control allocation."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+/* A quiet placeholder that disappears when lifeData contains entries. */
+#life-filter[hidden] { display: none; }
+
+.life-empty {
+    --life-ink: #64748b;
+    --life-tea: #bd9771;
+    --life-halo: rgba(189, 151, 113, 0.09);
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 360px;
+    padding: 28px 20px 48px;
+    text-align: center;
+}
+
+[data-theme="dark"] .life-empty {
+    --life-ink: #a4b3c8;
+    --life-tea: #cfac88;
+    --life-halo: rgba(207, 172, 136, 0.07);
+}
+
+.life-brewing-art {
+    position: relative;
+    width: 180px;
+    background: radial-gradient(ellipse at 50% 55%, var(--life-halo), transparent 70%);
+}
+
+.life-cup { display: block; width: 100%; height: auto; }
+.life-cup-body, .life-cup-rim, .life-cup-handle, .life-saucer {
+    stroke: var(--life-ink);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.life-cup-shadow { fill: var(--life-ink); opacity: 0.08; }
+.life-tea { fill: var(--life-tea); opacity: 0.22; }
+.life-saucer { opacity: 0.65; }
+.life-steam {
+    stroke: var(--life-ink);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    opacity: 0.35;
+}
+.life-empty[data-motion-ready] .life-steam { animation: life-steam-rise 4.2s ease-in-out infinite; }
+.life-empty[data-motion-ready] .life-steam:nth-child(2) { animation-delay: -1.4s; }
+.life-empty[data-motion-ready] .life-steam:nth-child(3) { animation-delay: -2.8s; }
+.life-empty[data-paused="true"] .life-steam { animation-play-state: paused; }
+
+@keyframes life-steam-rise {
+    0% { transform: translateY(6px); opacity: 0; }
+    30% { opacity: 0.45; }
+    65% { opacity: 0.35; }
+    100% { transform: translateY(-8px); opacity: 0; }
+}
+
+.life-empty h3 {
+    margin: 14px 0 10px;
+    color: var(--primary-color);
+    font-size: clamp(1.3rem, 2.1vw, 1.65rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.4;
+}
+.life-empty p { color: var(--light-text); font-size: 0.92rem; line-height: 1.85; }
+
+.life-animation-toggle {
+    position: absolute;
+    right: 0;
+    bottom: 3px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--bg-color);
+    color: var(--light-text);
+    cursor: pointer;
+    opacity: 0.65;
+}
+.life-animation-toggle[hidden] { display: none; }
+.life-animation-toggle:hover { opacity: 1; color: var(--accent-color); }
+.life-animation-toggle:focus-visible { opacity: 1; outline: 2px solid var(--accent-color); outline-offset: 3px; }
+.life-animation-toggle svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.life-motion-play { display: none; fill: currentColor; stroke: none; }
+.life-animation-toggle[aria-pressed="true"] .life-motion-pause { display: none; }
+.life-animation-toggle[aria-pressed="true"] .life-motion-play { display: block; }
+
+@media (max-width: 768px) {
+    .life-empty { min-height: 320px; padding: 20px 0 36px; }
+    .life-brewing-art { width: 160px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .life-empty[data-motion-ready] .life-steam { animation: none; opacity: 0.35; }
+    .life-animation-toggle { display: none; }
+}

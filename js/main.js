@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Shared site name; keep each page's existing Home URL.
+    if (typeof configData !== 'undefined' && configData.siteName) {
+        document.querySelectorAll('.navbar .logo').forEach(logo => {
+            logo.textContent = configData.siteName;
+        });
+    }
+
     // --- 0.0 Theme Toggle (Light/Dark) ---
     const navLinksContainer = document.querySelector('.nav-links');
     const savedTheme = localStorage.getItem('site-theme') || 'light';
@@ -46,14 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
     setupThemeToggle();
 
     // --- 0. Shared Logic (Navbar Active State) ---
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const normalizePage = path => path.replace(/\/index\.html$/, '/');
+    const currentPage = normalizePage(window.location.pathname);
     const navLinks = document.querySelectorAll('.nav-links a');
     
-    // Simple active state logic based on filename
+    // Compare full paths so a project's index.html is not mistaken for Home.
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
-        const linkPath = href.split('#')[0];
-        const isCurrentPage = !href.startsWith('#') && linkPath === currentPage;
+        const linkUrl = new URL(href, window.location.href);
+        const isCurrentPage = !linkUrl.hash && linkUrl.origin === window.location.origin
+            && normalizePage(linkUrl.pathname) === currentPage;
 
         if (isCurrentPage) {
             link.classList.add('active');
@@ -195,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pubsByYear[year].forEach(pub => {
                 const pubItem = document.createElement('div');
                 pubItem.className = 'pub-item';
+                pubItem.dataset.publicationId = pub.id || '';
                 const hasCitation = Object.prototype.hasOwnProperty.call(pub, 'citations');
                 const citationCount = Number.isFinite(Number(pub.citations)) ? Number(pub.citations) : 0;
                 
@@ -206,22 +216,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 let linksHtml = '';
                 if (pub.links) {
                     if (pub.links.code) linksHtml += `<a href="${pub.links.code}" target="_blank" class="pub-link"><i class="fab fa-github"></i> Code</a>`;
-                    if (pub.links.doi) linksHtml += `<a href="${pub.links.doi}" target="_blank" class="pub-link"><i class="fas fa-external-link-alt"></i> DOI</a>`;
+                    if (pub.links.doi) linksHtml += `<a href="${pub.links.doi}" target="_blank" rel="noopener noreferrer" class="pub-link pub-link--doi">DOI <span aria-hidden="true">↗</span></a>`;
+                }
+                const projectUrl = typeof pub.links?.project === 'string' ? pub.links.project.trim() : '';
+                let projectLink = '';
+                if (projectUrl) {
+                    const link = document.createElement('a');
+                    link.className = 'pub-link pub-link--project';
+                    link.href = projectUrl;
+                    link.textContent = 'Project page';
+                    projectLink = link.outerHTML;
                 }
 
                 pubItem.innerHTML = `
                     <div class="pub-title">${pub.title} <span class="tag-badge">${pub.type}</span></div>
                     <div class="pub-authors">${authorHtml}</div>
                     <div class="pub-venue">${pub.venue}, ${pub.year}</div>
-                    <div class="pub-abstract" style="display:none;">${pub.abstract}</div>
+                    <div class="pub-abstract" id="abstract-${pub.id}" hidden>${pub.abstract}</div>
                     <div class="pub-links">
                         <div class="pub-links-left">
                             ${linksHtml}
-                            <a href="javascript:void(0)" class="pub-link toggle-abstract" onclick="this.parentElement.parentElement.previousElementSibling.style.display = this.parentElement.parentElement.previousElementSibling.style.display === 'none' ? 'block' : 'none'">Abstract</a>
+                            <button type="button" class="pub-link pub-link--abstract toggle-abstract" aria-expanded="false" aria-controls="abstract-${pub.id}">Abstract</button>
+                            ${projectLink}
                         </div>
                         ${hasCitation ? `<span class="pub-citations"><i class="fas fa-quote-right"></i> Cited by ${citationCount}</span>` : ''}
                     </div>
                 `;
+                const abstractButton = pubItem.querySelector('.toggle-abstract');
+                abstractButton.addEventListener('click', () => {
+                    const abstract = pubItem.querySelector('.pub-abstract');
+                    abstract.hidden = !abstract.hidden;
+                    abstractButton.setAttribute('aria-expanded', String(!abstract.hidden));
+                });
                 yearGroup.appendChild(pubItem);
             });
 
@@ -418,7 +444,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!dataItems || dataItems.length === 0) {
-            container.innerHTML = '<p>No content loaded.</p>';
+            const lifeEmpty = containerId === 'life-list' ? container.querySelector('[data-life-empty]') : null;
+            if (lifeEmpty) {
+                if (filterContainer) filterContainer.hidden = true;
+                const motionToggle = lifeEmpty.querySelector('[data-life-motion]');
+                if (motionToggle) {
+                    motionToggle.addEventListener('click', () => {
+                        const paused = motionToggle.getAttribute('aria-pressed') !== 'true';
+                        lifeEmpty.dataset.paused = String(paused);
+                        motionToggle.setAttribute('aria-pressed', String(paused));
+                        const label = paused ? 'Resume animation' : 'Pause animation';
+                        motionToggle.setAttribute('aria-label', label);
+                        motionToggle.title = label;
+                    });
+                    motionToggle.hidden = false;
+                    lifeEmpty.dataset.motionReady = '';
+                }
+            } else {
+                container.innerHTML = '<p>No content loaded.</p>';
+            }
             return;
         }
 
@@ -513,6 +557,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="news-desc">${item.description}</div>
             </div>
         `;
+
+        const linkGroup = document.createElement('div');
+        linkGroup.className = 'news-links';
+        (Array.isArray(item.links) ? item.links : []).forEach(info => {
+            if (!info || typeof info.url !== 'string' || !info.url.trim()) return;
+            let destination;
+            try {
+                destination = new URL(info.url.trim(), document.baseURI);
+            } catch {
+                return;
+            }
+            const localFile = window.location.protocol === 'file:' && destination.protocol === 'file:';
+            if (!['http:', 'https:', 'mailto:'].includes(destination.protocol) && !localFile) return;
+            const link = document.createElement('a');
+            link.className = 'pub-link pub-link--doi';
+            link.textContent = typeof info.label === 'string' && info.label.trim() ? info.label.trim() : 'Read more';
+            link.href = destination.href;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.setAttribute('aria-label', `${link.textContent}: ${item.title}`);
+            linkGroup.appendChild(link);
+        });
+        if (linkGroup.childElementCount) {
+            const date = card.querySelector('.news-date');
+            const metadata = document.createElement('div');
+            metadata.className = 'news-meta';
+            date.replaceWith(metadata);
+            metadata.append(date, linkGroup);
+        }
 
         const imageEl = card.querySelector('.news-image-img');
         if (imageEl) {

@@ -1,4 +1,5 @@
 const configData = {
+    "siteName": "Yumin's Site",
     "name": "Zheng Yumin",
     "title": "Ph.D. Candidate | Nanyang Technological University",
     "introduction": "Welcome to my homepage!",

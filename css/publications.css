@@ -1,0 +1,21 @@
+/* Three distinct actions, with contrast adjusted for both themes. */
+.pub-links-left { gap: 8px; }
+.pub-link {
+    border: 1px solid transparent;
+    padding: 5px 11px;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.5;
+    cursor: pointer;
+}
+.pub-link:hover { text-decoration: none; filter: brightness(0.94); }
+.pub-link:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.pub-link--doi { color: #1d4ed8; background: #eff6ff; border-color: #bfdbfe; }
+.pub-link--abstract { color: #92400e; background: #fffbeb; border-color: #fde68a; }
+.pub-link--project { color: #0f766e; background: #f0fdfa; border-color: #99f6e4; }
+[data-theme="dark"] .pub-link--doi { color: #93c5fd; background: #172b4a; border-color: #2c4c77; }
+[data-theme="dark"] .pub-link--abstract { color: #fcd34d; background: #352b18; border-color: #645027; }
+[data-theme="dark"] .pub-link--project { color: #5eead4; background: #12312f; border-color: #245c55; }
+.pub-abstract[hidden] { display: none; }

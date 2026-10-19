@@ -1,0 +1,125 @@
+{
+  "featured": true,
+  "card": {
+    "title": "Tetherless neural recording",
+    "category": "Nature Electronics",
+    "year": "2025",
+    "image": "MOTE_in_Pipette.jpg",
+    "imageAlt": "Photograph of a MOTE in a glass micropipette beside two grains of salt for scale"
+  },
+  "title": "A subnanolitre tetherless optoelectronic microsystem for chronic neural recording in awake mice",
+  "venue": "Nature Electronics",
+  "year": 2025,
+  "authors": [
+    "Sunwoo Lee",
+    "Shahaboddin Ghajari",
+    "Sanaz Sadeghi",
+    "Yumin Zheng",
+    "Hind Zahr",
+    "Alejandro J. Cortese",
+    "Wenchao Gu",
+    "Kibaek Choe",
+    "Aaron Mok",
+    "Melanie Wallace",
+    "Rui Jiao",
+    "Chunyan Wu",
+    "Jesse C. Werth",
+    "Weiru Fan",
+    "Praneeth Mogalipuvvu",
+    "Ju Uhn Park",
+    "Shitong Zhao",
+    "Conrad Smart",
+    "Thomas A. Cleland",
+    "Melissa R. Warden",
+    "Jan Lammerding",
+    "Tianyu Wang",
+    "Jesse H. Goldberg",
+    "Paul L. McEuen",
+    "Chris Xu",
+    "Alyosha C. Molnar"
+  ],
+  "summary": "A subnanolitre neural recording microsystem that uses light for both photovoltaic power and optical data transfer, eliminating the need for wires or other tethers.",
+  "links": {
+    "doi": "https://doi.org/10.1038/s41928-025-01484-1"
+  },
+  "topics": [
+    "Neural interfaces",
+    "Optoelectronics",
+    "Implantable microsystems"
+  ],
+  "sections": [
+    {
+      "heading": "Overview",
+      "paragraphs": [
+        "A subnanolitre neural recording microsystem that uses light for both photovoltaic power and optical data transfer, eliminating the need for wires or other tethers.",
+        "A single AlGaAs diode provides photovoltaic power and light emission. CMOS circuits amplify neural signals and encode them using pulse position modulation. The published work demonstrates chronic neural recording in awake mice."
+      ],
+      "images": [
+        {
+          "src": "MOTE_in_Pipette.jpg",
+          "alt": "Photograph of a MOTE in a glass micropipette beside two grains of salt for scale",
+          "caption": "A MOTE in a pipette with two grains of salt as comparison."
+        }
+      ],
+      "imagePosition": "left"
+    },
+    {
+      "heading": "Scaling and system design",
+      "imagePosition": "bottom",
+      "paragraphs": [
+        "Tetherless neural-recording microsystems have progressively reduced their volume per channel through advances in wireless power, communication, and integration. MOTE combines CMOS circuitry with an AlGaAs PVLED to achieve a volume smaller than a single nanolitre per channel.",
+        "The CMOS circuits provide low-noise amplification, stable biasing, pulse-position modulation (PPM), and the LED drive for the PVLED. Low-noise amplification and the LED driver dominate the implant's power consumption.",
+        "Red light at 623 nm supplies power, while infrared emission at 825 nm carries the optical uplink. These wavelengths support transmission through tissue and operation at depth. Incident LED irradiance is kept below 70 mW mm⁻² in the reported system, compared with the 250 mW mm⁻² brain heat-damage threshold cited in the article.",
+        "Size and power optimization focus on the implanted circuitry, while the external optical and communications apparatus can be much larger and consume more power. Heterogeneous integration and this system-level trade-off enable the subnanolitre form factor."
+      ],
+      "images": [
+        {
+          "src": "Scaling_Chart.png",
+          "alt": "Volume per channel versus year for RF, ultrasound, and optoelectrical autonomous microsystems, showing MOTE below one nanolitre per channel and symbols for different validation stages",
+          "caption": "Scaling trends of tetherless autonomous microsystems for neural recording, with MOTE below 1 nL per channel. Reference numbers in the chart and text correspond to the reference list in the linked article."
+        }
+      ]
+    },
+    {
+      "heading": "Fabrication and integration",
+      "imagePosition": "bottom",
+      "paragraphs": [
+        "MOTEs are fabricated by integrating an AlGaAs PVLED with a CMOS chip, forming platinum (Pt) electrical connections, and applying atomic layer deposition (ALD) for encapsulation. The process combines vacuum annealing, top-side patterning, backside silicon etching, and front- and rear-side light shielding."
+      ],
+      "steps": [
+        "Transfer the PVLED onto the CMOS chip.",
+        "Vacuum anneal at 300 ± 3 °C and below 10⁻⁶ torr to remove polymeric residues and support high-quality ALD.",
+        "Deposit Pt contacts on the PVLED and CMOS.",
+        "Connect the PVLED and CMOS Pt contacts with additional Pt, then deposit further ALD layers to fill gaps and cracks.",
+        "Etch the CMOS intermetal dielectrics (IMDs) and bulk silicon between neighboring MOTEs. The resulting silicon trenches act as visible endpoint markers during the backside etch in step (viii).",
+        "Deposit a 94 ± 1 nm Pt light shield to protect the inner CMOS circuits from light, followed by another ALD encapsulation layer.",
+        "Expose a pair of Pt measurement electrodes.",
+        "Etch the bulk CMOS silicon from the backside using deep reactive-ion etching (DRIE) until the trenches formed in step (v) become visible.",
+        "Deposit a 94 ± 1 nm Pt layer on the backside to provide rear-side light shielding."
+      ],
+      "images": [
+        {
+          "src": "Fabrication_MOTE.png",
+          "alt": "Nine MOTE fabrication and integration steps, shown as microscopy images and cross-sectional schematics from PVLED transfer through backside Pt light shielding",
+          "caption": "Fabrication and integration sequence (i–ix). PMMA: polymethyl methacrylate; PR: photoresist."
+        }
+      ]
+    },
+    {
+      "heading": "In vivo recording results",
+      "imagePosition": "right",
+      "paragraphs": [
+        "MOTEs were implanted in the barrel cortex of awake, head-fixed mice. During neural recording, a computer-controlled motor moved a rod to stimulate a whisker. The figure combines the measurement setup, longitudinal views of implanted devices, and neuronal staining near an implant site 31 days after insertion.",
+        "Action potentials were recorded in mouse 2 on days 13 and 102 after implantation. Waveform overlays show action-potential events, while spike raster plots across 100 stimulation cycles and peri-stimulus time histograms show stimulus-linked firing. Grey windows indicate rod movements.",
+        "These recordings demonstrate the detection of whisker-evoked neural activity after chronic implantation. The increased stimulus-associated spiking on day 102 may reflect reduced inflammation and/or a change in the implant’s proximity to an axon hillock; these remain possible explanations."
+      ],
+      "images": [
+        {
+          "src": "Result_MOTE_AP.png",
+          "alt": "Multi-panel figure showing the whisker-stimulation setup, implanted MOTEs, neuronal staining, and action-potential waveforms and spike statistics from mouse 2 on days 13 and 102",
+          "caption": "In vivo recording setup and implant imaging (a), with action-potential waveforms, spike rasters, and peri-stimulus time histograms from mouse 2 on days 13 and 102 (b). Grey shading marks rod movements."
+        }
+      ]
+    }
+  ]
+}

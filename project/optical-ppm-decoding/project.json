@@ -1,0 +1,108 @@
+{
+  "featured": true,
+  "card": {
+    "title": "Closed-loop optical PPM decoding",
+    "category": "IEEE ICASSP",
+    "year": "2026",
+    "image": "ICASSP_Project_Card.jpg",
+    "imageAlt": "Concept illustration of noisy optical signals and recovered pulses"
+  },
+  "title": "A Closed-Loop and Data-Driven Decoding Algorithm for Optical Pulse Position Modulated Uplinks in Neural Implants",
+  "venue": "2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)",
+  "year": 2026,
+  "authors": [
+    "Yumin Zheng",
+    "Rui Jiao",
+    "Sunwoo Lee"
+  ],
+  "summary": "An adaptive, closed-loop algorithm for detecting and decoding optical pulse position modulation signals under low and varying signal-to-noise ratios.",
+  "links": {
+    "doi": "https://doi.org/10.1109/ICASSP55912.2026.11462355"
+  },
+  "topics": [
+    "Signal processing",
+    "Optical uplinks",
+    "Feedback control"
+  ],
+  "sections": [
+    {
+      "heading": "Overview",
+      "paragraphs": [
+        "An adaptive, closed-loop algorithm for detecting and decoding optical pulse position modulation signals under low and varying signal-to-noise ratios.",
+        "Proportional-integral feedback and a periodic microsystem clock provide reference enhancement. The decoding method is evaluated on a channel model based on experimental data from a neural recording microsystem."
+      ],
+      "images": [
+        {
+          "src": "ICASSP_Project_Card.jpg",
+          "alt": "Concept illustration of noisy optical signals and recovered pulses",
+          "caption": "Concept illustration."
+        }
+      ]
+    },
+    {
+      "heading": "Timing-guided detection",
+      "imagePosition": "bottom",
+      "paragraphs": [
+        "A MOTE encodes each sample as the delay between a periodic reference pulse and an encoding pulse. Under weak optical coupling, a low detection threshold introduces false alarms, while a high threshold misses real pulses.",
+        "PPM timing provides a way to recognize both errors. Inter-pulse intervals should fall within a valid range set by the clock period and minimum pulse separation. Violations of this timing structure provide feedback for threshold adaptation, without requiring a known pulse shape."
+      ],
+      "images": [
+        {
+          "src": "images/poster-timing-strategy.png",
+          "alt": "Noisy PPM pulses and a valid inter-pulse timing range, illustrating false alarms below the range and missed detections above it",
+          "caption": "Pulse timing reveals threshold errors: short intervals indicate false alarms, while long intervals indicate missed detections."
+        }
+      ]
+    },
+    {
+      "heading": "Closed-loop decoding",
+      "imagePosition": "bottom",
+      "paragraphs": [
+        "The decoder estimates signal parameters and adapts its threshold in a feedback loop. Once the threshold converges, reference calibration stabilizes the clock sequence before the neural waveform is reconstructed."
+      ],
+      "bullets": [
+        "Initialize the threshold from a log-compressed amplitude histogram using an entropy-based criterion.",
+        "Estimate pulse width, inter-pulse separation, pulse centers, and oscillator period from the thresholded samples.",
+        "Use PI feedback to balance missed and spurious detections, then reduce timing jitter near the low-error operating point. Quantization-aware updates limit threshold dithering.",
+        "Calibrate the periodic reference sequence using its dominant phase and clock period, compensate missing reference pulses, and decode each encoding pulse relative to the stabilized references."
+      ],
+      "images": [
+        {
+          "src": "images/poster-decoding-workflow.png",
+          "alt": "Horizontal decoding workflow showing raw PPM samples, statistical threshold initialization, parameter estimation, PI feedback, reference calibration, and decoded output",
+          "caption": "From noisy optical pulses to a decoded waveform through threshold adaptation and reference calibration."
+        }
+      ]
+    },
+    {
+      "heading": "Detection and decoding results",
+      "imagePosition": "right",
+      "paragraphs": [
+        "Evaluation combines labeled synthetic signals with measured MOTE uplinks. The synthetic signals reproduce the measured pulse width, clock period, and noise statistics, allowing detection accuracy to be compared over a range of SNRs.",
+        "PI feedback improves recall and F1 score over Otsu's method and Otsu-based thresholding, with a further improvement from reference calibration. Solid curves show mean performance and shaded bands show the minimum-to-maximum range. The measured waveform comparison demonstrates end-to-end decoding at approximately 7 dB SNR."
+      ],
+      "images": [
+        {
+          "src": "images/poster-decoding-results.png",
+          "alt": "Recall and F1 score across SNR levels, measured neural waveform reconstruction, and a close-up comparison of detected optical pulses",
+          "caption": "Detection accuracy across SNR levels, reconstructed neural waveforms, and pulse-level comparisons."
+        }
+      ]
+    },
+    {
+      "heading": "Bench validation and power budget",
+      "imagePosition": "left",
+      "paragraphs": [
+        "An arbitrary waveform generator applies a prerecorded neural signal to a MOTE on a PCB. A photodetector and oscilloscope capture the resulting optical PPM uplink, providing a hardware test of the complete decoding chain.",
+        "At comparable recall and F1 levels, the decoder operates at a pulse power level 2.1 dB lower than the conventional baselines. For the MOTE power budget evaluated in this work, that improvement translates to 38% lower pulse-generation power and a 24% reduction in total system power requirement."
+      ],
+      "images": [
+        {
+          "src": "images/poster-measurement-setup.png",
+          "alt": "Microscope and optical receiver above a MOTE on a PCB, with an arbitrary waveform generator and oscilloscope used for uplink measurements",
+          "caption": "Hardware test bench for replaying neural signals through the MOTE optical uplink."
+        }
+      ]
+    }
+  ]
+}
