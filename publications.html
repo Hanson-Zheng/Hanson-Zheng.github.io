@@ -25,23 +25,44 @@
         </div>
     </nav>
 
-    <main class="container section-padding">
+    <main class="container section-padding publications-page">
         <h2 class="section-title">Publications</h2>
         
         <div class="pub-layout">
             <!-- Sidebar Bookmarks -->
             <aside class="pub-sidebar">
                 <div class="sticky-wrapper">
-                    <h3>Year</h3>
-                    <ul id="year-filters" class="bookmark-list">
-                        <!-- JS will populate years here -->
-                    </ul>
+                    <form class="pub-search" role="search" aria-label="Search publications" hidden>
+                        <label for="publication-search">Search</label>
+                        <div class="pub-search-field">
+                            <svg class="pub-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                            <input type="search" id="publication-search" placeholder="Keywords…" aria-describedby="publication-search-help" aria-controls="pub-list" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="200">
+                            <button type="button" class="pub-search-clear" id="publication-search-clear" aria-label="Clear search" hidden>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+                            </button>
+                        </div>
+                        <!-- <p id="publication-search-help">Titles, authors, venues<br> and abstracts.</p> -->
+                    </form>
+                    <nav id="publication-years" aria-label="Publication years">
+                        <h3>Year</h3>
+                        <ul id="year-filters" class="bookmark-list">
+                            <!-- JS will populate years here -->
+                        </ul>
+                    </nav>
                 </div>
             </aside>
 
             <!-- Content -->
-            <div class="pub-content" id="pub-list">
-                <div class="loading">Loading publications...</div>
+            <div class="pub-content">
+                <p class="pub-search-status" id="publication-search-status" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+                <div id="pub-list">
+                    <div class="loading">Loading publications...</div>
+                </div>
+                <div class="pub-search-empty" id="publication-search-empty" hidden>
+                    <h3>No matching publications</h3>
+                    <p>Try another title, author, venue or keyword.</p>
+                    <button type="button" class="pub-search-reset">Clear search</button>
+                </div>
             </div>
         </div>
     </main>

@@ -6,13 +6,13 @@ const configData = {
     "email": "consummatezym@vip.qq.com",
     "copyrightYear": 2026,
     "socialLinks": [
-        // { "icon": "fab fa-twitter", "url": "#" },
-        // { "icon": "fab fa-github", "url": "#" },
-        // { "icon": "fab fa-linkedin", "url": "#" },
-        { "icon": "fas fa-envelope", "url": "mailto:consummatezym@vip.qq.com" },
-        { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967" },
-        { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/" },
-        { "icon": "fas fa-graduation-cap", "url": "https://scholar.google.com/citations?user=Oi2eZTwAAAAJ&hl=en" }
+        // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },
+        // { "icon": "fab fa-github", "url": "#", "label": "GitHub" },
+        // { "icon": "fab fa-linkedin", "url": "#", "label": "LinkedIn" },
+        { "icon": "fas fa-envelope", "url": "mailto:consummatezym@vip.qq.com", "label": "Email" },
+        { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967", "label": "ORCID" },
+        { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/", "label": "Lee's group @ NTU" },
+        { "icon": "fas fa-graduation-cap", "url": "https://scholar.google.com/citations?user=Oi2eZTwAAAAJ&hl=en", "label": "Google Scholar" }
     ],
     "aboutMe": [
         "A beginner at Robotics, Signal Processing, Micro Electronics.",

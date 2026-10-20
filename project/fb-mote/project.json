@@ -1,0 +1,147 @@
+{
+  "featured": true,
+  "card": {
+    "title": "FB-MOTE: light-adaptive neural recording",
+    "category": "IEEE TBioCAS",
+    "year": "2026",
+    "image": "images/fb-mote-card.png",
+    "imageAlt": "FB-MOTE characterization on an illuminated probe station under a microscope"
+  },
+  "title": "A 43 μm × 269 μm Light-Adaptive Optoelectronic Autonomous Microsystem for Neural Recording",
+  "venue": "IEEE Transactions on Biomedical Circuits and Systems",
+  "year": 2026,
+  "authors": [
+    "Rui Jiao",
+    "Yumin Zheng",
+    "Azmaeen M. Nibras",
+    "Shahaboddin Ghajari",
+    "Sanaz Sadeghi",
+    "Alejandro J. Cortese",
+    "Paul L. McEuen",
+    "Alyosha C. Molnar",
+    "Sunwoo Lee"
+  ],
+  "summary": "A 43 μm × 269 μm neural recording microsystem that harvests light through forward-biased CMOS junctions, adapts its bandwidth to available power, and transmits neural signals as optical pulses.",
+  "links": {
+    "doi": "https://doi.org/10.1109/TBCAS.2026.3652195"
+  },
+  "topics": [
+    "Neural interfaces",
+    "Forward-bulk CMOS",
+    "Optical telemetry"
+  ],
+  "sections": [
+    {
+      "heading": "Overview",
+      "imagePosition": "left",
+      "paragraphs": [
+        "FB-MOTE is a light-powered neural recording microsystem that collects photogenerated carriers through the intrinsic junctions of its CMOS bulk. The harvested energy supports amplification, encoding and optical communication in a compact footprint.",
+        "Fabricated in 180 nm CMOS, each recording unit measures approximately 43 μm × 269 μm. Its bandwidth grows with available optical power while the integrated input-referred noise remains relatively stable."
+      ],
+      "bullets": [
+        "CMOS footprint: 0.0116 mm².",
+        "Reported total system power: 0.25–0.8 μW.",
+        "Forward-bulk energy harvesting with AlGaAs optical telemetry."
+      ],
+      "images": [
+        {
+          "src": "images/fig-19-cmos-die.jpg",
+          "alt": "CMOS test die with a 3 by 26 FB-MOTE array, a single unit pad map, and its annotated circuit layout",
+          "caption": "The 180 nm CMOS test die, unit pad map and circuit layout."
+        }
+      ]
+    },
+    {
+      "heading": "Forward-bulk optical powering",
+      "imagePosition": "bottom",
+      "paragraphs": [
+        "Forward bias allows the CMOS silicon junctions to act as photovoltaic sources and lowers transistor threshold voltages. Red illumination at 637 nm powers both the CMOS bulk and a dual-function AlGaAs photovoltaic/light-emitting diode (PVLED). The PVLED supplies the charge pump and emits the encoded optical pulses at approximately 835 nm.",
+        "An inverter-based amplifier uses switched-capacitor feedback to reduce sensitivity to light-induced leakage. Most additional current is directed to amplification, while proportional-to-absolute-temperature biasing keeps the other circuit blocks comparatively stable. Complementary pulse pairs encode the neural signal using pulse position modulation (PPM)."
+      ],
+      "images": [
+        {
+          "src": "images/fig-03-signal-chain.jpg",
+          "alt": "FB-MOTE circuit block diagram showing silicon photovoltaic harvesting, the amplifier and encoder, and the PVLED-powered charge pump and LED driver",
+          "caption": "Signal chain and power domains: the CMOS bulk supplies the recording circuits, while the PVLED powers the charge pump for optical transmission."
+        }
+      ]
+    },
+    {
+      "heading": "Power-adaptive neural recording",
+      "imagePosition": "bottom",
+      "imageColumns": 2,
+      "paragraphs": [
+        "In probe-based optical measurements, increasing irradiance expands the recording bandwidth while integrated input-referred noise stays around 14–15 μV RMS. At approximately 1100 μW/mm², the bandwidth reaches about 12 kHz, improving reconstruction of higher-frequency action-potential features.",
+        "A pre-recorded neural waveform containing local field potentials and action potentials was applied to the chip inputs and recovered from its optical output. Recording remains clear near 1200 μW/mm²; increasing illumination to 1250 μW/mm² produces distortion and higher noise. These limits describe the probe-based test configuration."
+      ],
+      "images": [
+        {
+          "src": "images/fig-12-optical-characterization.png",
+          "alt": "Optical characterization plots of normalized gain, pulse encoding, bandwidth, oscillator period, supply voltage and noise versus irradiance",
+          "caption": "Measured circuit response under optical powering, including bandwidth, timing, supply voltage and input-referred noise."
+        },
+        {
+          "src": "images/fig-13-waveform-reconstruction.png",
+          "alt": "Ground-truth neural waveform and four decoded FB-MOTE recordings at illumination levels from 100 to 1250 microwatts per square millimetre",
+          "caption": "Reconstruction of an injected, pre-recorded neural waveform at 100, 1100, 1200 and 1250 μW/mm². Shaded intervals highlight action potentials."
+        }
+      ]
+    },
+    {
+      "heading": "Biological validation",
+      "imagePosition": "right",
+      "paragraphs": [
+        "Functional tests used optically powered, wire-bonded chips connected to external platinum microelectrodes. In phosphate-buffered saline, the decoded output reproduced an applied electric field carrying a pre-recorded neural waveform.",
+        "Acute recordings from an earthworm ventral nerve were compared with a simultaneously connected LT1793-based control amplifier. After compensating for the fixed decoding latency, the FB-MOTE output agreed with the control in timing and waveform morphology."
+      ],
+      "bullets": [
+        "Average input-referred noise in open air: 14.51 μV RMS.",
+        "In saline: 14.70 μV RMS.",
+        "In the acute earthworm experiment: 15.83 μV RMS."
+      ],
+      "images": [
+        {
+          "src": "images/fig-17-biological-validation.png",
+          "alt": "Saline recording setup and traces, acute earthworm nerve recording with a control amplifier, and noise measurements across optical illumination levels",
+          "caption": "Optically powered saline and acute earthworm recordings using external Pt electrodes, with corresponding waveform comparisons and noise measurements."
+        }
+      ]
+    },
+    {
+      "heading": "Optical decoding",
+      "imagePosition": "bottom",
+      "imageColumns": 2,
+      "paragraphs": [
+        "The external receiver detects optical pulses and processes them in 100 ms batches. Histogram compression and Otsu thresholding identify pulses; timing statistics recover the reference-pulse grid. The complementary encoding intervals are then combined to reconstruct the neural voltage.",
+        "A two-node demonstration separates channels by pulse amplitude when the contrast is sufficient. For similar amplitudes, reference timing and a lightweight Viterbi path help recover the channel assignments. The examples use a sine wave on one node and a neural signal on the other."
+      ],
+      "images": [
+        {
+          "src": "images/fig-20-ppm-decoding.png",
+          "alt": "Detected reference and encoding pulses, two pseudo-chopping traces and the reconstructed neural waveform",
+          "caption": "Reference and encoding pulse timing, intermediate pseudo-chopping traces, and the reconstructed neural signal."
+        },
+        {
+          "src": "images/fig-21-two-node-decoding.png",
+          "alt": "Two-node optical decoding with a sine-wave channel and a neural-signal channel, comparing distinct and similar pulse amplitudes",
+          "caption": "Two-node decoding with distinct pulse amplitudes and with similar amplitudes. Each node carries a different input waveform."
+        }
+      ]
+    },
+    {
+      "heading": "Light-aware modeling",
+      "imagePosition": "right",
+      "paragraphs": [
+        "Optical and electrical powering produce measurable differences in oscillator timing. Adding empirical photocurrent sources to the extracted circuit model captures the optical measurements more closely. Minority-carrier diffusion is proposed as an explanation; dedicated test structures would be needed to validate that mechanism.",
+        "The paper also reports wire-bonding damage to metal-insulator-metal capacitors and an earlier optical cutoff near 780 μW/mm² in wire-bonded samples. Probe-based performance and wire-bonded biological tests therefore describe different integration conditions."
+      ],
+      "images": [
+        {
+          "src": "images/fig-16-light-aware-modeling.png",
+          "alt": "Measured oscillator periods and bandwidths under electrical and optical powering, compared with extracted circuit simulations and an empirical photocurrent model",
+          "caption": "Electrical and optical measurements compared with extracted simulations. Empirical photocurrent sources improve the timing agreement under illumination."
+        }
+      ]
+    }
+  ]
+}

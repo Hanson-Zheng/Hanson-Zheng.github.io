@@ -9,6 +9,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         return node;
     };
 
+    function findPublication(project) {
+        if (typeof publicationsData === 'undefined' || !Array.isArray(publicationsData)) return null;
+        // An explicit ID can select one paper when several share a project page.
+        if (project.publicationId) return publicationsData.find(paper => paper.id === project.publicationId) || null;
+        const siteRoot = project.resolve('../../');
+        const pageKey = value => {
+            try {
+                const url = new URL(value, siteRoot);
+                return url.origin + url.pathname.replace(/\/index\.html$/, '/').replace(/\/$/, '');
+            } catch {
+                return null;
+            }
+        };
+        const projectKey = pageKey(project.pageUrl);
+        const matches = publicationsData.filter(paper => paper.links?.project && pageKey(paper.links.project) === projectKey);
+        return matches.length === 1 ? matches[0] : null;
+    }
+
     try {
         const segments = window.location.pathname.split('/').filter(Boolean);
         const folder = segments[segments.length - (segments.at(-1) === 'index.html' ? 2 : 1)];
@@ -24,8 +42,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const metadata = [project.venue, project.year].filter(Boolean).join(' / ');
         if (metadata) header.append(element('p', 'projects-eyebrow', metadata));
         header.append(element('h1', '', project.title));
-        const authors = Array.isArray(project.authors) ? project.authors.join(', ') : project.authors;
-        if (authors) header.append(element('p', 'project-authors', authors));
+        const authorData = findPublication(project) || project;
+        const authors = Array.isArray(authorData.authors) ? authorData.authors.join(', ') : authorData.authors;
+        if (authors) {
+            const authorLine = element('p', 'project-authors');
+            renderSiteAuthors(authorLine, authorData);
+            header.append(authorLine);
+        }
         const actions = element('div', 'project-actions');
         const labels = { doi: 'Read the paper ↗', code: 'Code ↗', video: 'Watch video ↗' };
         Object.entries(project.links || {}).forEach(([kind, url]) => {
@@ -67,9 +90,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             block.append(copy);
             if (section.images?.length) {
+                const imagePosition = ['left', 'right', 'top', 'bottom'].includes(section.imagePosition)
+                    ? section.imagePosition : 'left';
                 const gallery = element('div', 'project-section-images');
                 if (section.imageColumns === 2) gallery.dataset.columns = '2';
-                section.images.forEach(info => {
+                let row;
+                section.images.forEach((info, imageIndex) => {
                     const figure = element('figure', 'project-art');
                     const image = element('img');
                     image.src = project.resolve(info.src);
@@ -91,11 +117,34 @@ document.addEventListener('DOMContentLoaded', async () => {
                     fullSize.rel = 'noopener noreferrer';
                     caption.append(fullSize);
                     figure.append(caption);
-                    gallery.append(figure);
+                    if (section.imageColumns === 2) {
+                        if (imageIndex % 2 === 0) {
+                            row = element('div', 'project-image-row');
+                            gallery.append(row);
+                        }
+                        row.append(figure);
+                        row.dataset.imageCount = row.children.length;
+                    } else {
+                        gallery.append(figure);
+                    }
                 });
+                if (imagePosition === 'top' || imagePosition === 'bottom') {
+                    gallery.querySelectorAll('.project-image-row').forEach(imageRow => {
+                        const images = [...imageRow.querySelectorAll('img')];
+                        const sizeRow = () => {
+                            if (!images.every(image => image.naturalWidth > 0 && image.naturalHeight > 0)) return;
+                            // Proportional column widths give the actual images the same height.
+                            // CSS handles resizing and stacks them at the mobile breakpoint.
+                            const columns = images.map(image => `minmax(0, ${image.naturalWidth / image.naturalHeight}fr)`);
+                            imageRow.style.setProperty('--project-image-columns', columns.join(' '));
+                        };
+                        images.forEach(image => image.addEventListener('load', sizeRow, { once: true }));
+                        sizeRow();
+                    });
+                }
                 block.classList.add('has-images');
-                block.dataset.imagePosition = ['left', 'right', 'top', 'bottom'].includes(section.imagePosition)
-                    ? section.imagePosition : 'left';
+                block.dataset.imagePosition = imagePosition;
+                block.dataset.verticalAlign = section.verticalAlign === 'center' ? 'center' : 'top';
                 block.append(gallery);
             }
             article.append(block);

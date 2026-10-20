@@ -4,11 +4,12 @@ const projectDirectories = [
     'tetherless-neural-recording',
     'microdevice-injection',
     'optical-ppm-decoding',
+    'fb-mote',
     'coaxial-drone'
 ];
 
 // Continuous autoplay speed in pixels per second; manual navigation snaps one card.
 const projectCarouselSettings = {
-    autoScrollSpeed: 10,
+    autoScrollSpeed: 15,
     pauseAfterInteraction: 4000
 };

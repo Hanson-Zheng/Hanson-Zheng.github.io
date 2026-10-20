@@ -1,0 +1,203 @@
+{
+  "sourcePdf": "A_43_m_times_269_m_Light-Adaptive_Optoelectronic_Autonomous_Microsystem_for_Neural_Recording.pdf",
+  "sourceSha256": "3c8f8ba91aea241d18269002c1d82d0520904e9363d1e0eca5a62d0165c28069",
+  "sourceArticle": "https://doi.org/10.1109/TBCAS.2026.3652195",
+  "articleTitle": "A 43 μm × 269 μm Light-Adaptive Optoelectronic Autonomous Microsystem for Neural Recording",
+  "authors": "Rui Jiao et al.",
+  "license": "CC BY-NC-ND 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+  "notes": "Figures are selected from the supplied published PDF. PDF pages are 1-based and crop coordinates are points from the top-left. Full plot crops retain vector axis labels that are absent from embedded raster images. Vector elements and text are rendered at 600 dpi; raster detail remains limited to the source. No plot data, labels or panel arrangements were changed. The homepage photograph is the separately documented crop. Public captions are written in project.json.",
+  "figures": [
+    {
+      "file": "fig-03-signal-chain.jpg",
+      "figure": 3,
+      "pdfPage": 4,
+      "method": "native-raster-extraction",
+      "pixels": [
+        2239,
+        472
+      ],
+      "bytes": 93273,
+      "sha256": "5e2ce4fb42b2af93d7e44e963e038178ab5d24b331cf97893fccdb2e7339570a",
+      "sourceXref": 110,
+      "cropPdfPoints": [
+        42.588,
+        65.088,
+        546.492,
+        171.432
+      ]
+    },
+    {
+      "file": "fig-10-probe-station.jpg",
+      "figure": 10,
+      "pdfPage": 6,
+      "method": "native-raster-extraction",
+      "pixels": [
+        1029,
+        777
+      ],
+      "bytes": 103196,
+      "sha256": "8d74e96c7f8ae0fb1ed1672f0f227668852a58d1297985ccb3fc11f02ff823a4",
+      "sourceXref": 298,
+      "cropPdfPoints": [
+        47.115,
+        64.545,
+        278.64,
+        239.37
+      ]
+    },
+    {
+      "file": "fig-19-cmos-die.jpg",
+      "figure": 19,
+      "pdfPage": 10,
+      "method": "native-raster-extraction",
+      "pixels": [
+        1130,
+        1061
+      ],
+      "bytes": 206564,
+      "sha256": "e569131dc08f1766ac1b608995b930b470a43a49fc744b470c6025ce6f68e6a3",
+      "sourceXref": 94,
+      "cropPdfPoints": [
+        305.127,
+        64.773,
+        547.527,
+        292.371
+      ]
+    },
+    {
+      "file": "fig-12-optical-characterization.png",
+      "figure": 12,
+      "pdfPage": 6,
+      "method": "pdf-crop-render",
+      "pixels": [
+        2118,
+        1809
+      ],
+      "bytes": 1115800,
+      "sha256": "3b1fafd934482bcde4925d0fd23d57f8b2dec2cde39198d9e996944321c09c26",
+      "renderDpi": 600,
+      "cropPdfPoints": [
+        299,
+        333,
+        553,
+        550
+      ]
+    },
+    {
+      "file": "fig-13-waveform-reconstruction.png",
+      "figure": 13,
+      "pdfPage": 7,
+      "method": "pdf-crop-render",
+      "pixels": [
+        2118,
+        2443
+      ],
+      "bytes": 1030813,
+      "sha256": "b3f03c603f60340a8445c66ee5bb483688e4c97cc547e1b39b4d02fe851b295b",
+      "renderDpi": 600,
+      "cropPdfPoints": [
+        41,
+        62,
+        295,
+        355
+      ]
+    },
+    {
+      "file": "fig-16-light-aware-modeling.png",
+      "figure": 16,
+      "pdfPage": 8,
+      "method": "pdf-crop-render",
+      "pixels": [
+        2126,
+        2334
+      ],
+      "bytes": 869731,
+      "sha256": "a36069886377cb7c36407ea6709684df688e7af46cc1b98a8d8ec8e2e8226c9f",
+      "renderDpi": 600,
+      "cropPdfPoints": [
+        299,
+        62,
+        554,
+        342
+      ]
+    },
+    {
+      "file": "fig-17-biological-validation.png",
+      "figure": 17,
+      "pdfPage": 9,
+      "method": "pdf-crop-render",
+      "pixels": [
+        2118,
+        2625
+      ],
+      "bytes": 2406321,
+      "sha256": "57745cc4bd5c8ba6fb1906821b40d07e63cdcb6eb020fdfc6b11472e5d556cc2",
+      "renderDpi": 600,
+      "cropPdfPoints": [
+        41,
+        63,
+        295,
+        378
+      ]
+    },
+    {
+      "file": "fig-20-ppm-decoding.png",
+      "figure": 20,
+      "pdfPage": 11,
+      "method": "pdf-crop-render",
+      "pixels": [
+        2109,
+        1459
+      ],
+      "bytes": 650528,
+      "sha256": "e7e3b8ebe044268afe6eb3e2e76a2cc3b0c61750cc015ac0cd0649eab406bda9",
+      "renderDpi": 600,
+      "cropPdfPoints": [
+        304,
+        421,
+        557,
+        596
+      ]
+    },
+    {
+      "file": "fig-21-two-node-decoding.png",
+      "figure": 21,
+      "pdfPage": 12,
+      "method": "pdf-crop-render",
+      "pixels": [
+        2125,
+        1576
+      ],
+      "bytes": 2082792,
+      "sha256": "1884c6f384f8b21f0014f6971d0286840554ae16eaf744e8f94e09623cb3af85",
+      "renderDpi": 600,
+      "cropPdfPoints": [
+        36,
+        286,
+        291,
+        475
+      ]
+    },
+    {
+      "file": "fb-mote-card.png",
+      "figure": 10,
+      "pdfPage": 6,
+      "method": "native-photo-crop",
+      "pixels": [
+        1024,
+        576
+      ],
+      "bytes": 730248,
+      "sha256": "6ad7c4d0b1260683664b5d387d28cd5034ccd4432ffe7e05b61b7bc3df420f19",
+      "sourceFile": "fig-10-probe-station.jpg",
+      "sourceCropPixels": [
+        2,
+        110,
+        1026,
+        686
+      ],
+      "notes": "16:9 crop of the probe-station characterization photograph; no resizing, retouching, or added artwork."
+    }
+  ]
+}
