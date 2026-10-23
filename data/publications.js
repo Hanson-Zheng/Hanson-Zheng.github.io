@@ -1,4 +1,4 @@
-const publicationsUpdatedOn = "2026-Oct-20";
+const publicationsUpdatedOn = "2026-Oct-23";
 const publicationsData = [
   {
     "title": "An Autonomous and Hardware-Agnostic Vision-Servoed System for Microdevice Injection",
@@ -159,7 +159,8 @@ const publicationsData = [
     "type": "Inproceedings",
     "links": {
       "pdf": "https://doi.org/10.1109/ISCAS56072.2025.11044230",
-      "doi": "https://doi.org/10.1109/ISCAS56072.2025.11044230"
+      "doi": "https://doi.org/10.1109/ISCAS56072.2025.11044230",
+      "project": "project/fb-mote/index.html"
     },
     "abstract": "A sub-nanoliter, light-tolerant (780 µW/mm2), and power-adaptive forward-bulk optoelectronic microsystem for tetherless neural recording is presented. The CMOS bulk is used as a power harvester to utilize photogenerated carriers and a lower transistor threshold voltage for low power design (~0.3 µA at ~0.32 V). Increasing optical power boosts the system bandwidth to 14 kHz and the sampling frequency to 18.2 kHz, while maintaining the integrated input-referred noise (~10 µVRMS) stable, with an NEF of 2.34.",
     "citations": 2,
