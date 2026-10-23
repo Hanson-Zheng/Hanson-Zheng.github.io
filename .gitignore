@@ -3,5 +3,6 @@ scripts/
 data/publications/
 data/project/
 data/local/
+desktop.ini
 # Optional: local merged/backup artifacts
 # data/publications_generated.js
