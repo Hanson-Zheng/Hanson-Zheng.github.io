@@ -1,4 +1,4 @@
-const publicationsUpdatedOn = "2026-Oct-23";
+const publicationsUpdatedOn = "2026-Oct-30";
 const publicationsData = [
   {
     "title": "An Autonomous and Hardware-Agnostic Vision-Servoed System for Microdevice Injection",
@@ -83,9 +83,9 @@ const publicationsData = [
       "project": "project/fb-mote/index.html"
     },
     "abstract": "We present a 43 µm × 269 µm tetherless neural recording microsystem in which the CMOS bulk is forward-biased to utilize silicon junctions as a photovoltaic source. Our microsystem, forward-bulk microscale optoelectronic tetherless electrode (FB-MOTE), can operate with as low as 0.2 µA at 0.317 V and can withstand light intensity up to 1200 µW/mm2, and is power-adaptive: the higher available power increases the system bandwidth while maintaining the input-referred integrated noise. To balance adaptability and stability, we have designed our amplifier to take up most of the additional power, hence acting like a regulator, while the other circuit blocks are PTAT-biased to remain relatively stable across available power levels. The amplified neural signals are pulse position modulated (PPM) and optically transmitted through an AlGaAs microscale light emitting diode (µLED) for its information-per-photon efficiency, where the µLED driver is designed to maximize the emission-to-area ratio. Finally, we discuss various light-induced effects observed in measurements and introduce a simulation methodology to account for such effects and its limitations. Our forward-bulk CMOS microsystem provides an approach that can effectively harness and account for the available light in optoelectronic systems design.",
-    "citations": 2,
+    "citations": 3,
     "citationsByYear": {
-      "2026": 2
+      "2026": 3
     },
     "id": "11339461_TBCAS2026"
   },
@@ -132,9 +132,9 @@ const publicationsData = [
       "project": "project/tetherless-neural-recording/index.html"
     },
     "abstract": "The long-term recording of neural activity could be used to understand complex behaviours and disorders. However, the development of technology capable of such measurements faces a variety of technical challenges, including the relative motion between recording electrodes and tissue and the excessive displaced volume from implanted electronics. Here we report a subnanolitre-volume tetherless optoelectronic microsystem for neural recording. The system relies on light for photovoltaic power and data transfer, through a light-emitting diode, eliminating the need for wires or other tethers. It uses a single AlGaAs diode as both photovoltaic and light-emitting diode. Complementary metal–oxide–semiconductor circuits provide low-noise amplification, pulse-position-modulated encoding and electro-optical transduction. Two-dimensional materials processing techniques, vacuum annealing and atomic layer deposition, in conjunction with a standard complementary metal–oxide–semiconductor fabrication process, provide compact encapsulation against the corrosive conditions of biological media. We show that the subnanolitre neural implant is capable of chronic (365 days) in vivo recordings in awake mice.",
-    "citations": 9,
+    "citations": 11,
     "citationsByYear": {
-      "2026": 9
+      "2026": 11
     },
     "id": "4192802501484_NE2025"
   },
@@ -229,11 +229,11 @@ const publicationsData = [
       "project": "project/coaxial-drone/index.html"
     },
     "abstract": "Various quadrotor drones have been developed in recent years, mainly focusing on either improving maximum thrust per platform area or flight maneuverability. Evidently, achieving both advantages simultaneously is a challenging task, since they call for opposing rotor requirements. Specifically, improving the drone's maximum thrust per platform area mainly requires reducing the number of rotors to make way for larger and more powerful rotors. While this can be an effective method to increase overall thrust, improving flight maneuverability requires a greater number of rotors to generate larger rotating torques or to increase the thrust vectoring capability. To address this challenge, we design a novel coaxial drone with two contra-rotating rotors for high thrust efficiency while enabling independent dual-axis rotor rotation to maintain maneuverability along the roll and pitch axes. The thrust vectoring capability is provided by two dedicated servomotors connected vertically in series with the coaxial propellers to produce a compact and elongated fuselage frame. A nonlinear flight model in six degrees of freedom is developed for the underactuated system, incorporating four control inputs from the two propellers and servos, respectively. Consequently, a nonlinear control allocation approach is proposed such that the drone can produce a desired control force and yaw torque to stabilize the drone's position and yaw angle. For the uncontrolled roll and pitch dynamics, a damping component is added such that the roll and pitch angular velocities can also be stabilized. Both numerical simulations and real experiments are conducted to validate the design of the drone and the effectiveness of the proposed control strategy.",
-    "citations": 70,
+    "citations": 71,
     "citationsByYear": {
       "2024": 10,
       "2025": 39,
-      "2026": 21
+      "2026": 22
     },
     "id": "10399791_TRO2024"
   }
