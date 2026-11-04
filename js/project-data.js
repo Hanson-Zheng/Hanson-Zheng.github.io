@@ -30,5 +30,21 @@
         return results.filter(result => result.status === 'fulfilled').map(result => result.value);
     }
 
-    window.projectStore = { load, loadAll };
+    function relatedPublications(project) {
+        const papers = typeof publicationsData === 'undefined' ? [] : publicationsData;
+        if (!Array.isArray(papers)) return [];
+        const pageKey = path => {
+            try {
+                const url = new URL(path, siteRoot);
+                return url.origin + url.pathname.replace(/\/index\.html$/, '/').replace(/\/$/, '');
+            } catch {
+                return null;
+            }
+        };
+        const projectKey = pageKey(project.pageUrl);
+        return papers.filter(paper => (project.publicationId && paper.id === project.publicationId)
+            || (paper.links?.project && pageKey(paper.links.project) === projectKey));
+    }
+
+    window.projectStore = { load, loadAll, relatedPublications };
 })();

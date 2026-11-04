@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 0. Shared Logic (Navbar Active State) ---
     const normalizePage = path => path.replace(/\/index\.html$/, '/');
     const currentPage = normalizePage(window.location.pathname);
+    const isProjectDetail = /\/project\/[^/]+\/(?:index\.html)?$/.test(window.location.pathname);
     const navLinks = document.querySelectorAll('.nav-links a');
     
     // Compare full paths so a project's index.html is not mistaken for Home.
@@ -122,23 +123,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const isCurrentPage = !linkUrl.hash && linkUrl.origin === window.location.origin
             && normalizePage(linkUrl.pathname) === currentPage;
 
-        if (isCurrentPage) {
+        if (isCurrentPage || (isProjectDetail && link.dataset.section === 'projects')) {
             link.classList.add('active');
-            link.setAttribute('aria-current', 'page');
+            link.setAttribute('aria-current', isCurrentPage ? 'page' : 'location');
         } else {
             link.classList.remove('active');
             link.removeAttribute('aria-current');
         }
 
         // Close the mobile menu before following a page or section link.
-        link.addEventListener('click', () => navLinksContainer.classList.remove('active'));
+        link.addEventListener('click', () => {
+            navLinksContainer.classList.remove('active');
+            document.querySelector('.mobile-menu-btn')?.setAttribute('aria-expanded', 'false');
+        });
     });
 
     // Mobile Menu Toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     if(mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', () => {
-             navLinksContainer.classList.toggle('active');
+             const expanded = navLinksContainer.classList.toggle('active');
+             mobileMenuBtn.setAttribute('aria-expanded', String(expanded));
         });
     }
 

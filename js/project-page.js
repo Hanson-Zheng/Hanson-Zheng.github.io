@@ -10,20 +10,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     function findPublication(project) {
-        if (typeof publicationsData === 'undefined' || !Array.isArray(publicationsData)) return null;
-        // An explicit ID can select one paper when several share a project page.
-        if (project.publicationId) return publicationsData.find(paper => paper.id === project.publicationId) || null;
-        const siteRoot = project.resolve('../../');
-        const pageKey = value => {
-            try {
-                const url = new URL(value, siteRoot);
-                return url.origin + url.pathname.replace(/\/index\.html$/, '/').replace(/\/$/, '');
-            } catch {
-                return null;
-            }
-        };
-        const projectKey = pageKey(project.pageUrl);
-        const matches = publicationsData.filter(paper => paper.links?.project && pageKey(paper.links.project) === projectKey);
+        const matches = projectStore.relatedPublications(project);
+        if (project.publicationId) return matches.find(paper => paper.id === project.publicationId) || null;
         return matches.length === 1 ? matches[0] : null;
     }
 
@@ -36,8 +24,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (description) description.content = project.summary || project.title;
         article.replaceChildren();
 
-        const back = element('a', 'project-back', '← Back to selected projects');
-        back.href = '../../index.html#selected-work';
+        const back = element('a', 'project-back', '← All projects');
+        back.href = '../../projects.html';
         const header = element('header', 'project-page-header');
         const metadata = [project.venue, project.year].filter(Boolean).join(' / ');
         if (metadata) header.append(element('p', 'projects-eyebrow', metadata));

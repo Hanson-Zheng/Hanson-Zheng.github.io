@@ -1,4 +1,4 @@
-const publicationsUpdatedOn = "2026-Oct-30";
+const publicationsUpdatedOn = "2026-Nov-04";
 const publicationsData = [
   {
     "title": "An Autonomous and Hardware-Agnostic Vision-Servoed System for Microdevice Injection",
@@ -12,6 +12,7 @@ const publicationsData = [
       "Sunwoo Lee"
     ],
     "venue": "2026 IEEE International Conference on Robotics and Automation (ICRA)",
+    "venueShort": "IEEE ICRA",
     "year": 2026,
     "publicationDate": "20260930",
     "coFirstAuthors": [
@@ -38,6 +39,7 @@ const publicationsData = [
       "Sunwoo Lee"
     ],
     "venue": "2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)",
+    "venueShort": "IEEE ICASSP",
     "coFirstAuthors": [
       "Yumin Zheng",
       "Rui Jiao"
@@ -74,6 +76,7 @@ const publicationsData = [
       "Yumin Zheng"
     ],
     "venue": "IEEE Transactions on Biomedical Circuits and Systems",
+    "venueShort": "IEEE TBioCAS",
     "year": 2026,
     "publicationDate": "20260112",
     "type": "Article",
@@ -123,6 +126,7 @@ const publicationsData = [
       "Sunwoo Lee"
     ],
     "venue": "Nature Electronics",
+    "venueShort": "Nature Electronics",
     "year": 2025,
     "publicationDate": "20251103",
     "type": "Article",
@@ -154,6 +158,7 @@ const publicationsData = [
       "Sunwoo Lee"
     ],
     "venue": "2025 IEEE International Symposium on Circuits and Systems (ISCAS)",
+    "venueShort": "IEEE ISCAS",
     "year": 2025,
     "publicationDate": "20250627",
     "type": "Inproceedings",
@@ -220,6 +225,7 @@ const publicationsData = [
       "Jiaping Xiao"
     ],
     "venue": "IEEE Transactions on Robotics",
+    "venueShort": "IEEE T-RO",
     "year": 2024,
     "publicationDate": "20240115",
     "type": "Article",

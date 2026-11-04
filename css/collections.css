@@ -1,0 +1,47 @@
+/* Shared typography and navigation for the main content collections. */
+.collection-page { --collection-link-color: #1d4ed8; padding: calc(var(--nav-height) + 40px) 20px 80px; }
+[data-theme="dark"] .collection-page { --collection-link-color: #93c5fd; }
+.collection-page > .section-title { margin: 0 0 40px; padding-bottom: 10px; color: var(--primary-color); font-size: 2rem; font-weight: 700; line-height: 1.2; letter-spacing: normal; }
+.collection-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 36px; align-items: start; }
+.collection-layout [hidden] { display: none !important; }
+.collection-sidebar { width: auto; min-width: 0; align-self: stretch; }
+.collection-sidebar-sticky { display: block; position: sticky; top: 100px; padding-right: 20px; border-right: 2px solid var(--border-color); overflow: visible; }
+.collection-search { margin-bottom: 28px; }
+.collection-search label, .collection-sidebar-title { display: block; margin-bottom: 12px; color: var(--light-text); font-size: 0.85rem; font-weight: 600; line-height: 1.2; text-transform: uppercase; letter-spacing: 1px; }
+.collection-sidebar .collection-sidebar-title { margin-bottom: 15px; font-weight: 700; }
+.collection-search-field { position: relative; }
+.collection-search-icon { position: absolute; top: 14px; left: 11px; width: 16px; height: 16px; color: var(--light-text); pointer-events: none; }
+.collection-search-input { display: block; width: 100%; min-width: 0; min-height: 44px; padding: 10px 33px 10px 34px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-alt); color: var(--primary-color); font: inherit; font-size: 0.85rem; line-height: 1.5; appearance: none; -webkit-appearance: none; }
+.collection-search-input::placeholder { color: var(--light-text); opacity: 1; }
+.collection-search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.collection-search-clear { position: absolute; display: grid; place-items: center; top: 5px; right: 3px; width: 30px; height: 34px; padding: 6px; border: 0; border-radius: 5px; color: var(--light-text); background: transparent; cursor: pointer; }
+.collection-search-clear svg { width: 16px; height: 16px; }
+.collection-search-clear:hover { color: var(--primary-color); }
+.collection-year-links { display: block; }
+.collection-year-links li { position: relative; padding: 8px 0; color: var(--light-text); font-weight: 500; }
+.collection-year-links li:hover { padding-left: 0; }
+.collection-year-links li.active::before { content: none; }
+.collection-year-links a { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--light-text); font-size: 1rem; font-weight: 500; line-height: 1.6; }
+.collection-year-links a:hover { color: var(--primary-color); }
+.collection-year-links a[aria-current] { color: var(--collection-link-color); font-weight: 700; }
+.collection-year-links a[aria-current]::before { content: ''; position: absolute; left: -22px; top: 50%; width: 4px; height: 20px; transform: translateY(-50%); border-radius: 0 4px 4px 0; background: var(--accent-color); }
+.collection-search-input:focus-visible, .collection-search-clear:focus-visible, .collection-year-links a:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }
+.collection-page .filter-btn { font-family: inherit; font-weight: 500; }
+@media (max-width: 768px) {
+    .collection-page { padding-top: calc(var(--nav-height) + 24px); padding-bottom: 48px; }
+    .collection-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .collection-sidebar { margin-bottom: 0; }
+    .collection-sidebar-sticky { position: static; padding-right: 0; border-right: 0; }
+    .collection-search { margin-bottom: 22px; }
+    .collection-search-input { min-height: 48px; padding: 11px 48px 11px 34px; font-size: 16px; }
+    .collection-search-icon { top: 16px; }
+    .collection-search-clear { top: 2px; right: 2px; width: 44px; height: 44px; }
+    .collection-sidebar .collection-sidebar-title { margin-bottom: 10px; }
+    .collection-year-links { display: flex; gap: 20px; overflow-x: auto; overscroll-behavior-x: contain; padding-bottom: 6px; }
+    .collection-year-links li { flex: none; white-space: nowrap; }
+    .collection-year-links a { min-height: 28px; }
+    .collection-year-links a[aria-current]::before { left: 0; top: auto; bottom: -3px; width: 24px; height: 3px; transform: none; border-radius: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .collection-page *, .collection-page a { scroll-behavior: auto; transition: none !important; }
+}

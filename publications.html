@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/publications.css">
+    <link rel="stylesheet" href="css/collections.css">
+    <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -17,6 +19,7 @@
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="publications.html" class="active">Publications</a></li>
+                <li><a href="projects.html" data-section="projects">Projects</a></li>
                 <li><a href="highlights.html">Highlights</a></li>
                 <li><a href="life.html">Life</a></li>
                 <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section">Contact <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
@@ -25,27 +28,27 @@
         </div>
     </nav>
 
-    <main class="container section-padding publications-page">
-        <h2 class="section-title">Publications</h2>
+    <main class="container section-padding publications-page collection-page">
+        <h1 class="section-title">Publications</h1>
         
-        <div class="pub-layout">
+        <div class="pub-layout collection-layout">
             <!-- Sidebar Bookmarks -->
-            <aside class="pub-sidebar">
-                <div class="sticky-wrapper">
-                    <form class="pub-search" role="search" aria-label="Search publications" hidden>
+            <aside class="pub-sidebar collection-sidebar">
+                <div class="sticky-wrapper collection-sidebar-sticky">
+                    <form class="pub-search collection-search" role="search" aria-label="Search publications" hidden>
                         <label for="publication-search">Search</label>
-                        <div class="pub-search-field">
-                            <svg class="pub-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-                            <input type="search" id="publication-search" placeholder="Keywords…" aria-describedby="publication-search-help" aria-controls="pub-list" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="200">
-                            <button type="button" class="pub-search-clear" id="publication-search-clear" aria-label="Clear search" hidden>
+                        <div class="pub-search-field collection-search-field">
+                            <svg class="pub-search-icon collection-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                            <input type="search" class="collection-search-input" id="publication-search" placeholder="Keywords…" aria-controls="pub-list" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="200">
+                            <button type="button" class="pub-search-clear collection-search-clear" id="publication-search-clear" aria-label="Clear search" hidden>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
                             </button>
                         </div>
                         <!-- <p id="publication-search-help">Titles, authors, venues<br> and abstracts.</p> -->
                     </form>
                     <nav id="publication-years" aria-label="Publication years">
-                        <h3>Year</h3>
-                        <ul id="year-filters" class="bookmark-list">
+                        <h3 class="collection-sidebar-title">Year</h3>
+                        <ul id="year-filters" class="bookmark-list collection-year-links">
                             <!-- JS will populate years here -->
                         </ul>
                     </nav>

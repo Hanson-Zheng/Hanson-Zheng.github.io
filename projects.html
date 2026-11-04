@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore research projects by Yumin Zheng in microsystems, neural interfaces, signal processing and robotics.">
+    <title>Projects | Yumin Zheng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/project-directory.css">
+    <link rel="stylesheet" href="css/collections.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar" aria-label="Main navigation">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Yumin's Site</a>
+            <ul class="nav-links" id="site-navigation">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="projects.html" data-section="projects" aria-current="page">Projects</a></li>
+                <li><a href="highlights.html">Highlights</a></li>
+                <li><a href="life.html">Life</a></li>
+                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section">Contact <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
+            </ul>
+            <button type="button" class="mobile-menu-btn directory-menu-button" aria-label="Toggle navigation" aria-controls="site-navigation" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        </div>
+    </nav>
+
+    <main class="container projects-directory-page collection-page">
+        <h1 class="section-title">Projects</h1>
+        <div class="project-directory-layout collection-layout">
+            <aside class="project-directory-sidebar collection-sidebar">
+                <div class="project-directory-sticky collection-sidebar-sticky">
+                    <form class="project-directory-search collection-search" role="search" aria-label="Search projects" hidden>
+                        <label for="project-search">Search</label>
+                        <div class="project-directory-search-field collection-search-field">
+                            <svg class="collection-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                            <input type="search" class="collection-search-input" id="project-search" placeholder="Keywords…" aria-controls="project-directory-list" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="200">
+                            <button type="button" class="collection-search-clear" id="project-search-clear" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+                        </div>
+                    </form>
+                    <nav id="project-directory-years" aria-label="Project years" hidden>
+                        <h2 class="collection-sidebar-title">Year</h2>
+                        <ul class="collection-year-links" id="project-year-links"></ul>
+                    </nav>
+                </div>
+            </aside>
+            <div class="project-directory-content">
+                <p class="directory-search-status" id="project-search-status" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+                <div class="directory-load-error" id="project-directory-error" role="alert" hidden>
+                    <p>Some projects couldn’t be loaded. Please try again.</p>
+                    <button type="button" class="directory-reset" id="project-directory-retry">Reload projects</button>
+                </div>
+                <div id="project-directory-list" aria-busy="true"><p class="directory-loading" role="status">Loading projects…</p></div>
+                <div class="directory-empty" id="project-search-empty" hidden>
+                    <h2>No matching projects</h2>
+                    <p>Try another topic, title or keyword.</p>
+                    <button type="button" class="directory-reset" id="project-search-reset">Clear search</button>
+                </div>
+                <noscript><p>Please enable JavaScript to browse projects.</p></noscript>
+            </div>
+        </div>
+    </main>
+
+    <section id="contact" class="section-padding bg-light">
+        <div class="container">
+            <h2 class="section-title">Contact</h2>
+            <div class="contact-box">
+                <p>Feel free to reach out for collaborations or just a chat.</p>
+                <a href="#" class="email-link" id="contact-email">Loading...</a>
+            </div>
+        </div>
+    </section>
+    <footer><div class="container footer-content"><p id="footer-text"></p></div></footer>
+    <script src="data/config.js"></script>
+    <script src="data/projects.js"></script>
+    <script src="data/publications.js"></script>
+    <script src="js/project-data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/project-directory.js"></script>
+</body>
+</html>

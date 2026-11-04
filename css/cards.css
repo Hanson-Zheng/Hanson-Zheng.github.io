@@ -1,0 +1,54 @@
+/* One interaction style for research, publication and highlight cards. */
+:root {
+    --card-motion-duration: 260ms;
+    --card-motion-easing: cubic-bezier(0.2, 0.7, 0.25, 1);
+    --card-hover-lift: -3px;
+    --card-image-scale: 1.02;
+    --card-hover-border: #b8c7dc;
+    --card-rest-shadow: 0 1px 3px rgba(15, 23, 42, 0.025);
+    --card-hover-shadow: 0 3px 8px -3px rgba(15, 23, 42, 0.08), 0 18px 38px -24px rgba(15, 23, 42, 0.28);
+}
+[data-theme="dark"] {
+    --card-hover-border: #405775;
+    --card-rest-shadow: 0 1px 3px rgba(0, 0, 0, 0.16);
+    --card-hover-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.2), 0 18px 38px -24px rgba(0, 0, 0, 0.6);
+}
+:is(.directory-card, .pub-item, .news-card, .project-card) {
+    border-radius: 12px;
+    box-shadow: var(--card-rest-shadow);
+    transition: transform var(--card-motion-duration) var(--card-motion-easing),
+        border-color var(--card-motion-duration) var(--card-motion-easing),
+        box-shadow var(--card-motion-duration) var(--card-motion-easing);
+}
+/* Retain the tighter corners and dimensions inside the Home film strip. */
+.project-card { border-radius: 9px; }
+:is(.project-cover img, .directory-project-media img, .news-image-img) {
+    transition: transform var(--card-motion-duration) var(--card-motion-easing);
+}
+:is(.directory-project-arrow, .project-card-arrow) {
+    transition: transform var(--card-motion-duration) var(--card-motion-easing);
+}
+:is(.directory-card, .pub-item, .news-card, .project-card):focus-within {
+    border-color: var(--card-hover-border);
+    box-shadow: var(--card-hover-shadow);
+}
+@media (hover: hover) and (pointer: fine) {
+    :is(.directory-card, .pub-item, .news-card, .project-card):hover {
+        transform: translateY(var(--card-hover-lift));
+        border-color: var(--card-hover-border);
+        box-shadow: var(--card-hover-shadow);
+    }
+    .project-card:hover .project-cover img,
+    .directory-project-link:hover .directory-project-media img,
+    .news-card:hover .news-image-img { transform: scale(var(--card-image-scale)); }
+    .directory-project-link:hover .directory-project-arrow,
+    .project-card:hover .project-card-arrow { transform: translateX(2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    :is(.directory-card, .pub-item, .news-card, .project-card),
+    :is(.project-cover img, .directory-project-media img, .news-image-img),
+    :is(.directory-project-arrow, .project-card-arrow) {
+        transition: none !important;
+        transform: none !important;
+    }
+}
