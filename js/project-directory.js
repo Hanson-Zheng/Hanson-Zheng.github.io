@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const arrow = element('span', 'directory-project-arrow', '→');
             arrow.setAttribute('aria-hidden', 'true');
             titleRow.append(title, arrow);
-            copy.append(titleRow);
+            link.append(titleRow);
             if (project.summary) copy.append(element('p', 'directory-project-summary', project.summary));
             if (project.topics?.length) {
                 const topics = element('ul', 'directory-topics');

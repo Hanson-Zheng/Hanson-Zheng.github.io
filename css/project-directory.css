@@ -2,18 +2,18 @@
 .directory-year-group { margin-bottom: 38px; scroll-margin-top: 100px; }
 .directory-year-group:last-child { margin-bottom: 0; }
 .directory-year-heading { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); color: var(--light-text); font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
-.directory-card { overflow: hidden; margin-bottom: 22px; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-color); }
+.directory-card { container-type: inline-size; overflow: hidden; margin-bottom: 22px; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-color); }
 .directory-card:last-child { margin-bottom: 0; }
-.directory-project-link { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 24px; align-items: center; padding: 24px; }
-.directory-project-link--text-only { grid-template-columns: minmax(0, 1fr); }
-.directory-project-copy { min-width: 0; }
-.directory-title-row { display: flex; align-items: baseline; gap: 12px; }
-.directory-project-title { flex: 1; color: var(--primary-color); font-size: 1.15rem; font-weight: 600; line-height: 1.6; letter-spacing: normal; overflow-wrap: anywhere; }
+.directory-project-link { display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 32cqi, 360px); grid-template-areas: "heading heading" "copy media"; gap: 16px clamp(24px, 4cqi, 48px); align-items: start; padding: 24px; }
+.directory-project-link--text-only { grid-template-columns: minmax(0, 1fr); grid-template-areas: "heading" "copy"; }
+.directory-project-copy { grid-area: copy; min-width: 0; }
+.directory-title-row { grid-area: heading; display: flex; align-items: baseline; gap: 12px; }
+.directory-project-title { flex: 1; min-width: 0; color: var(--primary-color); font-size: 1.15rem; font-weight: 600; line-height: 1.6; letter-spacing: normal; text-wrap: pretty; overflow-wrap: anywhere; }
 .directory-project-arrow { flex: none; color: var(--accent-color); font-size: 1.1rem; line-height: 1; }
-.directory-project-summary { margin-top: 12px; color: var(--text-color); font-size: 1rem; line-height: 1.7; }
+.directory-project-summary { max-width: 76ch; color: var(--text-color); font-size: 1rem; line-height: 1.7; }
 .directory-topics { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
 .directory-topic { padding: 3px 8px; border-radius: 4px; background: var(--bg-alt); color: var(--text-color); font-size: 0.75rem; line-height: 1.6; }
-.directory-project-media { overflow: hidden; aspect-ratio: 16 / 9; border-radius: 7px; background: var(--bg-alt); }
+.directory-project-media { grid-area: media; width: 100%; max-width: 360px; justify-self: end; overflow: hidden; aspect-ratio: 16 / 9; border-radius: 7px; background: var(--bg-alt); }
 .directory-project-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .directory-related { padding: 16px 24px 18px; border-top: 1px solid var(--border-color); background: var(--bg-alt); text-align: left; }
 .directory-related-label { margin-bottom: 8px; color: var(--text-color); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }
@@ -47,12 +47,19 @@
 .directory-menu-button { border: 0; padding: 4px; background: transparent; color: var(--text-color); }
 .directory-menu-button svg { display: block; width: 26px; height: 26px; }
 @media (max-width: 1000px) and (min-width: 769px) {
-    .directory-project-link { padding: 20px; gap: 20px; }
+    .directory-project-link { padding: 20px; gap: 16px 20px; }
     .directory-related { padding-left: 20px; padding-right: 20px; }
 }
+/* Switch on the card's available space, including beside the desktop sidebar. */
+@container (max-width: 560px) {
+    .directory-project-link { grid-template-columns: minmax(0, 1fr); grid-template-areas: "media" "heading" "copy"; }
+    .directory-project-link--text-only { grid-template-areas: "heading" "copy"; }
+    .directory-project-media { max-width: 480px; justify-self: center; }
+}
 @media (max-width: 768px) {
-    .directory-project-link { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 18px; }
-    .directory-project-media { order: -1; }
+    .directory-project-link { grid-template-columns: minmax(0, 1fr); grid-template-areas: "media" "heading" "copy"; gap: 16px; padding: 18px; }
+    .directory-project-link--text-only { grid-template-areas: "heading" "copy"; }
+    .directory-project-media { max-width: 480px; justify-self: center; }
     .directory-related { padding: 15px 18px 18px; }
     .directory-card { margin-bottom: 20px; }
 }

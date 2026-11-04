@@ -1,4 +1,54 @@
-/* Let highlight text determine card height, including on narrow screens. */
+/* Image-led news cards share the site's typography and card interactions. */
+#highlights-filter {
+    gap: 24px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#highlights-filter .filter-btn {
+    position: relative;
+    padding: 0 0 12px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--light-text);
+    font-size: 0.95rem;
+}
+
+#highlights-filter .filter-btn:hover,
+#highlights-filter .filter-btn.active {
+    background: transparent;
+    color: var(--accent-color);
+}
+
+#highlights-filter .filter-btn.active { font-weight: 600; }
+#highlights-filter .filter-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--accent-color);
+}
+
+.highlights-sections .year-divider {
+    justify-content: flex-start;
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.highlights-sections .year-divider::before { content: none; }
+.highlights-sections .year-divider span {
+    padding: 0;
+    color: var(--light-text);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: normal;
+}
+
 .highlights-sections .year-grid .news-card {
     aspect-ratio: auto;
     display: flex;
@@ -9,7 +59,7 @@
 .highlights-sections .year-grid .news-image {
     flex: none;
     height: auto;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 3;
 }
 
 .highlights-sections .year-grid .news-image-img {
@@ -20,8 +70,14 @@
 
 .highlights-sections .year-grid .news-content {
     flex: 1;
+    padding: 24px;
     overflow: visible;
+    background: var(--bg-color);
 }
+
+.highlights-sections .news-date { font-size: 0.8rem; font-weight: 500; }
+.highlights-sections .year-grid .news-title { font-size: 1.15rem; font-weight: 600; line-height: 1.5; }
+.highlights-sections .year-grid .news-desc { font-size: 0.95rem; line-height: 1.75; }
 
 .highlights-sections .news-meta {
     display: flex;
@@ -58,4 +114,19 @@
     display: block;
     -webkit-line-clamp: unset;
     overflow: visible;
+}
+
+#highlights-filter .filter-btn:focus-visible,
+.highlights-sections a:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+}
+
+@media (min-width: 1600px) {
+    .highlights-sections .year-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 768px) {
+    .highlights-sections .year-grid { gap: 24px; }
+    .highlights-sections .year-grid .news-content { padding: 20px; }
 }

@@ -13,16 +13,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     const previous = controls.querySelector('[data-project-prev]');
     const next = controls.querySelector('[data-project-next]');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const layout = typeof configData === 'undefined' ? {} : configData.homeLayout ?? {};
+    const minWidth = Number.isFinite(layout.verticalMinWidth) && layout.verticalMinWidth > 0 ? layout.verticalMinWidth : 1500;
+    const minAspectRatio = Number.isFinite(layout.verticalMinAspectRatio) && layout.verticalMinAspectRatio >= 0 ? layout.verticalMinAspectRatio : 1.4;
+    const columnGap = Number.isFinite(layout.columnGap) && layout.columnGap >= 0 ? layout.columnGap : 56;
+    const ratioQuery = minAspectRatio > 0 ? ` and (min-aspect-ratio: ${Math.round(minAspectRatio * 1000)}/1000)` : '';
+    const wideLayout = window.matchMedia(`(min-width: ${minWidth}px)${ratioQuery}`);
+    document.body.style.setProperty('--home-projects-gap', `${columnGap}px`);
+    const horizontalControls = controls.parentElement;
+    const verticalControls = showcase.querySelector('.project-rail-toolbar');
+    let vertical = wideLayout.matches;
     const settings = typeof projectCarouselSettings === 'undefined' ? {} : projectCarouselSettings;
     const speed = Math.max(0, settings.autoScrollSpeed ?? 22);
+    const preferredCardWidth = Number.isFinite(settings.cardWidth) && settings.cardWidth > 0 ? settings.cardWidth : 300;
     const interactionDelay = settings.pauseAfterInteraction ?? 4000;
     const pauses = new Set(['offscreen']);
     const gap = 18;
     let userPaused = false;
-    let cardWidth = 0;
+    let cardSize = 0;
     let cardStep = 0;
-    let cycleWidth = 0;
-    let viewWidth = 0;
+    let cycleSize = 0;
+    let viewSize = 0;
     let offset = 0;
     let leadingIndex = -1;
     let frame = 0;
@@ -74,20 +85,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         return item;
     }
 
-    // Three identical strips allow continuous motion and one-card snapping at either end.
-    for (let copy = 0; copy < 3; copy++) {
+    function appendStrip(copy) {
         const group = document.createElement('ul');
         group.className = 'project-group';
         projects.forEach((project, index) => group.append(cardFor(project, index, copy * projects.length + index)));
         track.append(group);
     }
+    // Extra copies keep both ends filled during continuous motion.
+    for (let copy = 0; copy < (projects.length > 1 ? 3 : 1); copy++) appendStrip(copy);
     pagination.replaceChildren(...projects.map((project, index) => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'project-page-dot';
         button.setAttribute('aria-label', `Show project: ${project.card.title || project.title}`);
         button.addEventListener('click', () => {
-            if (!snap) snapTo(cycleWidth + index * cardStep);
+            if (!snap) snapTo(cycleSize + index * cardStep);
         });
         return button;
     }));
@@ -95,14 +107,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     previous.disabled = next.disabled = projects.length < 2;
 
     const modulo = (value, divisor) => ((value % divisor) + divisor) % divisor;
-    const normalize = () => { offset = cycleWidth + modulo(offset - cycleWidth, cycleWidth); };
+    const normalize = () => { offset = projects.length > 1 ? cycleSize + modulo(offset - cycleSize, cycleSize) : 0; };
 
     function canAutoScroll() {
-        return !userPaused && !reducedMotion.matches && !pauses.size && speed > 0 && projects.length > 1 && cycleWidth > 0;
+        return !userPaused && !reducedMotion.matches && !pauses.size && speed > 0 && projects.length > 1 && cycleSize > 0;
     }
 
     function render() {
-        track.style.transform = `translateX(${-offset}px)`;
+        track.style.transform = vertical ? `translateY(${-offset}px)` : `translateX(${-offset}px)`;
         const index = modulo(Math.floor((offset + 0.01) / cardStep), projects.length);
         if (index !== leadingIndex) {
             leadingIndex = index;
@@ -115,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Keep offscreen copies out of keyboard navigation, while every visible card is clickable.
         cards.forEach(({ item, link, ordinal }) => {
             const start = ordinal * cardStep;
-            const visible = start + cardWidth > offset + 0.5 && start < offset + viewWidth - 0.5;
+            const visible = start + cardSize > offset + 0.5 && start < offset + viewSize - 0.5;
             if (item.inert === visible) {
                 item.inert = !visible;
                 item.setAttribute('aria-hidden', String(!visible));
@@ -210,20 +222,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function measure() {
-        if (!viewport.clientWidth) return;
         const progress = cardStep ? offset / cardStep : projects.length;
+        const changedAxis = vertical !== wideLayout.matches;
+        vertical = wideLayout.matches;
+        document.body.classList.toggle('home-projects-vertical', vertical);
+        const controlsMount = vertical ? verticalControls : horizontalControls;
+        if (controls.parentElement !== controlsMount) {
+            const focused = controls.contains(document.activeElement) ? document.activeElement : null;
+            controlsMount.append(controls);
+            focused?.focus({ preventScroll: true });
+        }
+        previous.textContent = vertical ? '\u2191' : '\u2190';
+        next.textContent = vertical ? '\u2193' : '\u2192';
+        showcase.dataset.orientation = vertical ? 'vertical' : 'horizontal';
+        if (!viewport.clientWidth || (vertical && !viewport.clientHeight)) return;
         const style = getComputedStyle(viewport);
-        viewWidth = viewport.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-        const count = Math.min(projects.length, viewWidth >= 720 ? 3 : viewWidth >= 500 ? 2 : 1);
-        cardWidth = (viewWidth - gap * (count - 1)) / count;
-        cardStep = cardWidth + gap;
-        cycleWidth = cardStep * projects.length;
+        const availableWidth = viewport.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        let count;
+        if (vertical) {
+            viewSize = viewport.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+            track.style.setProperty('--project-card-width', `${availableWidth}px`);
+            track.style.removeProperty('--project-card-height');
+            cardSize = Math.max(...cards.slice(0, projects.length).map(({ item }) => item.getBoundingClientRect().height));
+            track.style.setProperty('--project-card-height', `${cardSize}px`);
+            count = Math.min(projects.length, Math.max(1, Math.floor((viewSize + gap) / (cardSize + gap))));
+        } else {
+            viewSize = availableWidth;
+            cardSize = Math.min(viewSize, preferredCardWidth);
+            count = Math.min(projects.length, Math.max(1, Math.floor((viewSize + gap) / (cardSize + gap))));
+            track.style.removeProperty('--project-card-height');
+            track.style.setProperty('--project-card-width', `${cardSize}px`);
+        }
+        cardStep = cardSize + gap;
+        cycleSize = cardStep * projects.length;
+        if (projects.length > 1) {
+            const copies = Math.max(3, Math.ceil(viewSize / cycleSize) + 2);
+            while (track.children.length < copies) appendStrip(track.children.length);
+        }
         offset = progress * cardStep;
         normalize();
         snap = null;
         previous.removeAttribute('aria-disabled');
         next.removeAttribute('aria-disabled');
-        track.style.setProperty('--project-card-width', `${cardWidth}px`);
+        if (changedAxis) {
+            pointerStart = null;
+            suppressClick = false;
+            pauses.delete('pointer');
+        }
         showcase.dataset.perPage = count;
         render();
         schedule();
@@ -252,7 +297,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!card) return;
         const start = card.ordinal * cardStep;
         if (start < offset) snapTo(start, true);
-        else if (start + cardWidth > offset + viewWidth) snapTo(start + cardWidth - viewWidth, true);
+        else if (start + cardSize > offset + viewSize) snapTo(start + cardSize - viewSize, true);
     });
     viewport.addEventListener('focusout', () => {
         requestAnimationFrame(() => setPause('focus', viewport.contains(document.activeElement)));
@@ -265,7 +310,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     viewport.addEventListener('pointermove', event => {
         if (!pointerStart || event.pointerId !== pointerStart.id) return;
-        if (Math.abs(event.clientX - pointerStart.x) > 12) suppressClick = true;
+        const distance = vertical ? event.clientY - pointerStart.y : event.clientX - pointerStart.x;
+        if (Math.abs(distance) > 12) suppressClick = true;
     }, { passive: true });
     window.addEventListener('pointerup', event => {
         if (!pointerStart || event.pointerId !== pointerStart.id) return;
@@ -273,9 +319,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const dy = event.clientY - pointerStart.y;
         pointerStart = null;
         setPause('pointer', false);
-        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+        const distance = vertical ? dy : dx;
+        const across = vertical ? dx : dy;
+        if (Math.abs(distance) > 45 && Math.abs(distance) > Math.abs(across)) {
             suppressClick = true;
-            move(dx < 0 ? 1 : -1);
+            move(distance < 0 ? 1 : -1);
         }
     });
     window.addEventListener('pointercancel', () => {
@@ -289,9 +337,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, true);
     [showcase, controls].forEach(region => {
         region.addEventListener('keydown', event => {
-            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            const backward = vertical ? 'ArrowUp' : 'ArrowLeft';
+            const forward = vertical ? 'ArrowDown' : 'ArrowRight';
+            if (event.key !== backward && event.key !== forward) return;
             event.preventDefault();
-            move(event.key === 'ArrowRight' ? 1 : -1);
+            event.stopPropagation();
+            move(event.key === forward ? 1 : -1);
         });
     });
     document.addEventListener('visibilitychange', () => setPause('hidden', document.hidden));
@@ -308,6 +359,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     new IntersectionObserver(entries => setPause('offscreen', !entries[0].isIntersecting)).observe(showcase);
     new ResizeObserver(measure).observe(viewport);
+    wideLayout.addEventListener('change', measure);
     setPause('hidden', document.hidden);
     showcase.hidden = false;
     controls.hidden = false;

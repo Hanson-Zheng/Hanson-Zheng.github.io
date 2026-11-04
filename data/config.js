@@ -5,6 +5,11 @@ const configData = {
     "introduction": "Welcome to my homepage!",
     "email": "consummatezym@vip.qq.com",
     "copyrightYear": 2026,
+    "homeLayout": {
+        "verticalMinWidth": 1500, // Browser viewport width in CSS pixels.
+        "verticalMinAspectRatio": 1.8, // Viewport width / height; 0 ignores the ratio.
+        "columnGap": 56 // Space between the introduction and vertical filmstrip.
+    },
     "socialLinks": [
         // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },
         // { "icon": "fab fa-github", "url": "#", "label": "GitHub" },
@@ -15,7 +20,7 @@ const configData = {
         { "icon": "fas fa-graduation-cap", "url": "https://scholar.google.com/citations?user=Oi2eZTwAAAAJ&hl=en", "label": "Google Scholar" }
     ],
     "aboutMe": [
-        "A beginner at Robotics, Signal Processing, Micro Electronics.",
+        "Passionate about Robotics, Signal Processing, and Microelectronics.",
         // "Currently pursuing a Ph.D. at Nanyang Technological University (NTU), Singapore."
     ],
     "education": [

@@ -1,8 +1,7 @@
 /* Shared typography and navigation for the main content collections. */
-.collection-page { --collection-link-color: #1d4ed8; padding: calc(var(--nav-height) + 40px) 20px 80px; }
-[data-theme="dark"] .collection-page { --collection-link-color: #93c5fd; }
+.collection-page { --collection-link-color: var(--accent-color); padding: calc(var(--nav-height) + 40px) 20px 80px; }
 .collection-page > .section-title { margin: 0 0 40px; padding-bottom: 10px; color: var(--primary-color); font-size: 2rem; font-weight: 700; line-height: 1.2; letter-spacing: normal; }
-.collection-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 36px; align-items: start; }
+.collection-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: clamp(36px, calc(3vw - 7.2px), 48px); align-items: start; }
 .collection-layout [hidden] { display: none !important; }
 .collection-sidebar { width: auto; min-width: 0; align-self: stretch; }
 .collection-sidebar-sticky { display: block; position: sticky; top: 100px; padding-right: 20px; border-right: 2px solid var(--border-color); overflow: visible; }

@@ -1,5 +1,7 @@
 // Optional date-row buttons: links: [{ label: "Project", url: "project/.../index.html" }].
 // Omit links or use [] to hide the buttons. URLs may be local paths or full addresses.
+// Images show fully by default. For photos, optionally set imageFit: "cover".
+// imagePosition: "center" (or e.g. "50% 30%") adjusts framing; imageAlt describes the image.
 const highlightsData = [
     {
         "date": "2026-10-01",

@@ -102,6 +102,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             applyTheme(isDark ? 'light' : 'dark');
             updateToggleUi();
+            if (citationChartInstance) {
+                const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+                citationChartInstance.data.datasets[0].backgroundColor = accent;
+                citationChartInstance.data.datasets[0].borderColor = accent;
+                citationChartInstance.update('none');
+            }
         });
 
         themeToggleItem.appendChild(themeToggleBtn);
@@ -325,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 pubItem.innerHTML = `
-                    <div class="pub-title">${pub.title} <span class="tag-badge">${pub.type}</span></div>
+                    <div class="pub-title"><span class="pub-title-text">${pub.title}</span> <span class="tag-badge">${pub.type}</span></div>
                     <div class="pub-authors"></div>
                     <div class="pub-venue">${pub.venue}, ${pub.year}</div>
                     <div class="pub-abstract" id="abstract-${pub.id}" hidden>${pub.abstract}</div>
@@ -586,8 +592,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 datasets: [{
                     label: 'Citations',
                     data: values,
-                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                    borderColor: 'rgba(59, 130, 246, 1)',
+                    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim(),
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim(),
                     borderWidth: 1,
                     borderRadius: 6,
                     maxBarThickness: 36
@@ -792,22 +798,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createNewsCard(item) {
-        const card = document.createElement('div');
+        const card = document.createElement('article');
         card.className = 'news-card';
 
-        let imageHtml = '';
-        if(item.image && item.image.trim() !== '') {
-            imageHtml = `<div class="news-image"><img class="news-image-img" src="${item.image}" alt="${item.title}"></div>`;
+        if (typeof item.image === 'string' && item.image.trim()) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'news-image';
+            const image = document.createElement('img');
+            image.className = 'news-image-img';
+            image.src = item.image;
+            image.alt = item.imageAlt || item.title || '';
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            if (['contain', 'cover'].includes(item.imageFit)) image.style.objectFit = item.imageFit;
+            if (typeof item.imagePosition === 'string') image.style.objectPosition = item.imagePosition;
+            wrapper.append(image);
+            card.append(wrapper);
         }
 
-        card.innerHTML = `
-            ${imageHtml}
-            <div class="news-content">
-                <div class="news-date">${item.date}</div>
-                <div class="news-title">${item.title}</div>
-                <div class="news-desc">${item.description}</div>
-            </div>
-        `;
+        const content = document.createElement('div');
+        content.className = 'news-content';
+        const date = document.createElement('time');
+        date.className = 'news-date';
+        date.dateTime = item.date || '';
+        date.textContent = item.date || '';
+        const title = document.createElement('h3');
+        title.className = 'news-title';
+        title.textContent = item.title || '';
+        const description = document.createElement('p');
+        description.className = 'news-desc';
+        description.textContent = item.description || '';
+        content.append(date, title, description);
+        card.append(content);
 
         const linkGroup = document.createElement('div');
         linkGroup.className = 'news-links';
@@ -889,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
             section.className = 'year-section';
             section.id = `highlights-year-${year}`;
 
-            const divider = document.createElement('div');
+            const divider = document.createElement('h2');
             divider.className = 'year-divider';
             divider.innerHTML = `<span>${year}</span>`;
             section.appendChild(divider);
