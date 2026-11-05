@@ -3,7 +3,7 @@ const configData = {
     "name": "Zheng Yumin",
     "title": "Ph.D. Candidate | Nanyang Technological University",
     "introduction": "Welcome to my homepage!",
-    "email": "consummatezym@vip.qq.com",
+    "email": "yumin004@e.ntu.edu.sg",
     "copyrightYear": 2026,
     "siteLayout": {
         "containerMinWidth": 900, // Fluid sizing starts from this preferred width.
@@ -19,7 +19,7 @@ const configData = {
         "columnGap": 48, // Space between the introduction and vertical filmstrip.
         "railMinWidth": 320,
         "railMaxWidth": 360,
-        "paddingTop": 120,
+        "paddingTop": 72,
         "paddingBottom": 96,
         "mobilePaddingTop": 40,
         "mobilePaddingBottom": 40,
@@ -30,7 +30,7 @@ const configData = {
         // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },
         // { "icon": "fab fa-github", "url": "#", "label": "GitHub" },
         // { "icon": "fab fa-linkedin", "url": "#", "label": "LinkedIn" },
-        { "icon": "fas fa-envelope", "url": "mailto:consummatezym@vip.qq.com", "label": "Email" },
+        { "icon": "fas fa-envelope", "url": "mailto:yumin004@e.ntu.edu.sg", "label": "Email" },
         { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967", "label": "ORCID" },
         { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/", "label": "Lee's group @ NTU" },
         { "icon": "fas fa-graduation-cap", "url": "https://scholar.google.com/citations?user=Oi2eZTwAAAAJ&hl=en", "label": "Google Scholar" }

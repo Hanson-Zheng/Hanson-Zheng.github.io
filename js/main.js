@@ -192,8 +192,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const educationEl = document.getElementById('profile-education');
 
         // Common Header Info
-        if (nameEl) nameEl.innerHTML = `Hello,<br>this is <span class="hero-name"><span class="highlight">${configData.name}</span>.</span>`;
-        if (titleEl) titleEl.textContent = configData.title;
+        if (nameEl) nameEl.innerHTML = `<span class="hero-greeting">Hello,<br class="hero-desktop-break"> this is</span> <span class="hero-name"><span class="highlight">${configData.name}</span>.</span>`;
+        if (titleEl) {
+            // Keep the title editable in config.js; pipes become mobile line breaks.
+            const titleParts = String(configData.title ?? '').split('|').map(part => part.trim()).filter(Boolean);
+            titleEl.replaceChildren();
+            titleParts.forEach((part, index) => {
+                if (index) {
+                    const separator = document.createElement('span');
+                    separator.className = 'profile-title-separator';
+                    separator.textContent = ' | ';
+                    titleEl.append(separator);
+                }
+                const segment = document.createElement('span');
+                segment.className = 'profile-title-part';
+                segment.textContent = part;
+                titleEl.append(segment);
+            });
+        }
         if (introEl) introEl.innerHTML = configData.introduction;
         
         // Biography below the welcome text
