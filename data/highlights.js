@@ -40,5 +40,12 @@ const highlightsData = [
             { "label": "Article", "url": "https://doi.org/10.1038/s41928-025-01484-1" }
         ],
         "description": "Our recent publication was featured on the cover of Nature Electronics (Volume 8 Issue 12, December 2025), highlighting our latest advances in tetherless neural recording."
+    },
+    {
+        "date": "2024-05-20",
+        "title": "MOTE at ISCAS 2024",
+        "image": "images/highlight/ISCAS2024_NTU_Booth.jpg",
+        "imageAlt": "MOTE research poster displayed at the NTU booth during ISCAS 2024",
+        "description": "We showcased our MOTE research at the NTU booth during ISCAS 2024."
     }
 ];
