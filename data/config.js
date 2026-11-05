@@ -5,10 +5,26 @@ const configData = {
     "introduction": "Welcome to my homepage!",
     "email": "consummatezym@vip.qq.com",
     "copyrightYear": 2026,
+    "siteLayout": {
+        "containerMinWidth": 900, // Fluid sizing starts from this preferred width.
+        "containerMaxWidth": 1500, // Maximum container width, including inner padding.
+        "fluidSideMargin": 80, // Preferred margin on each side while resizing.
+        "contentPadding": 20, // Inner padding on each side of desktop content.
+        "mobileContentPadding": 30 // Inner padding on each side on mobile.
+    },
     "homeLayout": {
-        "verticalMinWidth": 1500, // Browser viewport width in CSS pixels.
-        "verticalMinAspectRatio": 1.8, // Viewport width / height; 0 ignores the ratio.
-        "columnGap": 56 // Space between the introduction and vertical filmstrip.
+        "verticalMinWidth": 1440, // Browser viewport width in CSS pixels.
+        "verticalMinAspectRatio": 1.6, // Viewport width / height; 0 ignores the ratio.
+        "verticalContainerMaxWidth": 1320, // Home, navbar and Contact width in vertical mode.
+        "columnGap": 48, // Space between the introduction and vertical filmstrip.
+        "railMinWidth": 320,
+        "railMaxWidth": 360,
+        "paddingTop": 120,
+        "paddingBottom": 96,
+        "mobilePaddingTop": 40,
+        "mobilePaddingBottom": 40,
+        "mobileFilmGap": 28, // Space before the horizontal filmstrip on mobile.
+        "educationGap": 56 // Space from the introduction/buttons to Education.
     },
     "socialLinks": [
         // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },

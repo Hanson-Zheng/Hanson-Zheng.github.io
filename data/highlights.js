@@ -1,6 +1,6 @@
 // Optional date-row buttons: links: [{ label: "Project", url: "project/.../index.html" }].
 // Omit links or use [] to hide the buttons. URLs may be local paths or full addresses.
-// Images show fully by default. For photos, optionally set imageFit: "cover".
+// Images fill a 16:9 frame without distortion. Set imageFit: "contain" to show a full image.
 // imagePosition: "center" (or e.g. "50% 30%") adjusts framing; imageAlt describes the image.
 const highlightsData = [
     {
@@ -15,7 +15,8 @@ const highlightsData = [
     {
         "date": "2026-01-31",
         "title": "Paper Accepted in ICRA 2026",
-        "image": "images/highlight/ICRA2026.png",
+        "image": "images/highlight/icra-2026.jpg",
+        "imageAlt": "ICRA 2026 Vienna conference banner featuring a robotic hand and the city skyline",
         "links": [
             { "label": "Project", "url": "project/microdevice-injection/index.html" }
         ],
@@ -24,7 +25,8 @@ const highlightsData = [
     {
         "date": "2026-01-16",
         "title": "Paper Accepted in ICASSP 2026",
-        "image": "images/highlight/ICASSP2026.jpg",
+        "image": "images/highlight/icassp-2026.png",
+        "imageAlt": "ICASSP 2026 Barcelona conference banner",
         "links": [
             { "label": "Project", "url": "project/optical-ppm-decoding/index.html" }
         ],

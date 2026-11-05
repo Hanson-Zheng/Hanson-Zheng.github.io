@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 heading.id = `${section.id}-title`;
                 section.setAttribute('aria-labelledby', heading.id);
                 section.append(heading);
-                groups.set(year, { section, records: [] });
+                const cards = element('div', 'directory-year-cards');
+                section.append(cards);
+                groups.set(year, { section, cards, records: [] });
                 list.append(section);
             }
             const card = element('article', 'directory-card');
@@ -133,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const projectText = [project.title, project.card.category, ...(project.authors || []), ...(project.sections || []).flatMap(s => [s.heading, ...(s.paragraphs || []), ...(s.bullets || []), ...(s.steps || [])])].filter(Boolean).join(' ');
             const snippets = [{ label: 'From the project', text: projectText }, ...papers.map(p => ({ label: 'From a related publication', text: [p.title, ...(p.authors || []), p.venue, p.abstract].filter(Boolean).join(' · ') }))];
             const record = { project, card, visibleText, snippets, excerpt, excerptLabel, excerptText, searchText: `${visibleText} ${snippets.map(s => s.text).join(' ').toLowerCase()}` };
-            groups.get(year).section.append(card);
+            groups.get(year).cards.append(card);
             groups.get(year).records.push(record);
             return record;
         });

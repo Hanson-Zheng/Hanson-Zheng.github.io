@@ -58,6 +58,31 @@ function renderSiteAuthors(container, data, highlightNames = [], { showNotes = t
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Shared geometry lives in config.js; CSS keeps fallbacks for missing data.
+    const siteLayout = typeof configData === 'undefined' ? {} : configData.siteLayout ?? {};
+    const homeLayout = typeof configData === 'undefined' ? {} : configData.homeLayout ?? {};
+    const pixels = (value, fallback, minimum = 0) => Number.isFinite(value) && value >= minimum ? value : fallback;
+    const containerMax = pixels(siteLayout.containerMaxWidth, 1600, 1);
+    const containerMin = Math.min(pixels(siteLayout.containerMinWidth, 1000, 1), containerMax);
+    const sideMargin = pixels(siteLayout.fluidSideMargin, 80);
+    const railMin = pixels(homeLayout.railMinWidth, 320, 1);
+    const geometry = {
+        '--site-container-width': `clamp(${containerMin}px, calc(100vw - ${sideMargin * 2}px), ${containerMax}px)`,
+        '--content-padding': `${pixels(siteLayout.contentPadding, 20)}px`,
+        '--mobile-content-padding': `${pixels(siteLayout.mobileContentPadding, 30)}px`,
+        '--home-vertical-container-max': `${pixels(homeLayout.verticalContainerMaxWidth, 1320, 1)}px`,
+        '--home-projects-gap': `${pixels(homeLayout.columnGap, 48)}px`,
+        '--home-rail-min-width': `${railMin}px`,
+        '--home-rail-max-width': `${Math.max(railMin, pixels(homeLayout.railMaxWidth, 360, 1))}px`,
+        '--home-padding-top': `${pixels(homeLayout.paddingTop, 120)}px`,
+        '--home-padding-bottom': `${pixels(homeLayout.paddingBottom, 96)}px`,
+        '--home-mobile-padding-top': `${pixels(homeLayout.mobilePaddingTop, 40)}px`,
+        '--home-mobile-padding-bottom': `${pixels(homeLayout.mobilePaddingBottom, 40)}px`,
+        '--home-mobile-film-gap': `${pixels(homeLayout.mobileFilmGap, 28)}px`,
+        '--home-education-gap': `${pixels(homeLayout.educationGap, 56)}px`
+    };
+    Object.entries(geometry).forEach(([name, value]) => document.documentElement.style.setProperty(name, value));
+
     // Shared site name; keep each page's existing Home URL.
     if (typeof configData !== 'undefined' && configData.siteName) {
         document.querySelectorAll('.navbar .logo').forEach(logo => {

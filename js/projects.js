@@ -16,10 +16,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const layout = typeof configData === 'undefined' ? {} : configData.homeLayout ?? {};
     const minWidth = Number.isFinite(layout.verticalMinWidth) && layout.verticalMinWidth > 0 ? layout.verticalMinWidth : 1500;
     const minAspectRatio = Number.isFinite(layout.verticalMinAspectRatio) && layout.verticalMinAspectRatio >= 0 ? layout.verticalMinAspectRatio : 1.4;
-    const columnGap = Number.isFinite(layout.columnGap) && layout.columnGap >= 0 ? layout.columnGap : 56;
     const ratioQuery = minAspectRatio > 0 ? ` and (min-aspect-ratio: ${Math.round(minAspectRatio * 1000)}/1000)` : '';
     const wideLayout = window.matchMedia(`(min-width: ${minWidth}px)${ratioQuery}`);
-    document.body.style.setProperty('--home-projects-gap', `${columnGap}px`);
     const horizontalControls = controls.parentElement;
     const verticalControls = showcase.querySelector('.project-rail-toolbar');
     let vertical = wideLayout.matches;
@@ -123,6 +121,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (i === index) button.setAttribute('aria-current', 'true');
                 else button.removeAttribute('aria-current');
             });
+            if (vertical && pagination.scrollHeight > pagination.clientHeight) {
+                const button = pagination.querySelector('[aria-current]');
+                const top = button.offsetTop;
+                const bottom = top + button.offsetHeight;
+                if (top < pagination.scrollTop) pagination.scrollTop = Math.max(0, top - 4);
+                else if (bottom > pagination.scrollTop + pagination.clientHeight) pagination.scrollTop = bottom - pagination.clientHeight + 4;
+            }
         }
         // Keep offscreen copies out of keyboard navigation, while every visible card is clickable.
         cards.forEach(({ item, link, ordinal }) => {
@@ -265,6 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         previous.removeAttribute('aria-disabled');
         next.removeAttribute('aria-disabled');
         if (changedAxis) {
+            leadingIndex = -1;
             pointerStart = null;
             suppressClick = false;
             pauses.delete('pointer');
