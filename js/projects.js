@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cover = document.createElement('div');
         cover.className = 'project-cover';
         const image = document.createElement('img');
-        image.src = project.resolve(project.card.image);
+        applySiteCardImage(image, project.resolve(project.card.image), `${Math.min(preferredCardWidth, innerWidth - 100)}px`);
         image.alt = project.card.imageAlt || project.card.title || project.title;
         image.width = 640;
         image.height = 360;

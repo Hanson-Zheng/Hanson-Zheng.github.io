@@ -1,3 +1,24 @@
+// Resolve shared assets correctly on root pages and nested project pages.
+const siteAssetRoot = new URL('../', document.currentScript.src);
+
+function applySiteCardImage(image, source, sizes) {
+    const original = new URL(source, document.baseURI);
+    const key = decodeURIComponent(original.pathname.slice(siteAssetRoot.pathname.length));
+    const asset = original.origin === siteAssetRoot.origin && original.pathname.startsWith(siteAssetRoot.pathname)
+        && typeof cardImageAssets !== 'undefined' ? cardImageAssets[key] : null;
+    if (asset) {
+        image.sizes = sizes;
+        image.srcset = asset.sources.map(item => `${new URL(item.src, siteAssetRoot).href} ${item.width}w`).join(', ');
+        image.src = new URL(asset.src, siteAssetRoot).href;
+        image.addEventListener('error', () => {
+            image.removeAttribute('srcset');
+            image.src = original.href;
+        }, { once: true });
+    } else {
+        image.src = original.href;
+    }
+}
+
 // Shared by Publications and independent project pages. Keep author data as plain names.
 function renderSiteAuthors(container, data, highlightNames = [], { showNotes = true } = {}) {
     container.replaceChildren();
@@ -294,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return aTitle < bTitle ? -1 : aTitle > bTitle ? 1 : 0;
         });
         renderPublications(sortedData);
-        renderCitationChart(sortedData);
+        loadCitationChart(sortedData);
         if(yearFiltersContainer) { // Only if sidebar exists
             generateYearBookmarks(sortedData);
             setupScrollSpy();
@@ -576,6 +597,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'Unknown';
     }
 
+    function loadCitationChart(pubs) {
+        if (!document.getElementById('citation-chart')) return;
+        if (typeof Chart !== 'undefined') {
+            renderCitationChart(pubs);
+            return;
+        }
+        // The paper list and search are ready before the optional chart library arrives.
+        const script = document.createElement('script');
+        script.src = new URL('assets/vendor/chartjs/4.6.1/chart.umd.min.js', siteAssetRoot).href;
+        script.async = true;
+        script.addEventListener('load', () => renderCitationChart(pubs), { once: true });
+        script.addEventListener('error', () => {
+            const summary = document.getElementById('citation-summary');
+            if (summary) summary.textContent = 'Citation chart unavailable.';
+        }, { once: true });
+        document.head.append(script);
+    }
+
     function renderCitationChart(pubs) {
         const citationChartCanvas = document.getElementById('citation-chart');
         const citationSummary = document.getElementById('citation-summary');
@@ -847,7 +886,8 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.className = 'news-image';
             const image = document.createElement('img');
             image.className = 'news-image-img';
-            image.src = item.image;
+            applySiteCardImage(image, item.image,
+                '(max-width: 768px) calc(100vw - 60px), (min-width: 1600px) 480px, min(720px, calc((100vw - 72px) / 2))');
             image.alt = item.imageAlt || item.title || '';
             image.loading = 'lazy';
             image.decoding = 'async';

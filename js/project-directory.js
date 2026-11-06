@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (project.card.image) {
                 const media = element('div', 'directory-project-media');
                 const image = element('img');
-                image.src = project.resolve(project.card.image);
+                applySiteCardImage(image, project.resolve(project.card.image),
+                    '(max-width: 588px) calc(100vw - 108px), 480px');
                 image.alt = project.card.imageAlt || '';
                 image.width = 640;
                 image.height = 360;
