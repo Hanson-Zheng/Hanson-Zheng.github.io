@@ -108,10 +108,16 @@
 }
 
 .highlights-sections .news-links .pub-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     max-width: 100%;
     overflow-wrap: anywhere;
     text-align: center;
 }
+
+.highlights-sections .news-links .pub-link > span { min-width: 0; }
 
 .highlights-sections .year-grid .news-title,
 .highlights-sections .year-grid .news-desc {

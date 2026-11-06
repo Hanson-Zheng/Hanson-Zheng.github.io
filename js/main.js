@@ -104,10 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     Object.entries(geometry).forEach(([name, value]) => document.documentElement.style.setProperty(name, value));
 
-    // Shared site name; keep each page's existing Home URL.
+    // Keep the shared site name as the Logo's accessible label and tooltip.
     if (typeof configData !== 'undefined' && configData.siteName) {
         document.querySelectorAll('.navbar .logo').forEach(logo => {
-            logo.textContent = configData.siteName;
+            const label = `${configData.siteName} - Home`;
+            logo.setAttribute('aria-label', label);
+            logo.title = label;
         });
     }
 
@@ -927,11 +929,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!['http:', 'https:', 'mailto:'].includes(destination.protocol) && !localFile) return;
             const link = document.createElement('a');
             link.className = 'pub-link pub-link--doi';
-            link.textContent = typeof info.label === 'string' && info.label.trim() ? info.label.trim() : 'Read more';
+            const label = typeof info.label === 'string' && info.label.trim() ? info.label.trim() : 'Read more';
+            if (typeof info.icon === 'string' && info.icon.trim()) {
+                const icon = document.createElement('i');
+                icon.className = info.icon.trim();
+                icon.setAttribute('aria-hidden', 'true');
+                link.append(icon);
+            }
+            const labelText = document.createElement('span');
+            labelText.textContent = label;
+            link.append(labelText);
             link.href = destination.href;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.setAttribute('aria-label', `${link.textContent}: ${item.title}`);
+            link.setAttribute('aria-label', `${label}: ${item.title}`);
             linkGroup.appendChild(link);
         });
         if (linkGroup.childElementCount) {

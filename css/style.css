@@ -121,9 +121,38 @@ ul {
 }
 
 .logo {
-    font-size: 1.25rem;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 52px;
+    height: 52px;
     color: var(--accent-color);
+    border-radius: 6px;
+}
+
+/* Share the favicon's vector shape and use the site's theme color. */
+.logo-mark {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    -webkit-mask: url('../favicon.svg?v=zym-3') center / contain no-repeat;
+    mask: url('../favicon.svg?v=zym-3') center / contain no-repeat;
+    transition: transform 220ms ease;
+}
+
+.logo:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .logo:hover .logo-mark { transform: scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logo-mark { transition: none; }
 }
 
 .nav-links {
