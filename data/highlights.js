@@ -13,6 +13,26 @@ const highlightsData = [
         "description": "Grateful to receive the 2025 EEE Excellent Teaching Assistant Award at NTU. My sincere thanks to the course instructors and teaching team for their guidance and support, and to the students for making teaching such a rewarding learning experience."
     },
     {
+        "date": "2026-06-01",
+        "title": "ICRA 2026 in Vienna",
+        "image": "images/highlight/icra-vienna.jpg",
+        "imageAlt": "Opening ceremony at ICRA 2026 in Vienna, with the IEEE President speaking on stage",
+        "links": [
+            { "label": "Project", "url": "project/microdevice-injection/index.html" }
+        ],
+        "description": "I was excited to attend ICRA 2026 in Vienna and see the IEEE President in person for the first time. A snapshot from the opening ceremony."
+    },
+    {
+        "date": "2026-05-07",
+        "title": "Poster Presentation at ICASSP 2026",
+        "image": "images/highlight/icassp-barcelona.jpg",
+        "imageAlt": "Research poster on display at ICASSP 2026 at the CCIB in Barcelona",
+        "links": [
+            { "label": "Project", "url": "project/optical-ppm-decoding/index.html" }
+        ],
+        "description": "Presented our poster at the CCIB in Barcelona during ICASSP 2026."
+    },
+    {
         "date": "2026-01-31",
         "title": "Paper Accepted in ICRA 2026",
         "image": "images/highlight/icra-2026.jpg",

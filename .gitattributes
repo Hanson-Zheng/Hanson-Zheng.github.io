@@ -1,0 +1,2 @@
+# Preserve the existing line endings when removing legacy NUL bytes.
+css/style.css -text

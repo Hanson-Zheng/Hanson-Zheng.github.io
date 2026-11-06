@@ -944,10 +944,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const imageEl = card.querySelector('.news-image-img');
         if (imageEl) {
+            let canRetryOriginal = Boolean(imageEl.srcset);
             imageEl.addEventListener('load', () => {
+                const wrapper = imageEl.closest('.news-image');
+                if (wrapper) wrapper.style.removeProperty('display');
                 applySmartImageFit(imageEl);
             });
             imageEl.addEventListener('error', () => {
+                // The shared image helper retries the original after a WebP error.
+                if (canRetryOriginal) {
+                    canRetryOriginal = false;
+                    return;
+                }
                 const wrapper = imageEl.closest('.news-image');
                 if (wrapper) wrapper.style.display = 'none';
             });

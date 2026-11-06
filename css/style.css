@@ -729,9 +729,9 @@ footer {
     .citation-chart-wrap { min-height: 220px; }
     .theme-toggle-item { justify-content: center; }
     .theme-toggle-btn { width: fit-content; }
-}  
- 
- /* Blog/Highlights Styles */
+}
+
+/* Blog/Highlights Styles */
 .highlights-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

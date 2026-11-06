@@ -30,6 +30,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/highlight/icassp-barcelona.jpg": {
+    "src": "assets/images/cards/icassp-barcelona-7357cd8bbe-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/icassp-barcelona-7357cd8bbe-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/icassp-barcelona-7357cd8bbe-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/icassp-barcelona-7357cd8bbe-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/highlight/icra-2026.jpg": {
     "src": "assets/images/cards/icra-2026-f974b8464a-960w.webp",
     "sources": [
@@ -44,6 +61,23 @@ const cardImageAssets = {
       {
         "src": "assets/images/cards/icra-2026-f974b8464a-1200w.webp",
         "width": 1200
+      }
+    ]
+  },
+  "images/highlight/icra-vienna.jpg": {
+    "src": "assets/images/cards/icra-vienna-81eb73c6c0-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/icra-vienna-81eb73c6c0-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/icra-vienna-81eb73c6c0-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/icra-vienna-81eb73c6c0-1440w.webp",
+        "width": 1440
       }
     ]
   },
