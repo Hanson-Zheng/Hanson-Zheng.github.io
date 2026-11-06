@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>ZYM - Yumin's Site</title>
+  <style>
+    .mark { stroke: #111827; }
+    @media (prefers-color-scheme: dark) { .mark { stroke: #f8fafc; } }
+  </style>
+  <path class="mark" d="M8 16L33 10L15 54M21.955 37L39 23L45 44L55 23L60 37"
+        stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
