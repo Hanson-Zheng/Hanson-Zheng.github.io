@@ -134,3 +134,121 @@
     .highlights-sections .year-grid { gap: 24px; }
     .highlights-sections .year-grid .news-content { padding: 20px; }
 }
+
+/* The year navigation and reading preference share one toolbar. */
+.highlights-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border-color);
+}
+.highlights-toolbar #highlights-filter { margin: 0; border: 0; }
+.highlights-toolbar #highlights-filter .filter-btn { min-height: 52px; padding: 12px 0 16px; }
+.highlights-view-switch {
+    display: inline-flex;
+    flex: none;
+    gap: 2px;
+    margin-bottom: 8px;
+    padding: 3px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-alt);
+}
+.highlights-view-switch[hidden] { display: none; }
+.highlights-view-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 36px;
+    padding: 7px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--light-text);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+}
+.highlights-view-button svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.highlights-view-button:hover { color: var(--primary-color); }
+.highlights-view-button[aria-pressed="true"] { background: var(--bg-color); color: var(--accent-color); box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08); }
+.highlights-view-button:focus-visible,
+.highlight-entry-summary:focus-visible { outline: 2px solid var(--accent-color); outline-offset: -3px; }
+.highlight-entry { min-width: 0; }
+.highlight-entry-summary[hidden] { display: none; }
+.highlights-sections[data-view="cards"] .highlight-entry { display: grid; height: 100%; }
+
+/* Compact entries are native disclosures; their content is prepared on first open. */
+.highlights-sections[data-view="list"] .year-grid {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-color);
+}
+.highlights-sections[data-view="list"] .highlight-entry + .highlight-entry { border-top: 1px solid var(--border-color); }
+.highlight-entry-summary {
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr) 20px;
+    align-items: baseline;
+    gap: 20px;
+    min-height: 72px;
+    padding: 20px 24px;
+    list-style: none;
+    cursor: pointer;
+}
+.highlight-entry-summary::-webkit-details-marker { display: none; }
+.highlight-entry-summary::marker { content: ''; }
+.highlight-entry-summary:hover { background: var(--bg-alt); }
+.highlight-entry-date { color: var(--light-text); font-size: 0.8rem; line-height: 1.6; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.highlight-entry-title { min-width: 0; color: var(--primary-color); font-size: 1rem; font-weight: 500; line-height: 1.65; overflow-wrap: anywhere; }
+.highlight-entry-arrow { align-self: center; width: 20px; height: 20px; color: var(--light-text); stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.highlight-entry[open] > .highlight-entry-summary .highlight-entry-arrow { transform: rotate(180deg); color: var(--accent-color); }
+.highlight-entry[open] > .highlight-entry-summary .highlight-entry-title { color: var(--accent-color); }
+.highlights-sections[data-view="list"] .year-grid .news-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 360px);
+    grid-template-areas: "copy image";
+    grid-template-rows: auto;
+    align-items: start;
+    gap: 28px;
+    height: auto;
+    min-height: 0;
+    padding: 0 24px 24px 144px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+    transition: none;
+}
+.highlights-sections[data-view="list"] .year-grid .news-card--no-image { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy"; }
+.highlights-sections[data-view="list"] .year-grid .news-image { grid-area: image; width: 100%; max-width: 480px; border-radius: 7px; }
+.highlights-sections[data-view="list"] .year-grid .news-image-img { transform: none; }
+.highlights-sections[data-view="list"] .year-grid .news-content { display: flex; flex-direction: column; grid-area: copy; gap: 16px; padding: 0; border: 0; }
+.highlights-sections[data-view="list"] .year-grid .news-title,
+.highlights-sections[data-view="list"] .year-grid .news-date { display: none; }
+.highlights-sections[data-view="list"] .year-grid .news-desc { max-width: 76ch; margin: 0; }
+.highlights-sections[data-view="list"] .news-meta { order: 2; margin: 0; }
+.highlights-sections[data-view="list"] .news-links { justify-content: flex-start; margin: 0; }
+@media (max-width: 1000px) {
+    .highlights-sections[data-view="list"] .year-grid .news-card { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "image"; gap: 20px; }
+    .highlights-sections[data-view="list"] .year-grid .news-card--no-image { grid-template-areas: "copy"; }
+}
+@media (max-width: 768px) {
+    .highlights-toolbar { align-items: flex-start; gap: 8px 16px; padding-bottom: 12px; }
+    .highlights-toolbar #highlights-filter { flex-basis: 100%; gap: 24px; }
+    .highlights-toolbar #highlights-filter .filter-btn { min-height: 44px; padding: 4px 0 12px; }
+    .highlights-view-switch { margin: 0 0 0 auto; }
+    .highlights-view-button { min-height: 44px; padding: 9px 14px; }
+    .highlight-entry-summary { grid-template-columns: minmax(0, 1fr) 20px; grid-template-areas: "date arrow" "title arrow"; gap: 6px 12px; padding: 16px; }
+    .highlight-entry-date { grid-area: date; font-size: 0.75rem; }
+    .highlight-entry-title { grid-area: title; font-size: 0.95rem; line-height: 1.6; }
+    .highlight-entry-arrow { grid-area: arrow; }
+    .highlights-sections[data-view="list"] .year-grid .news-card { padding: 0 16px 20px; }
+}

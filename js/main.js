@@ -762,6 +762,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 3. News/Highlights/Life Rendering (Generic System) ---
     
+    const highlightEntries = new WeakMap();
+
     // Initialize Highlights Section
     setupFilterableGrid('highlights-list', 'highlights-filter', (typeof highlightsData !== 'undefined' ? highlightsData : []));
     
@@ -778,6 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isHighlightsPage) {
             container.classList.remove('highlights-grid');
             container.classList.add('highlights-sections');
+            setupHighlightsView(container);
         }
 
         if (!dataItems || dataItems.length === 0) {
@@ -823,8 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allBtn.onclick = () => {
                 setActiveBtn(filterContainer, allBtn);
                 if (isHighlightsPage) {
-                    renderHighlightsByYear(container, dataItems);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
                 } else {
                     renderGridItems(container, dataItems);
                 }
@@ -839,14 +841,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.onclick = () => {
                     setActiveBtn(filterContainer, btn);
                     if (isHighlightsPage) {
-                        // Keep all sections and jump to selected year section.
-                        renderHighlightsByYear(container, dataItems);
+                        // Keep the existing sections, view and expanded entries.
                         const yearSection = document.getElementById(`highlights-year-${year}`);
                         if (yearSection) {
                             const headerOffset = 90;
                             const elementPosition = yearSection.getBoundingClientRect().top;
                             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                            window.scrollTo({ top: offsetPosition, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
                         }
                     } else {
                         const filtered = dataItems.filter(item => item.date.startsWith(year));
@@ -971,6 +972,85 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function setupHighlightsView(container) {
+        const controls = document.getElementById('highlights-view-switch');
+        if (!controls) return;
+        let view = 'cards';
+        try {
+            if (localStorage.getItem('highlights-view') === 'list') view = 'list';
+        } catch { /* A reading preference is optional when storage is unavailable. */ }
+        container.dataset.view = view;
+        controls.hidden = false;
+        const buttons = controls.querySelectorAll('[data-highlights-view]');
+        const updateButtons = () => buttons.forEach(button => {
+            button.setAttribute('aria-pressed', String(button.dataset.highlightsView === container.dataset.view));
+        });
+        updateButtons();
+        buttons.forEach(button => button.addEventListener('click', () => {
+            const next = button.dataset.highlightsView;
+            if (next === container.dataset.view) return;
+            container.dataset.view = next;
+            container.querySelectorAll('.highlight-entry').forEach(entry => {
+                const state = highlightEntries.get(entry);
+                const expanded = next === 'cards' || state.expanded;
+                entry.querySelector('summary').hidden = next === 'cards';
+                if (expanded) state.prepare(next);
+                entry.open = expanded;
+            });
+            updateButtons();
+            try { localStorage.setItem('highlights-view', next); } catch { /* Keep the view usable. */ }
+        }));
+    }
+
+    function createHighlightEntry(item, view) {
+        const entry = document.createElement('details');
+        entry.className = 'highlight-entry';
+        const summary = document.createElement('summary');
+        summary.className = 'highlight-entry-summary';
+        const date = document.createElement('time');
+        date.className = 'highlight-entry-date';
+        date.dateTime = item.date || '';
+        date.textContent = item.date || '';
+        const title = document.createElement('h3');
+        title.className = 'highlight-entry-title';
+        title.textContent = item.title || '';
+        const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        arrow.setAttribute('viewBox', '0 0 20 20');
+        arrow.setAttribute('fill', 'none');
+        arrow.setAttribute('aria-hidden', 'true');
+        arrow.classList.add('highlight-entry-arrow');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M5 7.5L10 12.5L15 7.5');
+        arrow.append(path);
+        summary.append(date, title, arrow);
+        summary.hidden = view === 'cards';
+        entry.append(summary);
+        const state = {
+            expanded: false,
+            prepare(currentView = 'cards') {
+                const card = entry.querySelector('.news-card') || createNewsCard(item);
+                card.classList.toggle('news-card--no-image', !card.querySelector('.news-image'));
+                const image = card.querySelector('img');
+                if (image) image.sizes = currentView === 'list'
+                    ? '(max-width: 600px) calc(100vw - 94px), (max-width: 1000px) 480px, 360px'
+                    : '(max-width: 768px) calc(100vw - 60px), (min-width: 1600px) 480px, min(720px, calc((100vw - 72px) / 2))';
+                // Compact entries only create images when first expanded.
+                if (!card.parentElement) entry.append(card);
+            }
+        };
+        highlightEntries.set(entry, state);
+        entry.addEventListener('toggle', () => {
+            if (entry.closest('.highlights-sections')?.dataset.view !== 'list') return;
+            state.expanded = entry.open;
+            if (entry.open) state.prepare('list');
+        });
+        if (view === 'cards') {
+            state.prepare();
+            entry.open = true;
+        }
+        return entry;
+    }
+
     function renderHighlightsByYear(container, items) {
         container.innerHTML = '';
         if(items.length === 0) {
@@ -978,7 +1058,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const itemsByYear = items.reduce((acc, item) => {
+        const ordered = [...items].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+        const itemsByYear = ordered.reduce((acc, item) => {
             const year = (item.date || '').substring(0, 4) || 'Unknown';
             acc[year] = acc[year] || [];
             acc[year].push(item);
@@ -1001,8 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.className = 'highlights-grid year-grid';
 
             itemsByYear[year].forEach(item => {
-                const card = createNewsCard(item);
-                grid.appendChild(card);
+                grid.appendChild(createHighlightEntry(item, container.dataset.view || 'cards'));
             });
 
             section.appendChild(grid);
