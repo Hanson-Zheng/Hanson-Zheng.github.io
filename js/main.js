@@ -1004,10 +1004,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateButtons = () => buttons.forEach(button => {
             button.setAttribute('aria-pressed', String(button.dataset.highlightsView === container.dataset.view));
         });
+        const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+        let viewAnimation;
+        const cancelViewAnimation = () => {
+            viewAnimation?.cancel();
+            viewAnimation = null;
+            container.classList.remove('is-view-changing');
+        };
+        window.addEventListener('resize', cancelViewAnimation, { passive: true });
+        reducedMotion.addEventListener('change', cancelViewAnimation);
+        container.addEventListener('pointerdown', cancelViewAnimation);
+        container.addEventListener('keydown', cancelViewAnimation);
+        document.getElementById('highlights-filter')?.addEventListener('click', cancelViewAnimation);
         updateButtons();
         buttons.forEach(button => button.addEventListener('click', () => {
             const next = button.dataset.highlightsView;
             if (next === container.dataset.view) return;
+            const previousHeight = container.getBoundingClientRect().height;
+            cancelViewAnimation();
+            if (container.dataset.view === 'list') {
+                container.querySelectorAll('.highlight-entry').forEach(entry => {
+                    highlightEntries.get(entry).expanded = entry.open;
+                });
+            }
             container.dataset.view = next;
             container.querySelectorAll('.highlight-entry').forEach(entry => {
                 const state = highlightEntries.get(entry);
@@ -1018,6 +1037,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             updateButtons();
             try { localStorage.setItem('highlights-view', next); } catch { /* Keep the view usable. */ }
+            if (reducedMotion.matches || typeof container.animate !== 'function') return;
+            const nextHeight = container.getBoundingClientRect().height;
+            container.classList.add('is-view-changing');
+            const animation = container.animate([
+                { height: `${previousHeight}px`, opacity: 0.45 },
+                { height: `${nextHeight}px`, opacity: 1 }
+            ], { duration: 240, easing: 'cubic-bezier(0.2, 0.7, 0.25, 1)' });
+            viewAnimation = animation;
+            animation.finished.then(() => {
+                if (viewAnimation === animation) {
+                    viewAnimation = null;
+                    container.classList.remove('is-view-changing');
+                }
+            }).catch(() => { /* A new view or interaction can cancel this animation. */ });
         }));
     }
 

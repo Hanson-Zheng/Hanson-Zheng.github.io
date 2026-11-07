@@ -26,6 +26,9 @@ const configData = {
         "mobileFilmGap": 28, // Space before the horizontal filmstrip on mobile.
         "educationGap": 56 // Space from the introduction/buttons to Education.
     },
+    "projectDirectory": {
+        "cardPublicationStyle": "badge" // "badge": venue/year DOI links only; "full": include paper titles. Cards only.
+    },
     "socialLinks": [
         // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },
         // { "icon": "fab fa-github", "url": "#", "label": "GitHub" },

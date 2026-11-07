@@ -6,6 +6,7 @@ const projectDirectories = [
     'microdevice-injection',
     'optical-ppm-decoding',
     'fb-mote',
+    'algaas-micro-pvleds',
     'coaxial-drone'
 ];
 

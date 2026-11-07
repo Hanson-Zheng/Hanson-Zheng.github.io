@@ -36,10 +36,18 @@
     .collection-search-icon { top: 16px; }
     .collection-search-clear { top: 2px; right: 2px; width: 44px; height: 44px; }
     .collection-sidebar .collection-sidebar-title { margin-bottom: 10px; }
-    .collection-year-links { display: flex; gap: 20px; overflow-x: auto; overscroll-behavior-x: contain; padding-bottom: 6px; }
-    .collection-year-links li { flex: none; white-space: nowrap; }
-    .collection-year-links a { min-height: 28px; }
-    .collection-year-links a[aria-current]::before { left: 0; top: auto; bottom: -3px; width: 24px; height: 3px; transform: none; border-radius: 2px; }
+    .collection-year-links { display: flex; flex-wrap: nowrap; gap: 20px; min-width: 0; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding-bottom: 1px; }
+    .collection-year-links::-webkit-scrollbar { display: none; }
+    .collection-year-links li { flex: none; padding-block: 0; white-space: nowrap; }
+    .collection-year-links a { min-height: 52px; padding: 4px 0 12px; }
+    .collection-year-links a[aria-current]::before { left: 0; top: auto; bottom: -1px; width: 24px; height: 3px; transform: none; border-radius: 2px; }
+    .collection-year-links a:focus-visible { outline-offset: -3px; border-radius: 3px; }
+    /* The year strip takes the remaining width; view controls stay fixed at the right. */
+    .collection-year-toolbar { display: flex; align-items: flex-end; flex-wrap: nowrap; gap: 12px; min-width: 0; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+    .collection-year-toolbar > nav { flex: 1 1 auto; min-width: 0; }
+    .collection-year-toolbar > :is(.directory-view-switch, .highlights-view-switch) { flex: none; margin: 0 0 0 auto; }
+    .collection-year-toolbar #highlights-filter { gap: 20px; }
+    .collection-year-toolbar #highlights-filter .filter-btn { min-height: 52px; padding: 4px 0 12px; font-size: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
     .collection-page *, .collection-page a { scroll-behavior: auto; transition: none !important; }

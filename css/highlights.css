@@ -201,6 +201,7 @@
 .highlights-view-button:focus-visible,
 .highlight-entry-summary:focus-visible { outline: 2px solid var(--accent-color); outline-offset: -3px; }
 .highlight-entry { min-width: 0; }
+.highlights-sections.is-view-changing { overflow: clip; }
 .highlight-entry-summary[hidden] { display: none; }
 .highlights-sections[data-view="cards"] .highlight-entry { display: grid; height: 100%; }
 

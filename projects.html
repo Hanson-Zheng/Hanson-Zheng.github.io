@@ -31,7 +31,19 @@
     </nav>
 
     <main class="container projects-directory-page collection-page">
-        <h1 class="section-title">Projects</h1>
+        <div class="directory-page-heading">
+            <h1 class="section-title">Projects</h1>
+            <div class="directory-view-switch" id="project-view-switch" role="group" aria-label="Project reading view" hidden>
+                <button type="button" class="directory-view-button" data-project-view="cards" aria-label="Card view" title="Card view" aria-pressed="true" aria-controls="project-directory-list">
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="12" y="3" width="5" height="5" rx="1"/><rect x="3" y="12" width="5" height="5" rx="1"/><rect x="12" y="12" width="5" height="5" rx="1"/></svg>
+                    <span>Cards</span>
+                </button>
+                <button type="button" class="directory-view-button" data-project-view="list" aria-label="List view" title="List view" aria-pressed="false" aria-controls="project-directory-list">
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 5H17M7 10H17M7 15H17M3 5H3.01M3 10H3.01M3 15H3.01"/></svg>
+                    <span>List</span>
+                </button>
+            </div>
+        </div>
         <div class="project-directory-layout collection-layout">
             <aside class="project-directory-sidebar collection-sidebar">
                 <div class="project-directory-sticky collection-sidebar-sticky">
@@ -43,10 +55,12 @@
                             <button type="button" class="collection-search-clear" id="project-search-clear" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
                         </div>
                     </form>
-                    <nav id="project-directory-years" aria-label="Project years" hidden>
-                        <h2 class="collection-sidebar-title">Year</h2>
-                        <ul class="collection-year-links" id="project-year-links"></ul>
-                    </nav>
+                    <div class="collection-year-toolbar" id="project-year-toolbar">
+                        <nav id="project-directory-years" aria-label="Project years" hidden>
+                            <h2 class="collection-sidebar-title">Year</h2>
+                            <ul class="collection-year-links" id="project-year-links"></ul>
+                        </nav>
+                    </div>
                 </div>
             </aside>
             <div class="project-directory-content">

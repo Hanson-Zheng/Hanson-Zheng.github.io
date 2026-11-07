@@ -1,0 +1,39 @@
+{
+  "featured": true,
+  "card": {
+    "title": "Modeling and Fabrication of AlGaAs micro PV-LEDs",
+    "category": "Ongoing",
+    "year": "2025",
+    "image": "images/droplet.jpg",
+    "imageAlt": "Micrograph of a droplet-shaped micro PV-LED structure with a 10 micrometre scale bar"
+  },
+  "title": "Modeling and Fabrication of AlGaAs micro PV-LEDs",
+  "venue": "Ongoing",
+  "year": 2025,
+  "authors": [],
+  "summary": "Ongoing work on the modeling and fabrication of AlGaAs micro PV-LEDs.",
+  "links": {},
+  "topics": [
+    "AlGaAs",
+    "Micro PV-LEDs",
+    "Device modeling",
+    "Microfabrication"
+  ],
+  "sections": [
+    {
+      "heading": "Overview",
+      "imagePosition": "left",
+      "paragraphs": [
+        "This ongoing project focuses on the modeling and fabrication of AlGaAs micro PV-LEDs.",
+        "Further details will be shared as the work progresses."
+      ],
+      "images": [
+        {
+          "src": "images/droplet.jpg",
+          "alt": "Micrograph of a droplet-shaped structure with pseudo shadow effect.",
+          "caption": "Micrograph of the droplet-shaped structure. Scale bar: 10 μm."
+        }
+      ]
+    }
+  ]
+}

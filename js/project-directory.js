@@ -9,6 +9,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     const yearsNav = document.getElementById('project-directory-years');
     const yearLinks = document.getElementById('project-year-links');
     const error = document.getElementById('project-directory-error');
+    const viewSwitch = document.getElementById('project-view-switch');
+    const viewButtons = viewSwitch.querySelectorAll('[data-project-view]');
+    const mobileView = matchMedia('(max-width: 768px)');
+    const desktopViewMount = document.querySelector('.directory-page-heading');
+    const mobileViewMount = document.getElementById('project-year-toolbar');
+    function mountViewSwitch() {
+        const mount = mobileView.matches ? mobileViewMount : desktopViewMount;
+        if (viewSwitch.parentElement === mount) return;
+        const focused = viewSwitch.contains(document.activeElement) ? document.activeElement : null;
+        mount.append(viewSwitch);
+        focused?.focus({ preventScroll: true });
+    }
+    mobileView.addEventListener('change', mountViewSwitch);
+    mountViewSwitch();
+    let view = 'cards';
+    try { if (localStorage.getItem('projects-view') === 'list') view = 'list'; }
+    catch { /* Keep both views usable when storage is unavailable. */ }
+    list.dataset.view = view;
+    const cardPublicationStyle = typeof configData !== 'undefined'
+        && configData.projectDirectory?.cardPublicationStyle === 'badge' ? 'badge' : 'full';
+    list.dataset.cardPublications = cardPublicationStyle;
     const element = (tag, className, text) => {
         const node = document.createElement(tag);
         if (className) node.className = className;
@@ -82,16 +103,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             excerpt.hidden = true;
             copy.append(excerpt);
             link.append(copy);
-            if (project.card.image) {
-                const media = element('div', 'directory-project-media');
-                const image = element('img');
+            let image;
+            const prepareImage = () => {
+                if (!image || image.hasAttribute('src')) return;
                 applySiteCardImage(image, project.resolve(project.card.image),
                     '(max-width: 588px) calc(100vw - 108px), 480px');
+            };
+            if (project.card.image) {
+                const media = element('div', 'directory-project-media');
+                image = element('img');
                 image.alt = project.card.imageAlt || '';
                 image.width = 640;
                 image.height = 360;
                 image.loading = 'lazy';
                 image.decoding = 'async';
+                if (view === 'cards') prepareImage();
                 media.append(image);
                 link.append(media);
             } else {
@@ -103,10 +129,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                 try { return ['http:', 'https:'].includes(new URL(paper.links?.doi).protocol); }
                 catch { return false; }
             });
+            let relatedDetails;
+            let relatedSummary;
+            let relatedLabel;
             if (linkedPapers.length) {
                 const related = element('footer', 'directory-related');
                 if (linkedPapers.length > 1) related.classList.add('directory-related--multiple');
-                related.append(element('p', 'directory-related-label', linkedPapers.length === 1 ? 'Related publication' : 'Related publications'));
+                const label = linkedPapers.length === 1 ? 'Related publication' : 'Related publications';
+                relatedLabel = element('p', 'directory-related-label', label);
+                relatedDetails = element('details', 'directory-publications');
+                relatedSummary = element('summary', 'directory-publications-toggle');
+                relatedSummary.append(element('span', '', `${label} (${linkedPapers.length})`));
+                const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                chevron.setAttribute('viewBox', '0 0 20 20');
+                chevron.setAttribute('fill', 'none');
+                chevron.setAttribute('aria-hidden', 'true');
+                const chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                chevronPath.setAttribute('d', 'm6 8 4 4 4-4');
+                chevron.append(chevronPath);
+                relatedSummary.append(chevron);
+                relatedSummary.hidden = view === 'cards';
+                relatedLabel.hidden = view === 'list';
+                relatedDetails.open = view === 'cards';
                 const paperList = element('ul');
                 linkedPapers.forEach(paper => {
                     const item = element('li', 'directory-paper-item');
@@ -114,11 +158,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     paperLink.href = paper.links.doi;
                     paperLink.target = '_blank';
                     paperLink.rel = 'noopener noreferrer';
-                    paperLink.title = 'Read the publication (opens in a new tab)';
+                    paperLink.title = `${paper.title} (opens in a new tab)`;
+                    paperLink.setAttribute('aria-label', `${paper.title} (opens in a new tab)`);
                     const external = element('span', 'directory-paper-arrow', '↗');
                     external.setAttribute('aria-hidden', 'true');
                     const paperCopy = element('span', 'directory-paper-copy');
-                    const venue = [paper.venueShort || paper.venue, paper.year].filter(Boolean).join(' · ');
+                    const venue = [paper.venueShort || paper.venue || 'Publication', paper.year].filter(Boolean).join(' · ');
                     if (venue) {
                         const badge = element('span', 'directory-paper-venue', venue);
                         badge.title = paper.venue || '';
@@ -129,13 +174,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                     item.append(paperLink);
                     paperList.append(item);
                 });
-                related.append(paperList);
+                relatedDetails.append(relatedSummary, paperList);
+                related.append(relatedLabel, relatedDetails);
                 card.append(related);
             }
             const visibleText = [project.card.title, project.summary, ...(project.topics || []), ...linkedPapers.flatMap(p => [p.title, p.venueShort || p.venue, p.year])].filter(Boolean).join(' ').toLowerCase();
+            const primaryText = [project.card.title, project.summary, ...(project.topics || [])].filter(Boolean).join(' ').toLowerCase();
+            const paperText = linkedPapers.map(p => [p.title, p.venueShort || p.venue, p.year].filter(Boolean).join(' ').toLowerCase()).join(' ');
+            const badgeText = linkedPapers.map(p => [p.venueShort || p.venue || 'Publication', p.year].filter(Boolean).join(' ').toLowerCase()).join(' ');
             const projectText = [project.title, project.card.category, ...(project.authors || []), ...(project.sections || []).flatMap(s => [s.heading, ...(s.paragraphs || []), ...(s.bullets || []), ...(s.steps || [])])].filter(Boolean).join(' ');
             const snippets = [{ label: 'From the project', text: projectText }, ...papers.map(p => ({ label: 'From a related publication', text: [p.title, ...(p.authors || []), p.venue, p.abstract].filter(Boolean).join(' · ') }))];
-            const record = { project, card, visibleText, snippets, excerpt, excerptLabel, excerptText, searchText: `${visibleText} ${snippets.map(s => s.text).join(' ').toLowerCase()}` };
+            const record = { project, card, visibleText, primaryText, paperText, badgeText, snippets, excerpt, excerptLabel, excerptText, prepareImage,
+                relatedDetails, relatedSummary, relatedLabel, relatedExpanded: false, searchRevealsRelated: false,
+                searchText: `${visibleText} ${snippets.map(s => s.text).join(' ').toLowerCase()}` };
             groups.get(year).cards.append(card);
             groups.get(year).records.push(record);
             return record;
@@ -148,6 +199,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         let timer;
         let composing = false;
         let scrollPending = false;
+
+        function rememberRelated(record) {
+            if (view === 'list' && record.relatedDetails && !record.searchRevealsRelated) {
+                record.relatedExpanded = record.relatedDetails.open;
+            }
+        }
+        function syncRelated(record) {
+            if (!record.relatedDetails) return;
+            record.relatedSummary.hidden = view === 'cards';
+            record.relatedLabel.hidden = view === 'list';
+            record.relatedDetails.open = view === 'cards' || record.relatedExpanded || record.searchRevealsRelated;
+        }
+        function setView(next, persist = true) {
+            records.forEach(rememberRelated);
+            view = next === 'list' ? 'list' : 'cards';
+            list.dataset.view = view;
+            records.forEach(record => {
+                syncRelated(record);
+                if (view === 'cards') record.prepareImage();
+            });
+            viewButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.projectView === view)));
+            if (persist) {
+                try { localStorage.setItem('projects-view', view); } catch { /* The current view still works. */ }
+            }
+            if (input.value && cardPublicationStyle === 'badge') applySearch(false);
+            requestAnimationFrame(updateActiveYear);
+        }
+        viewButtons.forEach(button => button.addEventListener('click', () => setView(button.dataset.projectView)));
 
         function updateActiveYear() {
             const visible = [...groups.values()].filter(group => !group.section.hidden);
@@ -179,10 +258,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             yearsNav.hidden = yearLinks.children.length === 0;
             updateActiveYear();
         }
-        function applySearch() {
+        function applySearch(scrollToResults = true) {
             const terms = [...new Set(input.value.trim().toLowerCase().split(/\s+/u).filter(Boolean))];
             let count = 0;
             records.forEach(record => {
+                rememberRelated(record);
+                record.searchRevealsRelated = terms.some(term => !record.primaryText.includes(term) && record.paperText.includes(term));
+                syncRelated(record);
                 record.card.querySelectorAll('mark.directory-search-match').forEach(mark => mark.replaceWith(document.createTextNode(mark.textContent)));
                 record.card.normalize();
                 const matched = terms.every(term => record.searchText.includes(term));
@@ -192,7 +274,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 count += 1;
                 if (!terms.length) return;
                 record.card.querySelectorAll('.directory-project-title, .directory-project-summary, .directory-topics, .directory-paper-copy').forEach(node => highlight(node, terms));
-                if (!terms.every(term => record.visibleText.includes(term))) {
+                const visibleText = view === 'cards' && cardPublicationStyle === 'badge'
+                    ? `${record.primaryText} ${record.badgeText}` : record.visibleText;
+                if (!terms.every(term => visibleText.includes(term))) {
                     const snippet = [...record.snippets].sort((a, b) => terms.filter(t => b.text.toLowerCase().includes(t)).length - terms.filter(t => a.text.toLowerCase().includes(t)).length)[0];
                     const firstMatch = Math.min(...terms.map(t => snippet.text.toLowerCase().indexOf(t)).filter(index => index >= 0));
                     let start = Math.max(0, firstMatch - 48);
@@ -211,7 +295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             clearButton.hidden = !input.value;
             updateYearLinks();
             const content = document.querySelector('.project-directory-content');
-            if (matchMedia('(min-width: 769px)').matches && content.getBoundingClientRect().top < 80) {
+            if (scrollToResults && matchMedia('(min-width: 769px)').matches && content.getBoundingClientRect().top < 80) {
                 window.scrollTo({ top: Math.max(0, content.getBoundingClientRect().top + scrollY - 100), behavior: 'instant' });
             }
         }
@@ -241,6 +325,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, { passive: true });
         window.addEventListener('resize', updateActiveYear);
         form.hidden = false;
+        setView(view, false);
+        viewSwitch.hidden = false;
         updateYearLinks();
         if (input.value) applySearch();
     } catch (failure) {

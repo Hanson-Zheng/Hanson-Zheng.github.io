@@ -149,6 +149,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "project/algaas-micro-pvleds/images/droplet.jpg": {
+    "src": "assets/images/cards/droplet-dff0b59323-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/droplet-dff0b59323-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/droplet-dff0b59323-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/droplet-dff0b59323-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "project/coaxial-drone/TRO_Project_Card.png": {
     "src": "assets/images/cards/tro-project-card-fea0d3d564-960w.webp",
     "sources": [
