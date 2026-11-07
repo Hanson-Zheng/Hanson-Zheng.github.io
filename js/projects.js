@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showcase = document.getElementById('selected-work');
     const controls = document.querySelector('[data-project-controls]');
     if (!showcase || !controls || !window.projectStore) return;
-    const projects = (await projectStore.loadAll()).filter(project => project.featured);
+    const projects = (await projectStore.loadAll()).filter(project => project.featured)
+        .sort((a, b) => a.order - b.order);
     if (!projects.length) return;
 
     const viewport = showcase.querySelector('.project-viewport');

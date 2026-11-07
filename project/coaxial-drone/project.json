@@ -1,15 +1,13 @@
 {
-  "featured": true,
+  "date": "2024-01",
   "card": {
     "title": "Design & control of a coaxial drone",
     "category": "IEEE Transactions on Robotics",
-    "year": "2024",
     "image": "TRO_Project_Card.png",
     "imageAlt": "Coaxial drone prototype during an indoor flight test"
   },
   "title": "Design, Modeling, and Control of a Coaxial Drone",
   "venue": "IEEE Transactions on Robotics",
-  "year": 2024,
   "authors": [
     "Liangming Chen",
     "Jiaping Xiao",

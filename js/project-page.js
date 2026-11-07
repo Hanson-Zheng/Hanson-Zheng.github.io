@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const back = element('a', 'project-back', '← All projects');
         back.href = '../../projects.html';
         const header = element('header', 'project-page-header');
-        const metadata = [project.venue, project.year].filter(Boolean).join(' / ');
+        const metadata = [project.venue, project.date || project.year].filter(Boolean).join(' / ');
         if (metadata) header.append(element('p', 'projects-eyebrow', metadata));
         header.append(element('h1', '', project.title));
         const authorData = findPublication(project) || project;

@@ -1,15 +1,13 @@
 {
-  "featured": true,
+  "date": "2025-08",
   "card": {
     "title": "Modeling and Fabrication of AlGaAs micro PV-LEDs",
     "category": "Ongoing",
-    "year": "2025",
     "image": "images/droplet.jpg",
     "imageAlt": "Micrograph of a droplet-shaped micro PV-LED structure with a 10 micrometre scale bar"
   },
   "title": "Modeling and Fabrication of AlGaAs micro PV-LEDs",
   "venue": "Ongoing",
-  "year": 2025,
   "authors": [],
   "summary": "Ongoing work on the modeling and fabrication of AlGaAs micro PV-LEDs.",
   "links": {},

@@ -36,10 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (text !== undefined) node.textContent = text;
         return node;
     };
-    const yearOf = project => {
-        const years = String(project.year ?? project.card.year ?? '').match(/\b(?:19|20)\d{2}\b/g);
-        return years ? Number(years.at(-1)) : 0;
-    };
+    const yearOf = project => project.year || 0;
     const yearLabel = year => year || 'Other projects';
     const icon = () => {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -59,7 +56,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const projects = await projectStore.loadAll();
         const expected = typeof projectDirectories === 'undefined' ? 0 : projectDirectories.length;
         error.hidden = projects.length === expected;
-        projects.sort((a, b) => yearOf(b) - yearOf(a));
+        // Equal dates retain registration order; Home's order field has no effect here.
+        projects.sort((a, b) => b.sortDate - a.sortDate);
         list.replaceChildren();
         const groups = new Map();
         const records = projects.map(project => {
@@ -182,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const primaryText = [project.card.title, project.summary, ...(project.topics || [])].filter(Boolean).join(' ').toLowerCase();
             const paperText = linkedPapers.map(p => [p.title, p.venueShort || p.venue, p.year].filter(Boolean).join(' ').toLowerCase()).join(' ');
             const badgeText = linkedPapers.map(p => [p.venueShort || p.venue || 'Publication', p.year].filter(Boolean).join(' ').toLowerCase()).join(' ');
-            const projectText = [project.title, project.card.category, ...(project.authors || []), ...(project.sections || []).flatMap(s => [s.heading, ...(s.paragraphs || []), ...(s.bullets || []), ...(s.steps || [])])].filter(Boolean).join(' ');
+            const projectText = [project.title, project.date, project.card.category, ...(project.authors || []), ...(project.sections || []).flatMap(s => [s.heading, ...(s.paragraphs || []), ...(s.bullets || []), ...(s.steps || [])])].filter(Boolean).join(' ');
             const snippets = [{ label: 'From the project', text: projectText }, ...papers.map(p => ({ label: 'From a related publication', text: [p.title, ...(p.authors || []), p.venue, p.abstract].filter(Boolean).join(' · ') }))];
             const record = { project, card, visibleText, primaryText, paperText, badgeText, snippets, excerpt, excerptLabel, excerptText, prepareImage,
                 relatedDetails, relatedSummary, relatedLabel, relatedExpanded: false, searchRevealsRelated: false,

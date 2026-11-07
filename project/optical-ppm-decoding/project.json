@@ -1,15 +1,13 @@
 {
-  "featured": true,
+  "date": "2026-01-15",
   "card": {
     "title": "Closed-loop optical PPM decoding",
     "category": "IEEE ICASSP",
-    "year": "2026",
     "image": "ICASSP_Project_Card.jpg",
     "imageAlt": "Concept illustration of noisy optical signals and recovered pulses"
   },
   "title": "A Closed-Loop and Data-Driven Decoding Algorithm for Optical Pulse Position Modulated Uplinks in Neural Implants",
   "venue": "2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)",
-  "year": 2026,
   "authors": [
     "Yumin Zheng",
     "Rui Jiao",

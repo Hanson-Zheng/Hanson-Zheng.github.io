@@ -1,15 +1,13 @@
 {
-  "featured": true,
+  "date": "2026-01-04",
   "card": {
     "title": "FB-MOTE: light-adaptive neural recording",
     "category": "IEEE TBioCAS",
-    "year": "2026",
     "image": "images/fb-mote-card.png",
     "imageAlt": "FB-MOTE characterization on an illuminated probe station under a microscope"
   },
   "title": "A 43 μm × 269 μm Light-Adaptive Optoelectronic Autonomous Microsystem for Neural Recording",
   "venue": "IEEE Transactions on Biomedical Circuits and Systems",
-  "year": 2026,
   "authors": [
     "Rui Jiao",
     "Yumin Zheng",

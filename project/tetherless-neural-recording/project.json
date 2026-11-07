@@ -1,15 +1,13 @@
 {
-  "featured": true,
+  "date": "2025-11-03",
   "card": {
     "title": "Tetherless neural recording",
     "category": "Nature Electronics",
-    "year": "2025",
     "image": "MOTE_in_Pipette.jpg",
     "imageAlt": "Photograph of a MOTE in a glass micropipette beside two grains of salt for scale"
   },
   "title": "A subnanolitre tetherless optoelectronic microsystem for chronic neural recording in awake mice",
   "venue": "Nature Electronics",
-  "year": 2025,
   "authors": [
     "Sunwoo Lee",
     "Shahaboddin Ghajari",
