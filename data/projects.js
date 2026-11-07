@@ -41,5 +41,5 @@ const projectDirectories = [
 const projectCarouselSettings = {
     autoScrollSpeed: 15,
     cardWidth: 300, // Horizontal card width; extra space reveals more projects.
-    pauseAfterInteraction: 4000
+    pauseAfterInteraction: 2000
 };
