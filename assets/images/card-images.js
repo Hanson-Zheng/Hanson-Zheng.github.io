@@ -149,6 +149,40 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/beijing/beijing-night.jpg": {
+    "src": "assets/images/cards/beijing-night-fe2c94ac0b-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/beijing-night-fe2c94ac0b-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/beijing-night-fe2c94ac0b-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/beijing-night-fe2c94ac0b-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/ntu-eee/ntu-eee.jpg": {
+    "src": "assets/images/cards/ntu-eee-a629b45fea-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/ntu-eee-a629b45fea-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/ntu-eee-a629b45fea-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/ntu-eee-a629b45fea-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "project/algaas-micro-pvleds/images/droplet.jpg": {
     "src": "assets/images/cards/droplet-dff0b59323-960w.webp",
     "sources": [

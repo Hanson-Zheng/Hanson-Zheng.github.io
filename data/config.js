@@ -29,6 +29,9 @@ const configData = {
     "projectDirectory": {
         "cardPublicationStyle": "badge" // "badge": venue/year DOI links only; "full": include paper titles. Cards only.
     },
+    "travelMap": {
+        "showDates": false // Keep visits undated; set true to display an optional entry date.
+    },
     "socialLinks": [
         // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },
         // { "icon": "fab fa-github", "url": "#", "label": "GitHub" },

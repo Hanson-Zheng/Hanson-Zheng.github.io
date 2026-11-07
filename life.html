@@ -8,6 +8,7 @@
     <title>Life & Interests | Hanson Zheng</title>
     <link rel="stylesheet" href="assets/fonts/inter/inter.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/vendor/leaflet/1.9.4/leaflet.css">
     <link rel="stylesheet" href="css/life.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="assets/vendor/fontawesome/6.4.0/css/all.min.css">
@@ -33,7 +34,35 @@
         <h2 class="section-title">Life & Interests</h2>
         <p style="margin-bottom: 30px; color: var(--light-text);">Life is too short to stay in the lab 24/7. When I'm not chasing research deadlines, you'll find me on the badminton court, playing piano, kicking a football with friends, pulling perfect espresso shots, experimenting in the kitchen, or daydreaming about my next flight. Each of these keeps me grounded — and occasionally airborne.</p>
         
-        <!-- Filter -->
+        <section class="travel-section" aria-labelledby="travel-title">
+            <div class="travel-heading">
+                <div>
+                    <h3 id="travel-title">Places & moments</h3>
+                    <p>A few places, and the moments that stayed.</p>
+                </div>
+                <p class="travel-summary" id="travel-summary"></p>
+            </div>
+            <div class="travel-atlas">
+                <div class="travel-map-wrap">
+                    <div id="travel-map" aria-label="World map of places and photographs" aria-busy="true"></div>
+                    <div class="travel-map-message" id="travel-map-message" role="status">
+                        <p>Unfolding the map…</p>
+                        <button type="button" id="travel-map-retry" hidden>Try again</button>
+                    </div>
+                    <button type="button" class="travel-world-button" id="travel-world" title="Show the whole world" hidden>
+                        <i class="fas fa-globe" aria-hidden="true"></i><span>World view</span>
+                    </button>
+                    <div class="travel-map-legend"><span aria-hidden="true"></span>Places with stories</div>
+                </div>
+                <div class="travel-story" id="travel-story" aria-label="Selected place photographs">
+                    <p class="travel-no-places">New places, soon.</p>
+                </div>
+            </div>
+            <p class="visually-hidden" id="travel-announcement" role="status" aria-live="polite"></p>
+            <noscript><p>Enable JavaScript to explore the map and photographs.</p></noscript>
+        </section>
+
+        <!-- Additional Life entries and the brewing animation stay below the map. -->
         <div id="life-filter" class="filter-container"></div>
 
         <!-- Reuse Highlights Grid Styles -->
@@ -60,7 +89,7 @@
                         </svg>
                     </button>
                 </div>
-                <h3 id="life-empty-title">Stories are still brewing.</h3>
+                <h3 id="life-empty-title">More stories are still brewing.</h3>
                 <p>Slow mornings, small adventures,<br>and the little things worth keeping.</p>
             </section>
         </div>
@@ -85,6 +114,10 @@
 
     <script src="data/config.js"></script>
     <script src="data/life.js"></script>
+    <script src="data/travel.js"></script>
+    <script src="assets/images/card-images.js"></script>
+    <script src="assets/vendor/leaflet/1.9.4/leaflet.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/travel-map.js"></script>
 </body>
 </html>
