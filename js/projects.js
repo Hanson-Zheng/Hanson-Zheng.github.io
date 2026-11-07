@@ -272,9 +272,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         next.removeAttribute('aria-disabled');
         if (changedAxis) {
             leadingIndex = -1;
-            pointerStart = null;
+            finishDrag();
             suppressClick = false;
-            pauses.delete('pointer');
         }
         showcase.dataset.perPage = count;
         render();
@@ -310,33 +309,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         requestAnimationFrame(() => setPause('focus', viewport.contains(document.activeElement)));
     });
     viewport.addEventListener('pointerdown', event => {
-        if (event.button !== 0 || snap) return;
-        pointerStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+        if (event.button !== 0 || !event.isPrimary || snap || pointerStart) return;
+        pointerStart = { x: event.clientX, y: event.clientY, id: event.pointerId, last: vertical ? event.clientY : event.clientX, dragging: false };
         suppressClick = false;
         setPause('pointer', true);
     });
-    viewport.addEventListener('pointermove', event => {
-        if (!pointerStart || event.pointerId !== pointerStart.id) return;
-        const distance = vertical ? event.clientY - pointerStart.y : event.clientX - pointerStart.x;
-        if (Math.abs(distance) > 12) suppressClick = true;
-    }, { passive: true });
-    window.addEventListener('pointerup', event => {
+    window.addEventListener('pointermove', event => {
         if (!pointerStart || event.pointerId !== pointerStart.id) return;
         const dx = event.clientX - pointerStart.x;
         const dy = event.clientY - pointerStart.y;
-        pointerStart = null;
-        setPause('pointer', false);
         const distance = vertical ? dy : dx;
         const across = vertical ? dx : dy;
-        if (Math.abs(distance) > 45 && Math.abs(distance) > Math.abs(across)) {
+        if (!pointerStart.dragging) {
+            if (Math.abs(distance) <= 6 || Math.abs(distance) <= Math.abs(across)) return;
+            pointerStart.dragging = true;
             suppressClick = true;
-            move(distance < 0 ? 1 : -1);
+            viewport.setPointerCapture(event.pointerId);
+            viewport.classList.add('is-dragging');
         }
-    });
-    window.addEventListener('pointercancel', () => {
+        const position = vertical ? event.clientY : event.clientX;
+        offset -= position - pointerStart.last;
+        pointerStart.last = position;
+        normalize();
+        render();
+    }, { passive: true });
+    function finishDrag(event) {
+        if (!pointerStart || (event && event.pointerId !== pointerStart.id)) return;
+        const { id, dragging } = pointerStart;
         pointerStart = null;
+        viewport.classList.remove('is-dragging');
+        if (viewport.hasPointerCapture(id)) viewport.releasePointerCapture(id);
+        // Keep the exact release position; only navigation controls snap to cards.
+        if (dragging) pauseForInteraction();
         setPause('pointer', false);
+    }
+    window.addEventListener('pointerup', finishDrag);
+    window.addEventListener('pointercancel', finishDrag);
+    viewport.addEventListener('lostpointercapture', event => {
+        if (event.target === viewport) finishDrag(event);
     });
+    window.addEventListener('blur', () => finishDrag());
+    viewport.addEventListener('wheel', event => {
+        if (snap || pointerStart || projects.length < 2 || event.ctrlKey) return;
+        const distance = vertical ? event.deltaY : event.deltaX || (event.shiftKey ? event.deltaY : 0);
+        const across = vertical ? event.deltaX : event.shiftKey ? 0 : event.deltaY;
+        if (!distance || Math.abs(distance) < Math.abs(across)) return;
+        event.preventDefault();
+        const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? viewSize : 1;
+        pauseForInteraction();
+        offset += distance * unit;
+        normalize();
+        render();
+    }, { passive: false });
     viewport.addEventListener('click', event => {
         if (!suppressClick) return;
         event.preventDefault();

@@ -37,6 +37,7 @@
 .project-film::before { top: 10px; }
 .project-film::after { bottom: 9px; }
 .project-viewport { overflow: clip; padding: 3px 2px 7px; touch-action: pan-y pinch-zoom; }
+.project-viewport.is-dragging, .project-viewport.is-dragging * { cursor: grabbing; user-select: none; }
 .project-track { display: flex; width: max-content; will-change: transform; }
 .project-group { display: flex; gap: 18px; padding-right: 18px; flex-shrink: 0; list-style: none; }
 .project-frame { width: var(--project-card-width, 270px); flex-shrink: 0; min-width: 0; }
