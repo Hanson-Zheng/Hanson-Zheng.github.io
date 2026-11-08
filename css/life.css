@@ -12,7 +12,8 @@
     --travel-stroke: #fff;
     --travel-visited: #d5a18a;
     --travel-selected: #ad5438;
-    --travel-pin: #ad5438;
+    --travel-pin: #285cc4;
+    --travel-cluster-text: #fff;
     display: grid;
     grid-template-columns: minmax(0, 1.9fr) minmax(280px, 1fr);
     border: 1px solid var(--border-color);
@@ -26,7 +27,8 @@
     --travel-stroke: #17263c;
     --travel-visited: #a96c51;
     --travel-selected: #e39b79;
-    --travel-pin: #f0ad89;
+    --travel-pin: #96b8ff;
+    --travel-cluster-text: #0b1220;
 }
 .travel-map-wrap { position: relative; min-width: 0; min-height: 460px; isolation: isolate; background: var(--travel-ocean); }
 #travel-map { position: absolute; inset: 0; width: 100%; height: 100%; background: var(--travel-ocean); font-family: inherit; z-index: 0; }
@@ -42,6 +44,7 @@
 .travel-world-button:hover { color: var(--accent-color); border-color: var(--accent-border); }
 .travel-map-legend { left: 14px; bottom: 14px; display: flex; align-items: center; gap: 7px; padding: 5px 9px; border-radius: 6px; font-size: 0.65rem; pointer-events: none; }
 .travel-map-legend > span { width: 7px; height: 7px; border-radius: 50%; background: var(--travel-selected); }
+.travel-map-help { position: absolute; right: 14px; bottom: 14px; z-index: 1; padding: 5px 9px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-color); color: var(--light-text); font-size: 0.65rem; pointer-events: none; }
 .travel-map-message { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 14px; padding: 30px; text-align: center; background: var(--travel-ocean); color: var(--light-text); font-size: 0.85rem; }
 .travel-map-message[hidden] { display: none; }
 .travel-map-message button { padding: 7px 14px; border: 1px solid var(--accent-border); border-radius: 6px; color: var(--accent-color); background: var(--bg-color); font: inherit; cursor: pointer; }
@@ -53,6 +56,9 @@
 .travel-pin.is-selected circle { fill: var(--bg-color); }
 .travel-pin:hover svg, .travel-pin.is-selected svg { transform: scale(1.12); }
 .travel-pin:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 4px; border-radius: 8px; }
+.travel-cluster { display: grid; place-items: center; border: 2px solid var(--bg-color); border-radius: 50%; background: var(--travel-pin); color: var(--travel-cluster-text); font: 600 0.8rem/1 Inter, sans-serif; font-variant-numeric: tabular-nums; box-shadow: 0 2px 7px #0f172a40; }
+.travel-cluster.is-selected { box-shadow: 0 0 0 3px var(--accent-border), 0 2px 7px #0f172a40; }
+.travel-cluster:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 4px; }
 .travel-map-wrap .leaflet-control-zoom { border: 1px solid var(--border-color); box-shadow: 0 3px 12px #0f172a08; border-radius: 8px; overflow: hidden; margin: 14px; }
 .travel-map-wrap .leaflet-control-zoom a { background: var(--bg-color); color: var(--text-color); border-color: var(--border-color); }
 .travel-map-wrap .leaflet-control-zoom a:hover { color: var(--accent-color); background: var(--bg-alt); }
@@ -66,6 +72,7 @@
 .travel-story-heading time { flex: none; color: var(--light-text); font-size: 0.72rem; }
 .travel-media { position: relative; }
 .travel-photo-button { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 9px; overflow: hidden; background: var(--bg-alt); cursor: zoom-in; }
+.travel-photo-button.is-portrait { width: min(100%, calc(var(--travel-photo-ratio) * clamp(280px, 45vh, 420px))); margin-inline: auto; }
 .travel-photo { display: block; width: 100%; height: 100%; object-fit: contain; }
 .travel-photo[hidden], .travel-photo-error[hidden] { display: none; }
 .travel-photo-error { display: grid; place-items: center; height: 100%; padding: 20px; color: var(--light-text); font: 0.85rem/1.6 Inter, sans-serif; }
@@ -94,6 +101,8 @@
     .travel-heading { align-items: start; flex-direction: column; gap: 2px; }
     .travel-heading .travel-summary { margin-top: 5px; }
     .travel-section { margin-top: 32px; }
+    .travel-map-help { display: none; }
+    .travel-photo-button.is-portrait { width: min(100%, calc(var(--travel-photo-ratio) * clamp(320px, 60vh, 520px))); }
 }
 
 @media (prefers-reduced-motion: reduce) {

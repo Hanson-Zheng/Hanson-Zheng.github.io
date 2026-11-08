@@ -149,6 +149,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/bangkok/chao-phraya-river.jpg": {
+    "src": "assets/images/cards/chao-phraya-river-880320b6e0-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/chao-phraya-river-880320b6e0-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/chao-phraya-river-880320b6e0-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/chao-phraya-river-880320b6e0-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/beijing/beijing-night.jpg": {
     "src": "assets/images/cards/beijing-night-fe2c94ac0b-960w.webp",
     "sources": [
@@ -166,6 +183,91 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/hanoi/ho-chi-minh-mausoleum.jpg": {
+    "src": "assets/images/cards/ho-chi-minh-mausoleum-26c6ef20d9-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/ho-chi-minh-mausoleum-26c6ef20d9-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/ho-chi-minh-mausoleum-26c6ef20d9-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/ho-chi-minh-mausoleum-26c6ef20d9-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/harbin/hit-main-building.jpg": {
+    "src": "assets/images/cards/hit-main-building-62fcf75fda-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/hit-main-building-62fcf75fda-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-62fcf75fda-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-62fcf75fda-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/hong-kong/victoria-harbour.jpg": {
+    "src": "assets/images/cards/victoria-harbour-e8e2de7e2a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/victoria-harbour-e8e2de7e2a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/victoria-harbour-e8e2de7e2a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/victoria-harbour-e8e2de7e2a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/kuala-lumpur/petronas-twin-towers.jpg": {
+    "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-1291w.webp",
+        "width": 1291
+      }
+    ]
+  },
+  "images/life/manila/sm-mall-of-asia.jpg": {
+    "src": "assets/images/cards/sm-mall-of-asia-ef5e3a0338-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/sm-mall-of-asia-ef5e3a0338-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/sm-mall-of-asia-ef5e3a0338-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/sm-mall-of-asia-ef5e3a0338-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/ntu-eee/ntu-eee.jpg": {
     "src": "assets/images/cards/ntu-eee-a629b45fea-960w.webp",
     "sources": [
@@ -179,6 +281,74 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/ntu-eee-a629b45fea-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/shanghai/lujiazui.jpg": {
+    "src": "assets/images/cards/lujiazui-2ad98b93d7-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/lujiazui-2ad98b93d7-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/lujiazui-2ad98b93d7-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/lujiazui-2ad98b93d7-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/shenzhen/hit-main-building.jpg": {
+    "src": "assets/images/cards/hit-main-building-2e1fb0c03b-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/hit-main-building-2e1fb0c03b-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-2e1fb0c03b-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-2e1fb0c03b-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/siem-reap/angkor-wat.jpg": {
+    "src": "assets/images/cards/angkor-wat-075ec8bf0a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/angkor-wat-075ec8bf0a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/angkor-wat-075ec8bf0a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/angkor-wat-075ec8bf0a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/weihai/hit-main-building.jpg": {
+    "src": "assets/images/cards/hit-main-building-8eb1b5ed7f-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/hit-main-building-8eb1b5ed7f-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-8eb1b5ed7f-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-8eb1b5ed7f-1440w.webp",
         "width": 1440
       }
     ]

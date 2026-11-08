@@ -32,6 +32,7 @@
         let selected = null;
         let map = null;
         let countries = null;
+        let markerLayer = null;
         let photoIndex = 0;
         let photos = [];
         let loading = false;
@@ -103,9 +104,13 @@
             error.hidden = true;
             frame.disabled = false;
             frame.style.removeProperty('aspect-ratio');
+            frame.style.removeProperty('--travel-photo-ratio');
+            frame.classList.remove('is-portrait');
             image.alt = photo.alt;
             image.addEventListener('load', () => {
                 frame.style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
+                frame.style.setProperty('--travel-photo-ratio', image.naturalWidth / image.naturalHeight);
+                frame.classList.toggle('is-portrait', image.naturalHeight > image.naturalWidth);
             }, { once: true });
             applySiteCardImage(image, photo.src, '(max-width: 900px) calc(100vw - 60px), 440px');
             image.addEventListener('error', () => requestAnimationFrame(() => {
@@ -183,6 +188,7 @@
                 marker.setZIndexOffset(candidate === entry ? 1000 : 0);
             });
             updateCountries();
+            markerLayer?.refreshClusters?.();
             showStory(entry);
             announcement.textContent = `${entry.place}, ${entry.country}. ${photos.length} ${photos.length === 1 ? 'photograph' : 'photographs'}.`;
             if (pan && map) {
@@ -212,23 +218,63 @@
             map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
             map.attributionControl.addAttribution('<a href="https://www.naturalearthdata.com/">Natural Earth</a>');
             map.zoomControl.setPosition('topright');
+            // Keep regular scrolling for the page; Alt+wheel zooms only this map.
+            let wheelTarget = null;
+            let wheelPoint;
+            let wheelTime = 0;
+            let wheelFrame = 0;
+            canvas.addEventListener('wheel', event => {
+                if (!event.altKey || event.ctrlKey || event.metaKey || !event.deltaY) return;
+                event.preventDefault();
+                const now = performance.now();
+                if (wheelTarget === null || now - wheelTime > 180) wheelTarget = map.getZoom();
+                const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? canvas.clientHeight : 1;
+                wheelTarget = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), wheelTarget - event.deltaY * unit * 0.005));
+                wheelPoint = map.mouseEventToContainerPoint(event);
+                wheelTime = now;
+                if (!wheelFrame) wheelFrame = requestAnimationFrame(() => {
+                    wheelFrame = 0;
+                    worldView = false;
+                    map.setZoomAround(wheelPoint, Math.round(wheelTarget * 4) / 4, { animate: false });
+                });
+            }, { passive: false });
             fitWorld();
             const icon = L.divIcon({
                 className: 'travel-pin', iconSize: [28, 36], iconAnchor: [14, 35], tooltipAnchor: [0, -30],
                 html: '<svg viewBox="0 0 28 36" aria-hidden="true"><path d="M14 34S2 23 2 14a12 12 0 1 1 24 0c0 9-12 20-12 20Z"/><circle cx="14" cy="14" r="4"/></svg>'
             });
+            markerLayer = typeof L.markerClusterGroup === 'function' ? L.markerClusterGroup({
+                maxClusterRadius: 36, showCoverageOnHover: false,
+                animate: !reducedMotion.matches, spiderfyDistanceMultiplier: 1.5,
+                spiderLegPolylineOptions: { color: 'var(--travel-pin)', weight: 1.2, opacity: 0.65 },
+                iconCreateFunction(cluster) {
+                    const count = cluster.getChildCount();
+                    cluster.options.title = `Explore ${count} nearby places`;
+                    const current = selected && cluster.getAllChildMarkers().includes(markers.get(selected));
+                    return L.divIcon({
+                        className: `travel-cluster${current ? ' is-selected' : ''}`,
+                        html: String(count), iconSize: [36, 36], iconAnchor: [18, 18]
+                    });
+                }
+            }) : L.featureGroup();
+            markerLayer.addTo(map);
             entries.forEach(entry => {
-                const marker = L.marker(entry.coordinates, { icon, title: `${entry.place}, ${entry.country}`, keyboard: true, autoPanOnFocus: true }).addTo(map);
+                const marker = L.marker(entry.coordinates, { icon, title: `${entry.place}, ${entry.country}`, keyboard: true, autoPanOnFocus: true });
                 marker.bindTooltip(element('span', '', entry.place), { direction: 'top' });
                 marker.on('click', () => selectPlace(entry));
-                const pin = marker.getElement();
-                pin.setAttribute('aria-label', `Show photographs from ${entry.place}, ${entry.country}`);
-                pin.addEventListener('keydown', event => {
-                    if (event.key !== ' ') return;
-                    event.preventDefault();
-                    selectPlace(entry);
+                marker.on('add', () => {
+                    const pin = marker.getElement();
+                    pin.setAttribute('aria-label', `Show photographs from ${entry.place}, ${entry.country}`);
+                    pin.setAttribute('aria-pressed', String(selected === entry));
+                    pin.classList.toggle('is-selected', selected === entry);
+                    pin.onkeydown = event => {
+                        if (event.key !== ' ') return;
+                        event.preventDefault();
+                        selectPlace(entry);
+                    };
                 });
                 markers.set(entry, marker);
+                markerLayer.addLayer(marker);
             });
             map.on('dragstart zoomstart', event => { if (event.type === 'dragstart' || event.originalEvent) worldView = false; });
             // A real user zoom should stay at their chosen scale when the viewport resizes.

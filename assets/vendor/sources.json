@@ -173,18 +173,42 @@
     "license": "ISC; underlying Natural Earth data is public domain",
     "files": [
       {
-        "file": "assets/maps/countries-50m.geo.json",
-        "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json",
-        "bytes": 990435,
-        "sha256": "e188975fbbc581ef98991df03a9cda3bc87b8af52bf1d63a273abda5de603b04"
-      },
-      {
         "file": "assets/maps/LICENSE",
         "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/LICENSE",
         "bytes": 734,
         "sha256": "8048290dfdb6e83fbed17e8985c8cfc4ce9da9b842642f3d3e497280790cfa31"
+      },
+      {
+        "file": "assets/maps/countries-50m.geo.json",
+        "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json",
+        "bytes": 990435,
+        "sha256": "e188975fbbc581ef98991df03a9cda3bc87b8af52bf1d63a273abda5de603b04"
       }
     ],
     "preparation": "Date-line split, 0.018-degree topology-preserving simplification, 4-decimal coordinates; local/prepare_travel_map.py (Shapely 2)."
+  },
+  "leaflet-markercluster": {
+    "version": "1.5.3",
+    "license": "MIT",
+    "files": [
+      {
+        "file": "assets/vendor/leaflet-markercluster/1.5.3/leaflet.markercluster.js",
+        "source": "https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js",
+        "bytes": 34136,
+        "sha256": "1e4e1d22972a3926f48598e0caf14e3fe7049835d428a344fed4f9e3665b3508"
+      },
+      {
+        "file": "assets/vendor/leaflet-markercluster/1.5.3/MarkerCluster.css",
+        "source": "https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css",
+        "bytes": 872,
+        "sha256": "614dea0a98ff3f4ead74f04918f6b1d1b9ba435c25b5fc23b21a394d1e3e4d87"
+      },
+      {
+        "file": "assets/vendor/leaflet-markercluster/1.5.3/MIT-LICENCE.txt",
+        "source": "https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/MIT-LICENCE.txt",
+        "bytes": 1052,
+        "sha256": "3133dacd38250bd1f524d8166cc60a016a382522e062fce143691c65bf5e4b3d"
+      }
+    ]
   }
 }
