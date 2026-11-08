@@ -234,6 +234,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/cebu/ferry-terminal.jpg": {
+    "src": "assets/images/cards/ferry-terminal-f6930e0454-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/ferry-terminal-f6930e0454-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/ferry-terminal-f6930e0454-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/ferry-terminal-f6930e0454-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/doha/hamad-airport-dawn.jpg": {
     "src": "assets/images/cards/hamad-airport-dawn-24c985898a-960w.webp",
     "sources": [
@@ -265,6 +282,23 @@ const cardImageAssets = {
       {
         "src": "assets/images/cards/frankfurt-airport-icbc-f992f9c8c1-1291w.webp",
         "width": 1291
+      }
+    ]
+  },
+  "images/life/guangzhou/baiyun-a380-and-737.jpg": {
+    "src": "assets/images/cards/baiyun-a380-and-737-bd423e1383-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/baiyun-a380-and-737-bd423e1383-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/baiyun-a380-and-737-bd423e1383-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/baiyun-a380-and-737-bd423e1383-1440w.webp",
+        "width": 1440
       }
     ]
   },
@@ -353,6 +387,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/macau/airport-special-livery.jpg": {
+    "src": "assets/images/cards/airport-special-livery-eae75e3887-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/airport-special-livery-eae75e3887-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/airport-special-livery-eae75e3887-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/airport-special-livery-eae75e3887-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/manila/sm-mall-of-asia.jpg": {
     "src": "assets/images/cards/sm-mall-of-asia-ef5e3a0338-960w.webp",
     "sources": [
@@ -383,6 +434,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/bmw-museum-d66c11f5a5-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/ningbo/xiaoshi-high-school.jpg": {
+    "src": "assets/images/cards/xiaoshi-high-school-67b9a156c8-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/xiaoshi-high-school-67b9a156c8-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/xiaoshi-high-school-67b9a156c8-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/xiaoshi-high-school-67b9a156c8-1440w.webp",
         "width": 1440
       }
     ]

@@ -7,7 +7,9 @@
     <link rel="icon" href="favicon.svg?v=zym-3" type="image/svg+xml" sizes="any">
     <title>Life & Interests | Hanson Zheng</title>
     <link rel="stylesheet" href="assets/fonts/inter/inter.css">
+    <link rel="stylesheet" href="assets/fonts/chinese.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/i18n.css">
     <link rel="stylesheet" href="assets/vendor/leaflet/1.9.4/leaflet.css">
     <link rel="stylesheet" href="assets/vendor/leaflet-markercluster/1.5.3/MarkerCluster.css">
     <link rel="stylesheet" href="css/life.css?v=life-title-1">
@@ -20,56 +22,56 @@
         <div class="container nav-container">
             <a href="index.html" class="logo" aria-label="Yumin's Site - Home" title="Yumin's Site - Home"><span class="logo-mark" aria-hidden="true"></span></a>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="projects.html" data-section="projects">Projects</a></li>
-                <li><a href="highlights.html">Highlights</a></li>
-                <li><a href="life.html" class="active">Life</a></li>
-                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section">Contact <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="publications.html" data-i18n="nav.publications">Publications</a></li>
+                <li><a href="projects.html" data-section="projects" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="highlights.html" data-i18n="nav.highlights">Highlights</a></li>
+                <li><a href="life.html" class="active" data-i18n="nav.life">Life</a></li>
+                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section" data-i18n-aria-label="nav.contactJump"><span data-i18n="nav.contact">Contact</span> <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
             </ul>
             <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
         </div>
     </nav>
 
-    <main class="container section-padding">
-        <h2 class="section-title">Life & Interests</h2>
+    <main class="container section-padding life-page">
+        <h2 class="section-title" data-i18n="life.title">Life &amp; Interests</h2>
         
         <section class="travel-section" aria-labelledby="travel-title">
             <div class="travel-heading">
                 <div>
-                    <!-- <h3 id="travel-title">Places & moments</h3> -->
-                    <h3 id="travel-title">Beyond the lab, into the world.</h3>
+                    <!-- <h3 id="travel-title" lang="en">Places & moments</h3> -->
+                    <h3 id="travel-title" data-i18n="life.tagline">Beyond the lab, into the world.</h3>
                 </div>
                 <p class="travel-summary" id="travel-summary"></p>
             </div>
             <div class="travel-atlas">
                 <div class="travel-map-wrap">
-                    <div id="travel-map" aria-label="World map of places and photographs" aria-describedby="travel-map-help" aria-busy="true"></div>
+                    <div id="travel-map" aria-label="World map of places and photographs" aria-describedby="travel-map-help" aria-busy="true" data-i18n-aria-label="life.map"></div>
                     <div class="travel-map-message" id="travel-map-message" role="status">
-                        <p>Unfolding the map…</p>
-                        <button type="button" id="travel-map-retry" hidden>Try again</button>
+                        <p data-i18n="life.unfolding">Unfolding the map…</p>
+                        <button type="button" id="travel-map-retry" hidden data-i18n="common.retry">Try again</button>
                     </div>
-                    <button type="button" class="travel-world-button" id="travel-world" title="Show the whole world" hidden>
-                        <i class="fas fa-globe" aria-hidden="true"></i><span>World view</span>
+                    <button type="button" class="travel-world-button" id="travel-world" title="Show the whole world" hidden data-i18n-title="life.wholeWorld">
+                        <i class="fas fa-globe" aria-hidden="true"></i><span data-i18n="life.world">World view</span>
                     </button>
                     <div class="travel-map-note">
-                        <div class="travel-map-legend"><span aria-hidden="true"></span>Places with stories</div>
-                        <p class="travel-map-help" id="travel-map-help">Alt + scroll to zoom</p>
+                        <div class="travel-map-legend"><span aria-hidden="true"></span><span data-i18n="life.legend">Places with stories</span></div>
+                        <p class="travel-map-help" id="travel-map-help" data-i18n="life.zoomHint">Alt + scroll to zoom</p>
                     </div>
                 </div>
-                <div class="travel-story" id="travel-story" aria-label="Selected place photographs">
-                    <p class="travel-no-places">New places, soon.</p>
+                <div class="travel-story" id="travel-story" aria-label="Selected place photographs" data-i18n-aria-label="life.selected" lang="en">
+                    <p class="travel-no-places" data-i18n="life.soon">New places, soon.</p>
                 </div>
             </div>
             <p class="visually-hidden" id="travel-announcement" role="status" aria-live="polite"></p>
-            <noscript><p>Enable JavaScript to explore the map and photographs.</p></noscript>
+            <noscript><p data-i18n="life.enableJS">Enable JavaScript to explore the map and photographs.</p></noscript>
         </section>
 
         <!-- Additional Life entries and the brewing animation stay below the map. -->
         <div id="life-filter" class="filter-container"></div>
 
         <!-- Reuse Highlights Grid Styles -->
-        <div class="highlights-grid" id="life-list">
+        <div class="highlights-grid" id="life-list" lang="en">
             <section class="life-empty" data-life-empty aria-labelledby="life-empty-title">
                 <div class="life-brewing-art">
                     <svg class="life-cup" viewBox="0 0 200 160" fill="none" aria-hidden="true">
@@ -85,15 +87,15 @@
                         <ellipse class="life-tea" cx="94.5" cy="76" rx="31" ry="3.5" />
                         <path class="life-saucer" d="M40 134C68 144 130 144 158 134" />
                     </svg>
-                    <button class="life-animation-toggle" type="button" data-life-motion aria-pressed="false" aria-label="Pause animation" title="Pause animation" hidden>
+                    <button class="life-animation-toggle" type="button" data-life-motion aria-pressed="false" aria-label="Pause animation" title="Pause animation" hidden data-i18n-aria-label="life.pause" data-i18n-title="life.pause">
                         <svg viewBox="0 0 16 16" aria-hidden="true">
                             <g class="life-motion-pause"><path d="M5.5 4V12M10.5 4V12" /></g>
                             <path class="life-motion-play" d="M6 4L12 8L6 12Z" />
                         </svg>
                     </button>
                 </div>
-                <h3 id="life-empty-title">More stories are still brewing.</h3>
-                <p>Slow mornings, small adventures,<br>and the little things worth keeping.</p>
+                <h3 id="life-empty-title" data-i18n="life.brewingTitle">More stories are still brewing.</h3>
+                <p class="life-brewing-caption" data-i18n="life.brewingDescription">Slow mornings, small adventures,<br>and the little things worth keeping.</p>
             </section>
         </div>
         <!-- <p class="life-intro">Life is too short to stay in the lab 24/7. When I'm not chasing research deadlines, you'll find me on the badminton court, playing piano, kicking a football with friends, pulling perfect espresso shots, experimenting in the kitchen, or daydreaming about my next flight. Each of these keeps me grounded — and occasionally airborne.</p> -->
@@ -102,9 +104,9 @@
     <!-- Contact Section -->
     <section id="contact" class="section-padding bg-light">
         <div class="container">
-            <h2 class="section-title">Contact</h2>
+            <h2 class="section-title" data-i18n="nav.contact">Contact</h2>
             <div class="contact-box">
-                <p>Feel free to reach out for collaborations or just a chat.</p>
+                <p data-i18n="contact.invitation">Feel free to reach out for collaborations or just a chat.</p>
                 <a href="#" class="email-link" id="contact-email">Loading...</a>
             </div>
         </div>
@@ -117,6 +119,8 @@
     </footer>
 
     <script src="data/config.js"></script>
+    <script src="data/translations.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="data/life.js"></script>
     <script src="data/travel.js"></script>
     <script src="assets/images/card-images.js"></script>

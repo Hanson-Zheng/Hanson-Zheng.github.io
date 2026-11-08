@@ -19,17 +19,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const segments = window.location.pathname.split('/').filter(Boolean);
         const folder = segments[segments.length - (segments.at(-1) === 'index.html' ? 2 : 1)];
         const project = await projectStore.load(decodeURIComponent(folder));
-        document.title = `${project.title} | Zheng Yumin`;
-        const description = document.querySelector('meta[name="description"]');
-        if (description) description.content = project.summary || project.title;
+        const updateMetadata = () => {
+            document.title = `${SiteI18n.value(project, 'title')} | Zheng Yumin`;
+            const description = document.querySelector('meta[name="description"]');
+            if (description) description.content = SiteI18n.value(project, 'summary') || SiteI18n.value(project, 'title');
+        };
+        updateMetadata();
+        window.addEventListener('site:languagechange', updateMetadata);
         article.replaceChildren();
 
-        const back = element('a', 'project-back', '← All projects');
+        const back = SiteI18n.element('a', 'project-back', 'projects.all');
         back.href = '../../projects.html';
         const header = element('header', 'project-page-header');
-        const metadata = [project.venue, project.date || project.year].filter(Boolean).join(' / ');
-        if (metadata) header.append(element('p', 'projects-eyebrow', metadata));
-        header.append(element('h1', '', project.title));
+        const metadata = element('p', 'projects-eyebrow');
+        const updateVenue = () => { metadata.textContent = [SiteI18n.value(project, 'venue'), project.date || project.year].filter(Boolean).join(' / '); metadata.lang = SiteI18n.language === 'zh-CN' && project.venueZh ? 'zh-CN' : 'en'; };
+        updateVenue();
+        if (metadata.textContent) header.append(metadata);
+        window.addEventListener('site:languagechange', updateVenue);
+        header.append(SiteI18n.content(element('h1', ''), project, 'title'));
         const authorData = findPublication(project) || project;
         const authors = Array.isArray(authorData.authors) ? authorData.authors.join(', ') : authorData.authors;
         if (authors) {
@@ -38,16 +45,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             header.append(authorLine);
         }
         const actions = element('div', 'project-actions');
-        const labels = { doi: 'Read the paper ↗', code: 'Code ↗', video: 'Watch video ↗' };
+        const labels = { doi: 'projects.paper', code: 'projects.code', video: 'projects.video' };
         Object.entries(project.links || {}).forEach(([kind, url]) => {
             if (!url) return;
-            const link = element('a', `btn ${kind === 'doi' ? 'btn-primary' : 'btn-secondary'}`, labels[kind] || kind);
+            const link = labels[kind]
+                ? SiteI18n.element('a', `btn ${kind === 'doi' ? 'btn-primary' : 'btn-secondary'}`, labels[kind])
+                : element('a', 'btn btn-secondary', kind);
             link.href = project.resolve(url);
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
             actions.append(link);
         });
-        const publications = element('a', 'btn btn-secondary', 'All publications');
+        const publications = SiteI18n.element('a', 'btn btn-secondary', 'projects.allPapers');
         publications.href = '../../publications.html';
         actions.append(publications);
         header.append(actions);
@@ -57,23 +66,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             const block = element('section', 'project-section');
             block.setAttribute('aria-labelledby', `project-section-${index}`);
             const copy = element('div', 'project-copy');
-            const heading = element('h2', '', section.heading || `Section ${index + 1}`);
+            const heading = section.heading ? SiteI18n.content(element('h2', ''), section, 'heading')
+                : SiteI18n.element('h2', '', 'projects.section', { number: index + 1 });
             heading.id = `project-section-${index}`;
             copy.append(heading);
-            (section.paragraphs || []).forEach(paragraph => copy.append(element('p', '', paragraph)));
+            (section.paragraphs || []).forEach((paragraph, index) => copy.append(SiteI18n.content(element('p', ''), section, 'paragraphs', { index })));
             if (section.steps?.length) {
                 const steps = element('ol', 'project-steps');
-                section.steps.forEach(text => steps.append(element('li', '', text)));
+                section.steps.forEach((text, index) => steps.append(SiteI18n.content(element('li', ''), section, 'steps', { index })));
                 copy.append(steps);
             }
             if (section.bullets?.length) {
                 const list = element('ul', 'project-bullets');
-                section.bullets.forEach(text => list.append(element('li', '', text)));
+                section.bullets.forEach((text, index) => list.append(SiteI18n.content(element('li', ''), section, 'bullets', { index })));
                 copy.append(list);
             }
             if (index === 0 && project.topics?.length) {
                 const topics = element('div', 'project-topics');
-                project.topics.forEach(topic => topics.append(element('span', '', topic)));
+                project.topics.forEach((topic, index) => topics.append(SiteI18n.content(element('span', ''), project, 'topics', { index })));
                 copy.append(topics);
             }
             block.append(copy);
@@ -87,19 +97,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const figure = element('figure', 'project-art');
                     const image = element('img');
                     image.src = project.resolve(info.src);
-                    image.alt = info.alt || '';
+                    SiteI18n.content(image, info, 'alt', { attribute: 'alt' });
                     image.decoding = 'async';
                     if (index > 0) image.loading = 'lazy';
                     const imageLink = element('a', 'project-image-link');
                     imageLink.href = image.src;
                     imageLink.target = '_blank';
                     imageLink.rel = 'noopener noreferrer';
-                    imageLink.setAttribute('aria-label', `Open full-size image${info.alt ? `: ${info.alt}` : ''}`);
+                    SiteI18n.attr(imageLink, 'aria-label', 'projects.openImage', { title: info.alt || project.title });
                     imageLink.append(image);
                     figure.append(imageLink);
                     const caption = element('figcaption');
-                    if (info.caption) caption.append(element('span', '', info.caption));
-                    const fullSize = element('a', 'project-full-size', 'Full size ↗');
+                    if (info.caption || info.captionZh) caption.append(SiteI18n.content(element('span', ''), info, 'caption', { hideEmpty: true }));
+                    const fullSize = SiteI18n.element('a', 'project-full-size', 'projects.fullSize');
                     fullSize.href = image.src;
                     fullSize.target = '_blank';
                     fullSize.rel = 'noopener noreferrer';
@@ -140,11 +150,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         article.removeAttribute('aria-busy');
     } catch (error) {
         console.error(error);
-        article.replaceChildren(element('h1', '', 'Project unavailable'));
-        article.append(element('p', 'project-error', window.location.protocol === 'file:'
-            ? 'Please preview this site through a local web server to load project content.'
-            : 'This project could not be loaded. Please refresh the page or try again later.'));
-        const back = element('a', 'project-back', '← Back to Home');
+        article.replaceChildren(SiteI18n.element('h1', '', 'projects.unavailable'));
+        article.append(SiteI18n.element('p', 'project-error', window.location.protocol === 'file:'
+            ? 'projects.localServer' : 'projects.loadError'));
+        const back = SiteI18n.element('a', 'project-back', 'projects.backHome');
         back.href = '../../index.html';
         article.append(back);
         article.removeAttribute('aria-busy');

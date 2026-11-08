@@ -2,11 +2,13 @@
   "date": "2024-01",
   "card": {
     "title": "Design & control of a coaxial drone",
+    "titleZh": "共轴无人机设计与控制",
     "category": "IEEE Transactions on Robotics",
     "image": "TRO_Project_Card.png",
     "imageAlt": "Coaxial drone prototype during an indoor flight test"
   },
   "title": "Design, Modeling, and Control of a Coaxial Drone",
+  "titleZh": "共轴无人机的设计、建模与控制",
   "venue": "IEEE Transactions on Robotics",
   "authors": [
     "Liangming Chen",
@@ -16,6 +18,7 @@
     "Mir Feroskhan"
   ],
   "summary": "A coaxial drone design combining two counter-rotating rotors with dual-axis thrust vectoring, supported by a nonlinear flight model and control strategy.",
+  "summaryZh": "采用共轴反转双旋翼与双轴推力矢量机构的紧凑型无人机，并围绕其建立非线性飞行动力学模型和控制方法。",
   "links": {
     "doi": "https://doi.org/10.1109/TRO.2024.3354161"
   },
@@ -24,12 +27,22 @@
     "Dynamics",
     "Nonlinear control"
   ],
+  "topicsZh": [
+    "空中机器人",
+    "动力学",
+    "非线性控制"
+  ],
   "sections": [
     {
       "heading": "Overview",
+      "headingZh": "项目概述",
       "paragraphs": [
         "A coaxial drone design combining two counter-rotating rotors with dual-axis thrust vectoring, supported by a nonlinear flight model and control strategy.",
         "The compact platform uses two propellers and two servomotors. Its six-degree-of-freedom model and nonlinear control allocation are evaluated through numerical simulations and flight experiments."
+      ],
+      "paragraphsZh": [
+        "这款共轴无人机结合反向旋转的双旋翼和双轴推力矢量机构，并配套建立了非线性飞行动力学模型与控制方法。",
+        "紧凑的机体仅使用两个螺旋桨和两个舵机。通过数值仿真与飞行实验，对六自由度模型和非线性控制分配方法进行了验证。"
       ],
       "images": [
         {

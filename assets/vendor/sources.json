@@ -210,5 +210,11 @@
         "sha256": "3133dacd38250bd1f524d8166cc60a016a382522e062fce143691c65bf5e4b3d"
       }
     ]
+  },
+  "chinese-fonts": {
+    "sourceHanSans": "https://github.com/adobe-fonts/source-han-sans",
+    "lxgwWenKai": "https://github.com/lxgw/LxgwWenKai",
+    "license": "OFL-1.1",
+    "manifest": "assets/fonts/chinese-sources.json"
   }
 }

@@ -60,16 +60,16 @@
             return (Array.isArray(entry.photos) ? entry.photos : []).flatMap(photo => {
                 if (typeof photo === 'string') photo = { src: photo };
                 const src = photoUrl(photo?.src);
-                return src ? [{ src, alt: photo.alt || entry.title || entry.place, caption: photo.caption || '' }] : [];
+                return src ? [{ src, alt: photo.alt || entry.title || entry.place, altZh: photo.altZh || entry.titleZh || entry.placeZh, caption: photo.caption || '', captionZh: photo.captionZh }] : [];
             });
         }
 
         // The full-size photograph is loaded only when the viewer is opened.
         const dialog = element('dialog', 'travel-lightbox');
-        dialog.setAttribute('aria-label', 'Photograph viewer');
+        SiteI18n.attr(dialog, 'aria-label', 'life.viewer');
         const close = element('button', 'travel-lightbox-close', '×');
         close.type = 'button';
-        close.setAttribute('aria-label', 'Close photograph');
+        SiteI18n.attr(close, 'aria-label', 'life.close');
         const largeImage = element('img');
         const largeCaption = element('p');
         dialog.append(close, largeImage, largeCaption);
@@ -84,9 +84,9 @@
         function showLargePhoto() {
             const photo = photos[photoIndex];
             if (!photo) return;
-            largeImage.alt = photo.alt;
+            SiteI18n.content(largeImage, photo, 'alt', { attribute: 'alt' });
             largeImage.src = photo.src;
-            largeCaption.textContent = photo.caption;
+            SiteI18n.content(largeCaption, photo, 'caption', { hideEmpty: true });
             dialog.showModal();
             document.body.classList.add('travel-lightbox-open');
         }
@@ -106,7 +106,7 @@
             frame.style.removeProperty('aspect-ratio');
             frame.style.removeProperty('--travel-photo-ratio');
             frame.classList.remove('is-portrait');
-            image.alt = photo.alt;
+            SiteI18n.content(image, photo, 'alt', { attribute: 'alt' });
             image.addEventListener('load', () => {
                 frame.style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
                 frame.style.setProperty('--travel-photo-ratio', image.naturalWidth / image.naturalHeight);
@@ -120,11 +120,10 @@
                 error.hidden = false;
                 frame.disabled = true;
             }));
-            caption.textContent = photo.caption;
-            caption.hidden = !photo.caption;
+            SiteI18n.content(caption, photo, 'caption', { hideEmpty: true });
             story.querySelector('.travel-photo-count').textContent = `${photoIndex + 1} / ${photos.length}`;
-            frame.setAttribute('aria-label', `Enlarge photograph: ${photo.alt}`);
-            if (announce) announcement.textContent = `${selected.place}, photograph ${photoIndex + 1} of ${photos.length}.`;
+            SiteI18n.attr(frame, 'aria-label', 'life.enlarge', { title: SiteI18n.value(photo, 'alt') });
+            if (announce) SiteI18n.text(announcement, 'life.photoAnnouncement', { place: SiteI18n.value(selected, 'place'), number: photoIndex + 1, total: photos.length });
         }
 
         function showStory(entry) {
@@ -133,7 +132,7 @@
             story.replaceChildren();
             const heading = element('div', 'travel-story-heading');
             const location = element('div');
-            location.append(element('p', 'travel-country-name', entry.country), element('h4', '', entry.place));
+            location.append(SiteI18n.content(element('p', 'travel-country-name'), entry, 'country'), SiteI18n.content(element('h4', ''), entry, 'place'));
             heading.append(location);
             const date = new Date(`${entry.date}T12:00:00Z`);
             if (showDates && /^\d{4}-\d{2}-\d{2}$/.test(entry.date || '') && Number.isFinite(date.getTime())) {
@@ -148,7 +147,7 @@
                 frame.type = 'button';
                 const image = element('img', 'travel-photo');
                 image.decoding = 'async';
-                const error = element('span', 'travel-photo-error', 'This photograph is taking a little longer.');
+                const error = SiteI18n.element('span', 'travel-photo-error', 'life.photoSlow');
                 error.hidden = true;
                 frame.append(image, error, element('span', 'travel-photo-enlarge', '↗'));
                 frame.addEventListener('click', showLargePhoto);
@@ -156,8 +155,8 @@
                 const previous = element('button', '', '←');
                 const next = element('button', '', '→');
                 previous.type = next.type = 'button';
-                previous.setAttribute('aria-label', 'Previous photograph');
-                next.setAttribute('aria-label', 'Next photograph');
+                SiteI18n.attr(previous, 'aria-label', 'life.previous');
+                SiteI18n.attr(next, 'aria-label', 'life.next');
                 previous.addEventListener('click', () => showPhoto(photoIndex - 1));
                 next.addEventListener('click', () => showPhoto(photoIndex + 1));
                 navigation.append(previous, element('span', 'travel-photo-count'), next);
@@ -165,12 +164,29 @@
                 media.append(frame, navigation);
                 story.append(media, element('p', 'travel-photo-caption'));
             } else {
-                story.append(element('p', 'travel-no-photos', 'Photographs to follow.'));
+                story.append(SiteI18n.element('p', 'travel-no-photos', 'life.photosSoon'));
             }
-            if (entry.title) story.append(element('h5', 'travel-story-title', entry.title));
-            if (entry.description) story.append(element('p', 'travel-description', entry.description));
+            if (entry.title) story.append(SiteI18n.content(element('h5', 'travel-story-title'), entry, 'title'));
+            if (entry.description) story.append(SiteI18n.content(element('p', 'travel-description'), entry, 'description'));
             if (photos.length) showPhoto(0, false);
         }
+
+        function labelPin(marker, entry) {
+            const pin = marker.getElement();
+            if (!pin) return;
+            SiteI18n.attr(pin, 'aria-label', 'life.showPhotos', { place: SiteI18n.value(entry, 'place'), country: SiteI18n.value(entry, 'country') });
+            SiteI18n.content(pin, {
+                label: `${entry.place}, ${entry.country}`,
+                labelZh: entry.placeZh || entry.countryZh ? `${entry.placeZh || entry.place}, ${entry.countryZh || entry.country}` : undefined
+            }, 'label', { attribute: 'title' });
+        }
+        window.addEventListener('site:languagechange', () => {
+            markers.forEach((marker, entry) => labelPin(marker, entry));
+            if (!selected) return;
+            SiteI18n.text(announcement, 'life.placeAnnouncement', { place: SiteI18n.value(selected, 'place'), country: SiteI18n.value(selected, 'country'), count: photos.length });
+            const frame = story.querySelector('.travel-photo-button');
+            if (frame && photos[photoIndex]) SiteI18n.attr(frame, 'aria-label', 'life.enlarge', { title: SiteI18n.value(photos[photoIndex], 'alt') });
+        });
 
         function updateCountries() {
             countries?.eachLayer(layer => {
@@ -190,15 +206,14 @@
             updateCountries();
             markerLayer?.refreshClusters?.();
             showStory(entry);
-            announcement.textContent = `${entry.place}, ${entry.country}. ${photos.length} ${photos.length === 1 ? 'photograph' : 'photographs'}.`;
+            SiteI18n.text(announcement, 'life.placeAnnouncement', { place: SiteI18n.value(entry, 'place'), country: SiteI18n.value(entry, 'country'), count: photos.length });
             if (pan && map) {
                 worldView = false;
                 map.setView(entry.coordinates, Math.max(map.getZoom(), 3.5), { animate: !reducedMotion.matches });
             }
         }
 
-        document.getElementById('travel-summary').textContent = entries.length
-            ? `${entries.length} ${entries.length === 1 ? 'place' : 'places'} · ${visited.size} ${visited.size === 1 ? 'country' : 'countries'}` : '';
+        if (entries.length) SiteI18n.text(document.getElementById('travel-summary'), 'life.summary', { places: entries.length, countries: visited.size });
         if (entries.length) selectPlace(entries[0], false);
 
         function fitWorld() {
@@ -218,6 +233,16 @@
             map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
             map.attributionControl.addAttribution('<a href="https://www.naturalearthdata.com/">Natural Earth</a>');
             map.zoomControl.setPosition('topright');
+            const zoomLabels = () => {
+                const controls = canvas.querySelectorAll('.leaflet-control-zoom a');
+                controls.forEach((control, index) => {
+                    SiteI18n.attr(control, 'aria-label', index ? 'life.zoomOut' : 'life.zoomIn');
+                    SiteI18n.attr(control, 'title', index ? 'life.zoomOut' : 'life.zoomIn');
+                });
+                markerLayer?.refreshClusters?.();
+            };
+            zoomLabels();
+            window.addEventListener('site:languagechange', zoomLabels);
             // Keep regular scrolling for the page; Alt+wheel zooms only this map.
             let wheelTarget = null;
             let wheelPoint;
@@ -249,7 +274,7 @@
                 spiderLegPolylineOptions: { color: 'var(--travel-pin)', weight: 1.2, opacity: 0.65 },
                 iconCreateFunction(cluster) {
                     const count = cluster.getChildCount();
-                    cluster.options.title = `Explore ${count} nearby places`;
+                    cluster.options.title = SiteI18n.t('life.nearby', { count });
                     const current = selected && cluster.getAllChildMarkers().includes(markers.get(selected));
                     return L.divIcon({
                         className: `travel-cluster${current ? ' is-selected' : ''}`,
@@ -260,11 +285,11 @@
             markerLayer.addTo(map);
             entries.forEach(entry => {
                 const marker = L.marker(entry.coordinates, { icon, title: `${entry.place}, ${entry.country}`, keyboard: true, autoPanOnFocus: true });
-                marker.bindTooltip(element('span', '', entry.place), { direction: 'top' });
+                marker.bindTooltip(SiteI18n.content(element('span', ''), entry, 'place', { keepDetached: true }), { direction: 'top' });
                 marker.on('click', () => selectPlace(entry));
                 marker.on('add', () => {
                     const pin = marker.getElement();
-                    pin.setAttribute('aria-label', `Show photographs from ${entry.place}, ${entry.country}`);
+                    labelPin(marker, entry);
                     pin.setAttribute('aria-pressed', String(selected === entry));
                     pin.classList.toggle('is-selected', selected === entry);
                     pin.onkeydown = event => {
@@ -304,7 +329,7 @@
             loading = true;
             canvas.setAttribute('aria-busy', 'true');
             message.hidden = false;
-            message.firstElementChild.textContent = 'Unfolding the map…';
+            SiteI18n.text(message.firstElementChild, 'life.unfolding');
             retry.hidden = true;
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 12000);
@@ -322,7 +347,9 @@
                     onEachFeature(feature, layer) {
                         const label = ['344', '446', '158'].includes(String(feature.id))
                             ? `${feature.properties.name}, China` : feature.properties.name;
-                        layer.bindTooltip(element('span', '', label), { sticky: true });
+                        const regionZh = { '344': '中国香港', '446': '中国澳门', '158': '中国台湾' };
+                        const nameZh = regionZh[String(feature.id)] || entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))?.countryZh;
+                        layer.bindTooltip(SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }), { sticky: true });
                         if (visited.has(countryKey(feature.properties.name))) {
                             layer.on('click', () => selectPlace(entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))));
                         }
@@ -333,7 +360,7 @@
                 canvas.dataset.state = 'ready';
             } catch (error) {
                 canvas.dataset.state = 'error';
-                message.firstElementChild.textContent = 'The map is resting. Please try again in a moment.';
+                SiteI18n.text(message.firstElementChild, 'life.mapError');
                 retry.hidden = false;
                 console.warn('Travel map could not load:', error.message);
             } finally {

@@ -70,9 +70,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         caption.className = 'project-card-caption';
         const meta = document.createElement('p');
         meta.className = 'project-meta';
-        meta.textContent = [project.card.category, project.card.year].filter(Boolean).join(' / ');
+        const updateMeta = () => { meta.textContent = [SiteI18n.value(project.card, 'category'), project.card.year].filter(Boolean).join(' / '); meta.lang = SiteI18n.language === 'zh-CN' && project.card.categoryZh ? 'zh-CN' : 'en'; };
+        updateMeta();
+        window.addEventListener('site:languagechange', updateMeta);
         const title = document.createElement('h3');
-        title.textContent = project.card.title || project.title;
+        SiteI18n.content(title, project.card.title ? project.card : project, 'title');
         const arrow = document.createElement('span');
         arrow.className = 'project-card-arrow';
         arrow.textContent = '↗';
@@ -96,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'project-page-dot';
-        button.setAttribute('aria-label', `Show project: ${project.card.title || project.title}`);
+        SiteI18n.attr(button, 'aria-label', 'film.show', { title: SiteI18n.value(project.card.title ? project.card : project, 'title') });
         button.addEventListener('click', () => {
             if (!snap) snapTo(cycleSize + index * cardStep);
         });
@@ -178,10 +180,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const paused = userPaused || reducedMotion.matches;
         playback.disabled = reducedMotion.matches || projects.length < 2 || speed === 0;
         playback.setAttribute('aria-pressed', String(paused));
-        playback.setAttribute('aria-label', reducedMotion.matches
-            ? 'Automatic scrolling disabled by reduced motion preference'
-            : paused ? 'Play automatic scrolling' : 'Pause automatic scrolling');
-        playback.title = playback.getAttribute('aria-label');
+        const key = reducedMotion.matches ? 'film.reduced' : paused ? 'film.play' : 'film.pause';
+        SiteI18n.attr(playback, 'aria-label', key);
+        SiteI18n.attr(playback, 'title', key);
         playback.firstElementChild.textContent = paused ? '▶' : '❚❚';
         schedule();
     }
@@ -211,7 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             schedule();
         }
         const index = modulo(Math.round(target / cardStep), projects.length);
-        status.textContent = `Showing ${projects[index].card.title || projects[index].title}`;
+        SiteI18n.text(status, 'film.showing', { title: SiteI18n.value(projects[index].card.title ? projects[index].card : projects[index], 'title') });
     }
 
     function move(direction) {
@@ -391,6 +392,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     new IntersectionObserver(entries => setPause('offscreen', !entries[0].isIntersecting)).observe(showcase);
     new ResizeObserver(measure).observe(viewport);
     wideLayout.addEventListener('change', measure);
+    window.addEventListener('site:languagechange', () => {
+        [...pagination.children].forEach((button, index) => SiteI18n.attr(button, 'aria-label', 'film.show', { title: SiteI18n.value(projects[index].card.title ? projects[index].card : projects[index], 'title') }));
+        if (status.textContent && cardStep) {
+            const project = projects[modulo(Math.round(offset / cardStep), projects.length)];
+            SiteI18n.text(status, 'film.showing', { title: SiteI18n.value(project.card.title ? project.card : project, 'title') });
+        }
+        requestAnimationFrame(measure);
+    });
     setPause('hidden', document.hidden);
     showcase.hidden = false;
     controls.hidden = false;

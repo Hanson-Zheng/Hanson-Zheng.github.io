@@ -8,7 +8,9 @@
     <title>Hanson Zheng | Home</title>
     <!-- Fonts -->
     <link rel="stylesheet" href="assets/fonts/inter/inter.css">
+    <link rel="stylesheet" href="assets/fonts/chinese.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/i18n.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="assets/vendor/fontawesome/6.4.0/css/all.min.css">
@@ -20,12 +22,12 @@
         <div class="container nav-container">
             <a href="index.html" class="logo" aria-label="Yumin's Site - Home" title="Yumin's Site - Home"><span class="logo-mark" aria-hidden="true"></span></a>
             <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="projects.html" data-section="projects">Projects</a></li>
-                <li><a href="highlights.html">Highlights</a></li>
-                <li><a href="life.html">Life</a></li>
-                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section">Contact <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
+                <li><a href="index.html" class="active" data-i18n="nav.home">Home</a></li>
+                <li><a href="publications.html" data-i18n="nav.publications">Publications</a></li>
+                <li><a href="projects.html" data-section="projects" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="highlights.html" data-i18n="nav.highlights">Highlights</a></li>
+                <li><a href="life.html" data-i18n="nav.life">Life</a></li>
+                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section" data-i18n-aria-label="nav.contactJump"><span data-i18n="nav.contact">Contact</span> <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
             </ul>
             <div class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
@@ -38,42 +40,42 @@
         <div class="container hero-content">
             <div class="hero-text">
                 <div class="home-introduction">
-                    <h1 id="profile-name">Loading...</h1>
-                    <p class="subtitle" id="profile-title"></p>
-                    <div class="intro" id="profile-intro"></div>
-                    <div class="profile-about" id="profile-about"></div>
+                    <h1 id="profile-name" lang="en">Loading...</h1>
+                    <p class="subtitle" id="profile-title" lang="en"></p>
+                    <div class="intro" id="profile-intro" lang="en"></div>
+                    <div class="profile-about" id="profile-about" lang="en"></div>
                     <div class="hero-buttons">
                         <div class="hero-primary-actions">
-                            <a href="publications.html" class="btn btn-primary">Publications</a>
-                            <a href="highlights.html" class="btn btn-secondary">Highlights</a>
+                            <a href="publications.html" class="btn btn-primary" data-i18n="nav.publications">Publications</a>
+                            <a href="highlights.html" class="btn btn-secondary" data-i18n="nav.highlights">Highlights</a>
                         </div>
                         <div class="hero-secondary-actions">
                             <div class="social-links" id="social-links">
                                 <!-- JS populated -->
                             </div>
-                            <div class="project-controls" data-project-controls aria-label="Project carousel controls" hidden>
-                                <button type="button" class="project-control" data-project-prev aria-label="Previous project" aria-controls="project-track">&#8592;</button>
-                                <button type="button" class="project-control project-playback" data-project-playback aria-label="Pause automatic scrolling" aria-pressed="false" aria-controls="project-track"><span aria-hidden="true">&#10074;&#10074;</span></button>
-                                <button type="button" class="project-control" data-project-next aria-label="Next project" aria-controls="project-track">&#8594;</button>
+                            <div class="project-controls" data-project-controls aria-label="Project carousel controls" hidden data-i18n-aria-label="film.controls">
+                                <button type="button" class="project-control" data-project-prev aria-label="Previous project" aria-controls="project-track" data-i18n-aria-label="film.previous">&#8592;</button>
+                                <button type="button" class="project-control project-playback" data-project-playback aria-label="Pause automatic scrolling" aria-pressed="false" aria-controls="project-track" data-i18n-aria-label="film.pause"><span aria-hidden="true">&#10074;&#10074;</span></button>
+                                <button type="button" class="project-control" data-project-next aria-label="Next project" aria-controls="project-track" data-i18n-aria-label="film.next">&#8594;</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <section class="project-showcase" id="selected-work" aria-label="Projects" aria-roledescription="carousel" hidden>
+                <section class="project-showcase" id="selected-work" aria-label="Projects" aria-roledescription="carousel" hidden data-i18n-aria-label="nav.projects">
                     <div class="project-showcase-inner">
                         <div class="project-rail-toolbar"></div>
                         <div class="project-film">
-                            <div class="project-viewport" aria-label="Project previews" aria-live="off">
-                                <div class="project-track" id="project-track"></div>
+                            <div class="project-viewport" aria-label="Project previews" aria-live="off" data-i18n-aria-label="film.previews">
+                                <div class="project-track" id="project-track" lang="en"></div>
                             </div>
                         </div>
-                        <div class="project-pagination" aria-label="Choose a project"></div>
+                        <div class="project-pagination" aria-label="Choose a project" data-i18n-aria-label="film.choose"></div>
                         <p class="project-status visually-hidden" aria-live="polite" aria-atomic="true"></p>
                     </div>
                 </section>
                 <section class="education" aria-labelledby="education-title">
-                    <h2 class="home-section-title" id="education-title">Education</h2>
-                    <ol class="education-list" id="profile-education"></ol>
+                    <h2 class="home-section-title" id="education-title" data-i18n="common.education">Education</h2>
+                    <ol class="education-list" id="profile-education" lang="en"></ol>
                 </section>
             </div>
         </div>
@@ -82,9 +84,9 @@
     <!-- Contact Section -->
     <section id="contact" class="section-padding bg-light">
         <div class="container">
-            <h2 class="section-title">Contact</h2>
+            <h2 class="section-title" data-i18n="nav.contact">Contact</h2>
             <div class="contact-box">
-                <p>Feel free to reach out for collaborations or just a chat.</p>
+                <p data-i18n="contact.invitation">Feel free to reach out for collaborations or just a chat.</p>
                 <a href="#" class="email-link" id="contact-email">Loading...</a>
             </div>
         </div>
@@ -99,6 +101,8 @@
 
     <!-- Load Data -->
     <script src="data/config.js"></script>
+    <script src="data/translations.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="data/projects.js"></script>
     <script src="js/project-data.js"></script>
     <script src="assets/images/card-images.js"></script>

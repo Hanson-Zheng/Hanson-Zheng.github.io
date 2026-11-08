@@ -7,7 +7,9 @@
     <link rel="icon" href="favicon.svg?v=zym-3" type="image/svg+xml" sizes="any">
     <title>Publications | Hanson Zheng</title>
     <link rel="stylesheet" href="assets/fonts/inter/inter.css">
+    <link rel="stylesheet" href="assets/fonts/chinese.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/i18n.css">
     <link rel="stylesheet" href="css/publications.css">
     <link rel="stylesheet" href="css/collections.css">
     <link rel="stylesheet" href="css/cards.css">
@@ -19,37 +21,37 @@
         <div class="container nav-container">
             <a href="index.html" class="logo" aria-label="Yumin's Site - Home" title="Yumin's Site - Home"><span class="logo-mark" aria-hidden="true"></span></a>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="publications.html" class="active">Publications</a></li>
-                <li><a href="projects.html" data-section="projects">Projects</a></li>
-                <li><a href="highlights.html">Highlights</a></li>
-                <li><a href="life.html">Life</a></li>
-                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section">Contact <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="publications.html" class="active" data-i18n="nav.publications">Publications</a></li>
+                <li><a href="projects.html" data-section="projects" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="highlights.html" data-i18n="nav.highlights">Highlights</a></li>
+                <li><a href="life.html" data-i18n="nav.life">Life</a></li>
+                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section" data-i18n-aria-label="nav.contactJump"><span data-i18n="nav.contact">Contact</span> <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
             </ul>
             <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
         </div>
     </nav>
 
     <main class="container section-padding publications-page collection-page">
-        <h1 class="section-title">Publications</h1>
+        <h1 class="section-title" data-i18n="nav.publications">Publications</h1>
         
         <div class="pub-layout collection-layout">
             <!-- Sidebar Bookmarks -->
             <aside class="pub-sidebar collection-sidebar">
                 <div class="sticky-wrapper collection-sidebar-sticky">
-                    <form class="pub-search collection-search" role="search" aria-label="Search publications" hidden>
-                        <label for="publication-search">Search</label>
+                    <form class="pub-search collection-search" role="search" aria-label="Search publications" hidden data-i18n-aria-label="publications.search">
+                        <label for="publication-search" data-i18n="common.search">Search</label>
                         <div class="pub-search-field collection-search-field">
                             <svg class="pub-search-icon collection-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-                            <input type="search" class="collection-search-input" id="publication-search" placeholder="Keywords…" aria-controls="pub-list" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="200">
-                            <button type="button" class="pub-search-clear collection-search-clear" id="publication-search-clear" aria-label="Clear search" hidden>
+                            <input type="search" class="collection-search-input" id="publication-search" placeholder="Keywords…" aria-controls="pub-list" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="200" data-i18n-placeholder="common.keywords">
+                            <button type="button" class="pub-search-clear collection-search-clear" id="publication-search-clear" aria-label="Clear search" hidden data-i18n-aria-label="common.clear">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
                             </button>
                         </div>
                         <!-- <p id="publication-search-help">Titles, authors, venues<br> and abstracts.</p> -->
                     </form>
-                    <nav id="publication-years" aria-label="Publication years">
-                        <h3 class="collection-sidebar-title">Year</h3>
+                    <nav id="publication-years" aria-label="Publication years" data-i18n-aria-label="publications.years">
+                        <h3 class="collection-sidebar-title" data-i18n="common.year">Year</h3>
                         <ul id="year-filters" class="bookmark-list collection-year-links">
                             <!-- JS will populate years here -->
                         </ul>
@@ -60,13 +62,13 @@
             <!-- Content -->
             <div class="pub-content">
                 <p class="pub-search-status" id="publication-search-status" role="status" aria-live="polite" aria-atomic="true" hidden></p>
-                <div id="pub-list">
-                    <div class="loading">Loading publications...</div>
+                <div id="pub-list" lang="en">
+                    <div class="loading" data-i18n="publications.loading">Loading publications...</div>
                 </div>
                 <div class="pub-search-empty" id="publication-search-empty" hidden>
-                    <h3>No matching publications</h3>
-                    <p>Try another title, author, venue or keyword.</p>
-                    <button type="button" class="pub-search-reset">Clear search</button>
+                    <h3 data-i18n="publications.noMatch">No matching publications</h3>
+                    <p data-i18n="publications.searchHint">Try another title, author, venue or keyword.</p>
+                    <button type="button" class="pub-search-reset" data-i18n="common.clear">Clear search</button>
                 </div>
             </div>
         </div>
@@ -75,9 +77,9 @@
     <!-- Contact Section -->
     <section id="contact" class="section-padding bg-light">
         <div class="container">
-            <h2 class="section-title">Contact</h2>
+            <h2 class="section-title" data-i18n="nav.contact">Contact</h2>
             <div class="contact-box">
-                <p>Feel free to reach out for collaborations or just a chat.</p>
+                <p data-i18n="contact.invitation">Feel free to reach out for collaborations or just a chat.</p>
                 <a href="#" class="email-link" id="contact-email">Loading...</a>
             </div>
         </div>
@@ -90,6 +92,8 @@
     </footer>
 
     <script src="data/config.js"></script>
+    <script src="data/translations.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="data/publications.js"></script>
     <script src="js/main.js"></script>
 </body>

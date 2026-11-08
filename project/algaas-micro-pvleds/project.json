@@ -2,14 +2,19 @@
   "date": "2025-08",
   "card": {
     "title": "Modeling and Fabrication of AlGaAs micro PV-LEDs",
+    "titleZh": "AlGaAs 微型 PV-LED 的建模与制备",
     "category": "Ongoing",
+    "categoryZh": "进行中",
     "image": "images/droplet.jpg",
     "imageAlt": "Micrograph of a droplet-shaped micro PV-LED structure with a 10 micrometre scale bar"
   },
   "title": "Modeling and Fabrication of AlGaAs micro PV-LEDs",
+  "titleZh": "AlGaAs 微型 PV-LED 的建模与制备",
   "venue": "Ongoing",
+  "venueZh": "进行中",
   "authors": [],
   "summary": "Ongoing work on the modeling and fabrication of AlGaAs micro PV-LEDs.",
+  "summaryZh": "围绕 AlGaAs 微型光伏发光二极管（PV-LED）开展器件建模与微加工制备，目前仍在推进中。",
   "links": {},
   "topics": [
     "AlGaAs",
@@ -17,13 +22,24 @@
     "Device modeling",
     "Microfabrication"
   ],
+  "topicsZh": [
+    "AlGaAs",
+    "微型 PV-LED",
+    "器件建模",
+    "微加工"
+  ],
   "sections": [
     {
       "heading": "Overview",
+      "headingZh": "项目概述",
       "imagePosition": "left",
       "paragraphs": [
         "This ongoing project focuses on the modeling and fabrication of AlGaAs micro PV-LEDs.",
         "Further details will be shared as the work progresses."
+      ],
+      "paragraphsZh": [
+        "这个项目关注 AlGaAs 微型 PV-LED 的器件建模与制备。",
+        "后续进展会在这里陆续更新。"
       ],
       "images": [
         {

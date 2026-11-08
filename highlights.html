@@ -7,7 +7,9 @@
     <link rel="icon" href="favicon.svg?v=zym-3" type="image/svg+xml" sizes="any">
     <title>Highlights | Hanson Zheng</title>
     <link rel="stylesheet" href="assets/fonts/inter/inter.css">
+    <link rel="stylesheet" href="assets/fonts/chinese.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/i18n.css">
     <link rel="stylesheet" href="css/publications.css">
     <link rel="stylesheet" href="css/highlights.css">
     <link rel="stylesheet" href="css/collections.css">
@@ -20,47 +22,47 @@
         <div class="container nav-container">
             <a href="index.html" class="logo" aria-label="Yumin's Site - Home" title="Yumin's Site - Home"><span class="logo-mark" aria-hidden="true"></span></a>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="projects.html" data-section="projects">Projects</a></li>
-                <li><a href="highlights.html" class="active">Highlights</a></li>
-                <li><a href="life.html">Life</a></li>
-                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section">Contact <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="publications.html" data-i18n="nav.publications">Publications</a></li>
+                <li><a href="projects.html" data-section="projects" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="highlights.html" class="active" data-i18n="nav.highlights">Highlights</a></li>
+                <li><a href="life.html" data-i18n="nav.life">Life</a></li>
+                <li><a href="#contact" class="nav-contact" aria-label="Jump to contact section" data-i18n-aria-label="nav.contactJump"><span data-i18n="nav.contact">Contact</span> <i class="fas fa-arrow-down" aria-hidden="true"></i></a></li>
             </ul>
             <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
         </div>
     </nav>
 
     <main class="container section-padding collection-page">
-        <h1 class="section-title">Highlights</h1>
+        <h1 class="section-title" data-i18n="nav.highlights">Highlights</h1>
         
         <div class="highlights-toolbar collection-year-toolbar">
-            <div id="highlights-filter" class="filter-container" aria-label="Highlight years"></div>
-            <div class="highlights-view-switch" id="highlights-view-switch" role="group" aria-label="Reading view" hidden>
-                <button type="button" class="highlights-view-button" data-highlights-view="cards" aria-label="Card view" title="Card view" aria-pressed="true" aria-controls="highlights-list">
+            <div id="highlights-filter" class="filter-container" aria-label="Highlight years" data-i18n-aria-label="highlights.years"></div>
+            <div class="highlights-view-switch" id="highlights-view-switch" role="group" aria-label="Reading view" hidden data-i18n-aria-label="common.readingView">
+                <button type="button" class="highlights-view-button" data-highlights-view="cards" aria-label="Card view" title="Card view" aria-pressed="true" aria-controls="highlights-list" data-i18n-aria-label="common.cardView" data-i18n-title="common.cardView">
                     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="12" y="3" width="5" height="5" rx="1"/><rect x="3" y="12" width="5" height="5" rx="1"/><rect x="12" y="12" width="5" height="5" rx="1"/></svg>
-                    <span>Cards</span>
+                    <span data-i18n="common.cards">Cards</span>
                 </button>
-                <button type="button" class="highlights-view-button" data-highlights-view="list" aria-label="List view" title="List view" aria-pressed="false" aria-controls="highlights-list">
+                <button type="button" class="highlights-view-button" data-highlights-view="list" aria-label="List view" title="List view" aria-pressed="false" aria-controls="highlights-list" data-i18n-aria-label="common.listView" data-i18n-title="common.listView">
                     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 5H17M7 10H17M7 15H17M3 5H3.01M3 10H3.01M3 15H3.01"/></svg>
-                    <span>List</span>
+                    <span data-i18n="common.list">List</span>
                 </button>
             </div>
         </div>
 
         <!-- Highlights Grid -->
-        <div class="highlights-grid" id="highlights-list">
+        <div class="highlights-grid" id="highlights-list" lang="en">
             <!-- JS will populate News here -->
-            <div class="loading">Loading news...</div>
+            <div class="loading" data-i18n="highlights.loading">Loading news...</div>
         </div>
     </main>
 
     <!-- Contact Section -->
     <section id="contact" class="section-padding bg-light">
         <div class="container">
-            <h2 class="section-title">Contact</h2>
+            <h2 class="section-title" data-i18n="nav.contact">Contact</h2>
             <div class="contact-box">
-                <p>Feel free to reach out for collaborations or just a chat.</p>
+                <p data-i18n="contact.invitation">Feel free to reach out for collaborations or just a chat.</p>
                 <a href="#" class="email-link" id="contact-email">Loading...</a>
             </div>
         </div>
@@ -73,6 +75,8 @@
     </footer>
 
     <script src="data/config.js"></script>
+    <script src="data/translations.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="data/highlights.js"></script>
     <script src="assets/images/card-images.js"></script>
     <script src="js/main.js"></script>

@@ -1,0 +1,82 @@
+{
+  "license": "SIL Open Font License 1.1",
+  "sourceHanSansVersion": "2.005",
+  "lxgwWenKaiVersion": "1.530",
+  "notes": "Source Han Sans full WOFF2 is unchanged; its interface subset is renamed Hanson UI Sans. WenKai format conversions and subsets are web-only derivatives under its additional OFL permission. Copyright and licenses are preserved.",
+  "originals": [
+    {
+      "file": "local/font-originals/source-han-sans/source-han-sans-cn-vf.woff2",
+      "source": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/Variable/WOFF2/TTF/Subset/SourceHanSansCN-VF.ttf.woff2",
+      "bytes": 7711988,
+      "sha256": "f971e3bff46f76b49e1d5510556c2297c618ec4b491a295a4e741cdd38257799"
+    },
+    {
+      "file": "local/font-originals/source-han-sans/OFL.txt",
+      "source": "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/a4f7cf94edfb9d7ffbdfc4841de276358bd7e0f2/LICENSE.txt",
+      "bytes": 4463,
+      "sha256": "fcac737e761ec63dbfbdce11030a1780161920d80315edba9c8beff1c2bac5a2"
+    },
+    {
+      "file": "local/font-originals/lxgw-wenkai/LXGWWenKai-Regular.ttf",
+      "source": "https://github.com/lxgw/LxgwWenKai/releases/download/v1.530/LXGWWenKai-Regular.ttf",
+      "bytes": 25928940,
+      "sha256": "2d73eea94ad808999d90c0000c239a84a33b09d4bc6ab6c5b8bbf1eda8a7fc8b"
+    },
+    {
+      "file": "local/font-originals/lxgw-wenkai/LXGWWenKai-Medium.ttf",
+      "source": "https://github.com/lxgw/LxgwWenKai/releases/download/v1.530/LXGWWenKai-Medium.ttf",
+      "bytes": 25800076,
+      "sha256": "f4b8a34d1f838fe411540cb7c97b1c384ac9738a876c4104500bc42508b2312a"
+    },
+    {
+      "file": "local/font-originals/lxgw-wenkai/OFL.txt",
+      "source": "https://raw.githubusercontent.com/lxgw/LxgwWenKai/4becfb4d5cf0c92cfdb60a6e9b504bda43315325/OFL.txt",
+      "bytes": 5171,
+      "sha256": "1a25e35da1031c6c3436fde545bb9cb5aca954e9873afe510c834b8b79bd21a0"
+    }
+  ],
+  "webfonts": [
+    {
+      "file": "assets/fonts/source-han-sans/source-han-sans-cn-vf.woff2",
+      "kind": "full webfont",
+      "source": "local/font-originals/source-han-sans/source-han-sans-cn-vf.woff2",
+      "bytes": 7711988,
+      "sha256": "f971e3bff46f76b49e1d5510556c2297c618ec4b491a295a4e741cdd38257799"
+    },
+    {
+      "file": "assets/fonts/source-han-sans/source-han-sans-cn-vf-ui.woff2",
+      "kind": "interface glyph subset",
+      "source": "local/font-originals/source-han-sans/source-han-sans-cn-vf.woff2",
+      "bytes": 196548,
+      "sha256": "3edba94be0e527fa59e36bc71e315b883822af6b800c999f7da44b83cf4accca"
+    },
+    {
+      "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-regular.woff2",
+      "kind": "full webfont",
+      "source": "local/font-originals/lxgw-wenkai/LXGWWenKai-Regular.ttf",
+      "bytes": 8097740,
+      "sha256": "ab6702d4d43f38451af9c39f69e7a313cea367af51647eb8d43272d3bd34a69a"
+    },
+    {
+      "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-regular-ui.woff2",
+      "kind": "interface glyph subset",
+      "source": "local/font-originals/lxgw-wenkai/LXGWWenKai-Regular.ttf",
+      "bytes": 158164,
+      "sha256": "9ababcf777bcacea4a791b466e4131bd92d7da2908fb67d7a6234c0bfd641517"
+    },
+    {
+      "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-medium.woff2",
+      "kind": "full webfont",
+      "source": "local/font-originals/lxgw-wenkai/LXGWWenKai-Medium.ttf",
+      "bytes": 9146936,
+      "sha256": "b44fdf5b950493b8f6ca94f2a8cb6408f28a0eca2a1637e319a8ec6d7cd94906"
+    },
+    {
+      "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-medium-ui.woff2",
+      "kind": "interface glyph subset",
+      "source": "local/font-originals/lxgw-wenkai/LXGWWenKai-Medium.ttf",
+      "bytes": 158788,
+      "sha256": "995a00743215966c56ffef2bde9928858a803092009adea05c590bf156ec0a34"
+    }
+  ]
+}

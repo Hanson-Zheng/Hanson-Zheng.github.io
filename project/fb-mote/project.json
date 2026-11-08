@@ -2,11 +2,13 @@
   "date": "2026-01-04",
   "card": {
     "title": "FB-MOTE: light-adaptive neural recording",
+    "titleZh": "FB-MOTE：光功率自适应神经记录",
     "category": "IEEE TBioCAS",
     "image": "images/fb-mote-card.png",
     "imageAlt": "FB-MOTE characterization on an illuminated probe station under a microscope"
   },
   "title": "A 43 μm × 269 μm Light-Adaptive Optoelectronic Autonomous Microsystem for Neural Recording",
+  "titleZh": "FB-MOTE：光功率自适应的自主神经记录微系统",
   "venue": "IEEE Transactions on Biomedical Circuits and Systems",
   "authors": [
     "Rui Jiao",
@@ -20,6 +22,7 @@
     "Sunwoo Lee"
   ],
   "summary": "A 43 μm × 269 μm neural recording microsystem that harvests light through forward-biased CMOS junctions, adapts its bandwidth to available power, and transmits neural signals as optical pulses.",
+  "summaryZh": "尺寸仅为 43 μm × 269 μm 的神经记录微系统，通过正向偏置的 CMOS 结收集光能，随可用功率调节记录带宽，并以光脉冲传输神经信号。",
   "links": {
     "doi": "https://doi.org/10.1109/TBCAS.2026.3652195"
   },
@@ -28,18 +31,33 @@
     "Forward-bulk CMOS",
     "Optical telemetry"
   ],
+  "topicsZh": [
+    "神经接口",
+    "正向衬底偏置 CMOS",
+    "光学遥测"
+  ],
   "sections": [
     {
       "heading": "Overview",
+      "headingZh": "项目概述",
       "imagePosition": "left",
       "paragraphs": [
         "FB-MOTE is a light-powered neural recording microsystem that collects photogenerated carriers through the intrinsic junctions of its CMOS bulk. The harvested energy supports amplification, encoding and optical communication in a compact footprint.",
         "Fabricated in 180 nm CMOS, each recording unit measures approximately 43 μm × 269 μm. Its bandwidth grows with available optical power while the integrated input-referred noise remains relatively stable."
       ],
+      "paragraphsZh": [
+        "FB-MOTE 利用 CMOS 衬底固有的半导体结收集光生载流子，为神经信号放大、编码和光通信供能，将整套记录功能集成在微小的芯片面积内。",
+        "系统采用 180 nm CMOS 工艺，单个记录单元约为 43 μm × 269 μm。可用光功率增加时，记录带宽随之扩大，而积分输入参考噪声保持相对稳定。"
+      ],
       "bullets": [
         "CMOS footprint: 0.0116 mm².",
         "Reported total system power: 0.25–0.8 μW.",
         "Forward-bulk energy harvesting with AlGaAs optical telemetry."
+      ],
+      "bulletsZh": [
+        "CMOS 面积：0.0116 mm²。",
+        "论文报告的系统总功耗：0.25–0.8 μW。",
+        "结合正向衬底光能采集与 AlGaAs 光学遥测。"
       ],
       "images": [
         {

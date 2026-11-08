@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return node;
     };
     const yearOf = project => project.year || 0;
-    const yearLabel = year => year || 'Other projects';
+    const yearLabel = year => year || SiteI18n.t('projects.other');
     const icon = () => {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('viewBox', '0 0 24 24');
@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const section = element('section', 'directory-year-group');
                 section.id = `project-year-${year || 'other'}`;
                 const heading = element('h2', 'directory-year-heading', yearLabel(year));
+                if (!year) SiteI18n.text(heading, 'projects.other');
                 heading.id = `${section.id}-title`;
                 section.setAttribute('aria-labelledby', heading.id);
                 section.append(heading);
@@ -80,18 +81,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             link.href = project.pageUrl;
             const copy = element('div', 'directory-project-copy');
             const titleRow = element('div', 'directory-title-row');
-            const title = element('h3', 'directory-project-title', project.card.title || project.title);
+            const title = SiteI18n.content(element('h3', 'directory-project-title'), project.card.title ? project.card : project, 'title');
             title.id = `directory-title-${project.folder}`;
             link.setAttribute('aria-labelledby', title.id);
             const arrow = element('span', 'directory-project-arrow', '→');
             arrow.setAttribute('aria-hidden', 'true');
             titleRow.append(title, arrow);
             link.append(titleRow);
-            if (project.summary) copy.append(element('p', 'directory-project-summary', project.summary));
+            if (project.summary) copy.append(SiteI18n.content(element('p', 'directory-project-summary'), project, 'summary'));
             if (project.topics?.length) {
                 const topics = element('ul', 'directory-topics');
-                topics.setAttribute('aria-label', 'Topics');
-                project.topics.forEach(topic => topics.append(element('li', 'directory-topic', topic)));
+                SiteI18n.attr(topics, 'aria-label', 'common.topics');
+                project.topics.forEach((topic, index) => topics.append(SiteI18n.content(element('li', 'directory-topic'), project, 'topics', { index })));
                 copy.append(topics);
             }
             const excerpt = element('p', 'directory-search-excerpt');
@@ -134,10 +135,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const related = element('footer', 'directory-related');
                 if (linkedPapers.length > 1) related.classList.add('directory-related--multiple');
                 const label = linkedPapers.length === 1 ? 'Related publication' : 'Related publications';
-                relatedLabel = element('p', 'directory-related-label', label);
+                relatedLabel = SiteI18n.element('p', 'directory-related-label', linkedPapers.length === 1 ? 'projects.related' : 'projects.relatedMany');
                 relatedDetails = element('details', 'directory-publications');
                 relatedSummary = element('summary', 'directory-publications-toggle');
-                relatedSummary.append(element('span', '', `${label} (${linkedPapers.length})`));
+                relatedSummary.append(SiteI18n.element('span', '', 'projects.relatedCount', { count: linkedPapers.length }));
                 const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 chevron.setAttribute('viewBox', '0 0 20 20');
                 chevron.setAttribute('fill', 'none');
@@ -156,8 +157,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     paperLink.href = paper.links.doi;
                     paperLink.target = '_blank';
                     paperLink.rel = 'noopener noreferrer';
-                    paperLink.title = `${paper.title} (opens in a new tab)`;
-                    paperLink.setAttribute('aria-label', `${paper.title} (opens in a new tab)`);
+                    SiteI18n.attr(paperLink, 'title', 'common.external', { title: paper.title });
+                    SiteI18n.attr(paperLink, 'aria-label', 'common.external', { title: paper.title });
                     const external = element('span', 'directory-paper-arrow', '↗');
                     external.setAttribute('aria-hidden', 'true');
                     const paperCopy = element('span', 'directory-paper-copy');
@@ -176,12 +177,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 related.append(relatedLabel, relatedDetails);
                 card.append(related);
             }
-            const visibleText = [project.card.title, project.summary, ...(project.topics || []), ...linkedPapers.flatMap(p => [p.title, p.venueShort || p.venue, p.year])].filter(Boolean).join(' ').toLowerCase();
-            const primaryText = [project.card.title, project.summary, ...(project.topics || [])].filter(Boolean).join(' ').toLowerCase();
+            const visibleText = [project.card.title, project.card.titleZh, project.titleZh, project.summary, project.summaryZh, ...(project.topics || []), ...(project.topicsZh || []), ...linkedPapers.flatMap(p => [p.title, p.venueShort || p.venue, p.year])].filter(Boolean).join(' ').toLowerCase();
+            const primaryText = [project.card.title, project.card.titleZh, project.titleZh, project.summary, project.summaryZh, ...(project.topics || []), ...(project.topicsZh || [])].filter(Boolean).join(' ').toLowerCase();
             const paperText = linkedPapers.map(p => [p.title, p.venueShort || p.venue, p.year].filter(Boolean).join(' ').toLowerCase()).join(' ');
             const badgeText = linkedPapers.map(p => [p.venueShort || p.venue || 'Publication', p.year].filter(Boolean).join(' ').toLowerCase()).join(' ');
-            const projectText = [project.title, project.date, project.card.category, ...(project.authors || []), ...(project.sections || []).flatMap(s => [s.heading, ...(s.paragraphs || []), ...(s.bullets || []), ...(s.steps || [])])].filter(Boolean).join(' ');
-            const snippets = [{ label: 'From the project', text: projectText }, ...papers.map(p => ({ label: 'From a related publication', text: [p.title, ...(p.authors || []), p.venue, p.abstract].filter(Boolean).join(' · ') }))];
+            const projectText = [project.title, project.titleZh, project.summary, project.summaryZh, project.date, project.card.category, ...(project.authors || []), ...(project.sections || []).flatMap(s => [s.heading, s.headingZh, ...(s.paragraphs || []), ...(s.paragraphsZh || []), ...(s.bullets || []), ...(s.bulletsZh || []), ...(s.steps || []), ...(s.stepsZh || [])])].filter(Boolean).join(' ');
+            const snippets = [{ label: 'projects.fromProject', text: projectText }, ...papers.map(p => ({ label: 'projects.fromPaper', text: [p.title, ...(p.authors || []), p.venue, p.abstract].filter(Boolean).join(' · ') }))];
             const record = { project, card, visibleText, primaryText, paperText, badgeText, snippets, excerpt, excerptLabel, excerptText, prepareImage,
                 relatedDetails, relatedSummary, relatedLabel, relatedExpanded: false, searchRevealsRelated: false,
                 searchText: `${visibleText} ${snippets.map(s => s.text).join(' ').toLowerCase()}` };
@@ -191,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         list.removeAttribute('aria-busy');
         if (!records.length) {
-            if (expected === 0) list.append(element('p', 'directory-loading', 'Projects are on their way.'));
+            if (expected === 0) list.append(SiteI18n.element('p', 'directory-loading', 'projects.soon'));
             return;
         }
         let timer;
@@ -244,6 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!count) return;
                 const item = element('li');
                 const link = element('a', '', yearLabel(year));
+                if (!year) SiteI18n.text(link, 'projects.other');
                 link.href = `#${group.section.id}`;
                 link.addEventListener('click', event => {
                     event.preventDefault();
@@ -272,8 +274,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 count += 1;
                 if (!terms.length) return;
                 record.card.querySelectorAll('.directory-project-title, .directory-project-summary, .directory-topics, .directory-paper-copy').forEach(node => highlight(node, terms));
-                const visibleText = view === 'cards' && cardPublicationStyle === 'badge'
-                    ? `${record.primaryText} ${record.badgeText}` : record.visibleText;
+                const primaryVisible = [...record.card.querySelectorAll('.directory-project-title, .directory-project-summary, .directory-topics')].map(node => node.textContent).join(' ').toLowerCase();
+                const relatedVisible = view === 'cards' || record.relatedDetails?.open;
+                const relatedText = relatedVisible ? (view === 'cards' && cardPublicationStyle === 'badge' ? record.badgeText : record.paperText) : '';
+                const visibleText = `${primaryVisible} ${relatedText}`;
                 if (!terms.every(term => visibleText.includes(term))) {
                     const snippet = [...record.snippets].sort((a, b) => terms.filter(t => b.text.toLowerCase().includes(t)).length - terms.filter(t => a.text.toLowerCase().includes(t)).length)[0];
                     const firstMatch = Math.min(...terms.map(t => snippet.text.toLowerCase().indexOf(t)).filter(index => index >= 0));
@@ -282,12 +286,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let end = Math.min(snippet.text.length, start + 220);
                     if (end < snippet.text.length && snippet.text.lastIndexOf(' ', end) > start) end = snippet.text.lastIndexOf(' ', end);
                     record.excerptText.textContent = `${start ? '…' : ''}${snippet.text.slice(start, end).trim()}${end < snippet.text.length ? '…' : ''}`;
-                    record.excerptLabel.textContent = snippet.label;
+                    SiteI18n.text(record.excerptLabel, snippet.label);
                     record.excerpt.hidden = false;
                     highlight(record.excerptText, terms);
                 }
             });
-            status.textContent = terms.length ? `${count} of ${records.length} projects` : '';
+            SiteI18n.text(status, 'projects.results', { count, total: records.length });
             status.hidden = !terms.length;
             empty.hidden = !terms.length || count > 0;
             clearButton.hidden = !input.value;
@@ -327,6 +331,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         viewSwitch.hidden = false;
         updateYearLinks();
         if (input.value) applySearch();
+        window.addEventListener('site:languagechange', () => {
+            if (input.value) applySearch(false);
+            requestAnimationFrame(updateActiveYear);
+        });
     } catch (failure) {
         console.error(failure);
         list.replaceChildren();

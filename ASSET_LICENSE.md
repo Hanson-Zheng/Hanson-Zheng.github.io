@@ -29,7 +29,7 @@ Normal proportional rendering by a browser when viewing this website is permitte
 
 This notice claims rights only in the author's original works. It does not claim ownership of third-party software, fonts, icons, maps, scientific figures, publisher covers, conference banners or other third-party materials. Those retain their respective licenses, public-domain status and permission requirements. Generated previews retain the rights status of their source material.
 
-The licenses bundled with Inter, Font Awesome, Chart.js, Leaflet, Leaflet.markercluster and the map data remain applicable. Relevant records are in `assets/vendor/sources.json`, the component directories and `assets/maps/LICENSE`.
+The licenses bundled with Inter, Source Han Sans, LXGW WenKai, Font Awesome, Chart.js, Leaflet, Leaflet.markercluster and the map data remain applicable. Chinese fonts and their web derivatives remain under SIL OFL 1.1; see the bundled `OFL.txt` files. Relevant records are in `assets/vendor/sources.json`, `assets/fonts/chinese-sources.json`, the component directories and `assets/maps/LICENSE`.
 
 This notice does not override statutory exceptions, permissions required by GitHub's service terms, or valid permissions already granted. A public repository being viewable or forkable does not by itself provide a separate license to republish the author's branding or photographs outside those permissions. See [GitHub's licensing documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository).
 

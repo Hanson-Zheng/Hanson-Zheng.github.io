@@ -2,11 +2,13 @@
   "date": "2025-11-03",
   "card": {
     "title": "Tetherless neural recording",
+    "titleZh": "无线神经记录微系统",
     "category": "Nature Electronics",
     "image": "MOTE_in_Pipette.jpg",
     "imageAlt": "Photograph of a MOTE in a glass micropipette beside two grains of salt for scale"
   },
   "title": "A subnanolitre tetherless optoelectronic microsystem for chronic neural recording in awake mice",
+  "titleZh": "用于清醒小鼠长期神经记录的亚纳升级无线光电微系统",
   "venue": "Nature Electronics",
   "authors": [
     "Sunwoo Lee",
@@ -37,6 +39,7 @@
     "Alyosha C. Molnar"
   ],
   "summary": "A subnanolitre neural recording microsystem that uses light for both photovoltaic power and optical data transfer, eliminating the need for wires or other tethers.",
+  "summaryZh": "通过光伏效应获取能量、以光信号传输数据的亚纳升级神经记录微系统，无需导线或其他外部系留连接。",
   "links": {
     "doi": "https://doi.org/10.1038/s41928-025-01484-1"
   },
@@ -45,12 +48,22 @@
     "Optoelectronics",
     "Implantable microsystems"
   ],
+  "topicsZh": [
+    "神经接口",
+    "光电子学",
+    "可植入微系统"
+  ],
   "sections": [
     {
       "heading": "Overview",
+      "headingZh": "项目概述",
       "paragraphs": [
         "A subnanolitre neural recording microsystem that uses light for both photovoltaic power and optical data transfer, eliminating the need for wires or other tethers.",
         "A single AlGaAs diode provides photovoltaic power and light emission. CMOS circuits amplify neural signals and encode them using pulse position modulation. The published work demonstrates chronic neural recording in awake mice."
+      ],
+      "paragraphsZh": [
+        "这款亚纳升级神经记录微系统通过光伏效应获取能量，并以光信号传输数据，无需导线或其他外部系留连接。",
+        "单个 AlGaAs 二极管同时承担光伏供能和发光通信；CMOS 电路负责神经信号放大与脉冲位置调制（PPM）编码。该系统已用于清醒小鼠的长期神经记录。"
       ],
       "images": [
         {

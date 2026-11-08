@@ -1,4 +1,9 @@
 const configData = {
+    "language": {
+        "enabled": true, // false: English only, hide the language switch (ignores saved Chinese).
+        "defaultLanguage": "en", // "en" or "zh-CN"; a visitor's saved choice takes priority when enabled.
+        "chineseFont": "source-han-sans" // "source-han-sans" (思源黑体) or "lxgw-wenkai" (霞鹜文楷).
+    },
     "siteName": "Yumin's Site",
     "name": "Zheng Yumin",
     "title": "Ph.D. Candidate | Nanyang Technological University",

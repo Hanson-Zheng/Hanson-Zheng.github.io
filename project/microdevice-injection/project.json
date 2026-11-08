@@ -2,11 +2,13 @@
   "date": "2026-01-31",
   "card": {
     "title": "Vision-servoed microdevice injection",
+    "titleZh": "视觉伺服微器件自动植入",
     "category": "IEEE ICRA",
     "image": "ICRA_Project_Card.png",
     "imageAlt": "Concept illustration of microscope-guided microdevice delivery"
   },
   "title": "An Autonomous and Hardware-Agnostic Vision-Servoed System for Microdevice Injection",
+  "titleZh": "不依赖特定硬件的自主视觉伺服微器件植入系统",
   "venue": "2026 IEEE International Conference on Robotics and Automation (ICRA)",
   "authors": [
     "Yumin Zheng",
@@ -15,6 +17,7 @@
     "Sunwoo Lee"
   ],
   "summary": "A vision-servoed manipulation system for delivering implantable microdevices, built around standard commercial hardware and an automated positioning workflow.",
+  "summaryZh": "以常见商用硬件搭建的视觉伺服微操作系统，通过自动定位流程完成可植入微器件的递送。",
   "links": {
     "doi": "https://doi.org/10.1109/ICRA57385.2026.11697121"
   },
@@ -23,12 +26,22 @@
     "Micromanipulation",
     "Automation"
   ],
+  "topicsZh": [
+    "视觉伺服",
+    "微操作",
+    "自动化"
+  ],
   "sections": [
     {
       "heading": "Overview",
+      "headingZh": "项目概述",
       "paragraphs": [
         "A vision-servoed manipulation system for delivering implantable microdevices, built around standard commercial hardware and an automated positioning workflow.",
         "The workflow combines coarse positioning, autofocus, and marker-aided centering to reduce manual calibration and intervention. The system is evaluated using the microscale optoelectronic tetherless electrode (MOTE)."
+      ],
+      "paragraphsZh": [
+        "这套视觉伺服微操作系统基于常见商用硬件，通过自动化定位流程递送可植入微器件。",
+        "流程结合粗定位、自动对焦和标记辅助对中，减少人工标定与干预，并以微型光电无系留电极（MOTE）开展系统评估。"
       ],
       "images": [
         {

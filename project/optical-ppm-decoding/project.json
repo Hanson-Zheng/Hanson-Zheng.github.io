@@ -2,11 +2,13 @@
   "date": "2026-01-15",
   "card": {
     "title": "Closed-loop optical PPM decoding",
+    "titleZh": "光学 PPM 信号的闭环解码",
     "category": "IEEE ICASSP",
     "image": "ICASSP_Project_Card.jpg",
     "imageAlt": "Concept illustration of noisy optical signals and recovered pulses"
   },
   "title": "A Closed-Loop and Data-Driven Decoding Algorithm for Optical Pulse Position Modulated Uplinks in Neural Implants",
+  "titleZh": "面向神经植入器件光学 PPM 上行链路的闭环数据驱动解码",
   "venue": "2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)",
   "authors": [
     "Yumin Zheng",
@@ -14,6 +16,7 @@
     "Sunwoo Lee"
   ],
   "summary": "An adaptive, closed-loop algorithm for detecting and decoding optical pulse position modulation signals under low and varying signal-to-noise ratios.",
+  "summaryZh": "针对低信噪比及信噪比波动的情况，通过自适应闭环算法检测并解码光学脉冲位置调制（PPM）信号。",
   "links": {
     "doi": "https://doi.org/10.1109/ICASSP55912.2026.11462355"
   },
@@ -22,12 +25,22 @@
     "Optical uplinks",
     "Feedback control"
   ],
+  "topicsZh": [
+    "信号处理",
+    "光学上行链路",
+    "反馈控制"
+  ],
   "sections": [
     {
       "heading": "Overview",
+      "headingZh": "项目概述",
       "paragraphs": [
         "An adaptive, closed-loop algorithm for detecting and decoding optical pulse position modulation signals under low and varying signal-to-noise ratios.",
         "Proportional-integral feedback and a periodic microsystem clock provide reference enhancement. The decoding method is evaluated on a channel model based on experimental data from a neural recording microsystem."
+      ],
+      "paragraphsZh": [
+        "这项工作关注低信噪比及信噪比波动条件下的光学 PPM 信号，利用自适应闭环算法完成脉冲检测与信号解码。",
+        "通过比例–积分（PI）反馈和微系统的周期时钟增强参考信号，并基于神经记录微系统的实验数据建立信道模型，对解码方法进行评估。"
       ],
       "images": [
         {

@@ -47,8 +47,8 @@ function renderSiteAuthors(container, data, highlightNames = [], { showNotes = t
             const marker = document.createElement('sup');
             marker.className = 'author-dagger';
             marker.textContent = '†';
-            marker.title = 'Co-first author';
-            marker.setAttribute('aria-label', 'Co-first author');
+            SiteI18n.attr(marker, 'title', 'authors.coFirst');
+            SiteI18n.attr(marker, 'aria-label', 'authors.coFirst');
             author.append(marker);
             hasCoFirstAuthor = true;
         }
@@ -56,8 +56,8 @@ function renderSiteAuthors(container, data, highlightNames = [], { showNotes = t
             const marker = document.createElement('sup');
             marker.className = 'author-corresponding';
             marker.textContent = coFirstAuthors.has(name) ? ',*' : '*';
-            marker.title = 'Corresponding author';
-            marker.setAttribute('aria-label', 'Corresponding author');
+            SiteI18n.attr(marker, 'title', 'authors.corresponding');
+            SiteI18n.attr(marker, 'aria-label', 'authors.corresponding');
             author.append(marker);
             correspondingCount += 1;
         }
@@ -66,13 +66,13 @@ function renderSiteAuthors(container, data, highlightNames = [], { showNotes = t
     if (showNotes && hasCoFirstAuthor) {
         const note = document.createElement('span');
         note.className = 'author-contribution-note';
-        note.textContent = '† These authors contributed equally to this work.';
+        SiteI18n.text(note, 'authors.equalNote');
         container.append(note);
     }
     if (showNotes && correspondingCount) {
         const note = document.createElement('span');
         note.className = 'author-correspondence-note';
-        note.textContent = correspondingCount === 1 ? '* Corresponding author.' : '* Corresponding authors.';
+        SiteI18n.text(note, correspondingCount === 1 ? 'authors.correspondingNote' : 'authors.correspondingNotes');
         container.append(note);
     }
 }
@@ -107,20 +107,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keep the shared site name as the Logo's accessible label and tooltip.
     if (typeof configData !== 'undefined' && configData.siteName) {
         document.querySelectorAll('.navbar .logo').forEach(logo => {
-            const label = `${configData.siteName} - Home`;
-            logo.setAttribute('aria-label', label);
-            logo.title = label;
+            SiteI18n.attr(logo, 'aria-label', 'nav.logo', { site: configData.siteName });
+            SiteI18n.attr(logo, 'title', 'nav.logo', { site: configData.siteName });
         });
     }
 
     // --- 0.0 Theme Toggle (Light/Dark) ---
     const navLinksContainer = document.querySelector('.nav-links');
-    const savedTheme = localStorage.getItem('site-theme') || 'light';
+    let savedTheme = 'light';
+    try { savedTheme = localStorage.getItem('site-theme') || 'light'; } catch { /* Storage can be blocked. */ }
 
     function applyTheme(theme) {
         const normalizedTheme = theme === 'dark' ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', normalizedTheme);
-        localStorage.setItem('site-theme', normalizedTheme);
+        try { localStorage.setItem('site-theme', normalizedTheme); } catch { /* Keep the current theme usable. */ }
     }
 
     applyTheme(savedTheme);
@@ -137,11 +137,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateToggleUi = () => {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            themeToggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-            themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+            SiteI18n.attr(themeToggleBtn, 'aria-label', isDark ? 'theme.toLight' : 'theme.toDark');
+            SiteI18n.attr(themeToggleBtn, 'title', isDark ? 'theme.toLight' : 'theme.toDark');
             themeToggleBtn.innerHTML = isDark
-                ? '<i class="fas fa-sun"></i><span>Light</span>'
-                : '<i class="fas fa-moon"></i><span>Dark</span>';
+                ? '<i class="fas fa-sun"></i><span data-i18n="theme.light">Light</span>'
+                : '<i class="fas fa-moon"></i><span data-i18n="theme.dark">Dark</span>';
         };
 
         updateToggleUi();
@@ -288,7 +288,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Footer
-        if (footerTextEl) footerTextEl.innerHTML = `&copy; ${configData.copyrightYear} ${configData.name}. Hosted on GitHub Pages.`;
+        if (footerTextEl) {
+            footerTextEl.textContent = `© ${configData.copyrightYear} ${configData.name}. Hosted on GitHub Pages.`;
+            footerTextEl.lang = 'en';
+        }
 
         // Social Links
         if (linksEl && configData.socialLinks) {
@@ -327,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pubListContainer && typeof publicationsData !== 'undefined') {
         initPublications(publicationsData);
     } else if (pubListContainer) {
-         pubListContainer.innerHTML = '<p>Error: Could not load publications data.</p>';
+         pubListContainer.replaceChildren(SiteI18n.element('p', '', 'publications.loadError'));
     }
 
     function initPublications(data) {
@@ -380,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const years = Object.keys(pubsByYear).sort((a, b) => b - a);
 
         if (years.length === 0) {
-            pubListContainer.innerHTML = '<p>No publications found.</p>';
+            pubListContainer.replaceChildren(SiteI18n.element('p', '', 'publications.none'));
             return;
         }
 
@@ -412,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const link = document.createElement('a');
                     link.className = 'pub-link pub-link--project';
                     link.href = projectUrl;
-                    link.textContent = 'Project page';
+                    SiteI18n.text(link, 'common.projectPage');
                     projectLink = link.outerHTML;
                 }
 
@@ -424,10 +427,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="pub-links">
                         <div class="pub-links-left">
                             ${linksHtml}
-                            <button type="button" class="pub-link pub-link--abstract toggle-abstract" aria-expanded="false" aria-controls="abstract-${pub.id}">Abstract</button>
+                            <button type="button" class="pub-link pub-link--abstract toggle-abstract" aria-expanded="false" aria-controls="abstract-${pub.id}" data-i18n="common.abstract">Abstract</button>
                             ${projectLink}
                         </div>
-                        ${hasCitation ? `<span class="pub-citations"><i class="fas fa-quote-right"></i> Cited by ${citationCount}</span>` : ''}
+                        ${hasCitation ? `<span class="pub-citations"><i class="fas fa-quote-right"></i> <span data-i18n="publications.cited" data-i18n-params='{"count":${citationCount}}'>Cited by ${citationCount}</span></span>` : ''}
                     </div>
                 `;
                 renderSiteAuthors(pubItem.querySelector('.pub-authors'), pub,
@@ -449,19 +452,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const citationSection = document.createElement('section');
         citationSection.id = 'citation-metrics';
         citationSection.className = 'citation-card';
-        citationSection.setAttribute('aria-label', 'Citation metrics');
+        SiteI18n.attr(citationSection, 'aria-label', 'publications.metrics');
         citationSection.innerHTML = `
             <div class="citation-card-header">
-                <h3>Citation Metrics</h3>
-                <p id="citation-summary">Add citation data to publication entries to visualize yearly citations.</p>
+                <h3 data-i18n="publications.metrics">Citation Metrics</h3>
+                <p id="citation-summary" data-i18n="publications.chartIntro">Add citation data to publication entries to visualize yearly citations.</p>
             </div>
             <div class="citation-chart-wrap">
-                <canvas id="citation-chart" aria-label="Yearly citation bar chart" role="img"></canvas>
+                <canvas id="citation-chart" aria-label="Yearly citation bar chart" data-i18n-aria-label="publications.chart" role="img"></canvas>
             </div>
             <div class="citation-card-footer">
                 <span id="citation-updated-on">Updated on ${getCitationUpdateStamp()}</span>
             </div>
         `;
+        SiteI18n.text(citationSection.querySelector('#citation-updated-on'), 'publications.updated', { date: getCitationUpdateStamp() });
         pubListContainer.appendChild(citationSection);
     }
 
@@ -485,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
             excerpt.hidden = true;
             const label = document.createElement('span');
             label.className = 'pub-search-excerpt-label';
-            label.textContent = 'Abstract';
+            SiteI18n.text(label, 'common.abstract');
             const text = document.createElement('span');
             excerpt.append(label, text);
             abstract.before(excerpt);
@@ -536,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (citationSection) citationSection.hidden = searching;
             clearButton.hidden = input.value.length === 0;
             status.hidden = !searching;
-            status.textContent = searching ? `${matches.length} of ${pubs.length} publications` : '';
+            SiteI18n.text(status, 'publications.results', { count: matches.length, total: pubs.length });
             emptyState.hidden = !searching || matches.length > 0;
             yearNavigation.hidden = matches.length === 0;
             generateYearBookmarks(matches, { includeCitation: !searching, showCounts: searching });
@@ -634,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
         script.addEventListener('load', () => renderCitationChart(pubs), { once: true });
         script.addEventListener('error', () => {
             const summary = document.getElementById('citation-summary');
-            if (summary) summary.textContent = 'Citation chart unavailable.';
+            if (summary) SiteI18n.text(summary, 'publications.chartUnavailable');
         }, { once: true });
         document.head.append(script);
     }
@@ -673,18 +677,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (years.length === 0) {
             if (citationSummary) {
-                citationSummary.textContent = 'No citation data yet. Add "citations" or "citationsByYear" in data/publications.js.';
+                SiteI18n.text(citationSummary, 'publications.noCitations');
             }
             return;
         }
 
         if (citationSummary) {
-            citationSummary.textContent = `Total citations: ${totalCitations}`;
+            SiteI18n.text(citationSummary, 'publications.totalCitations', { count: totalCitations });
         }
 
         if (typeof Chart === 'undefined') {
             if (citationSummary) {
-                citationSummary.textContent += ' (Chart.js failed to load)';
+                SiteI18n.text(citationSummary, 'publications.chartFailed', { count: totalCitations });
             }
             return;
         }
@@ -694,7 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data: {
                 labels: years,
                 datasets: [{
-                    label: 'Citations',
+                    label: SiteI18n.t('publications.citations'),
                     data: values,
                     backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim(),
                     borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim(),
@@ -722,6 +726,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    window.addEventListener('site:languagechange', () => {
+        if (citationChartInstance) {
+            citationChartInstance.data.datasets[0].label = SiteI18n.t('publications.citations');
+            citationChartInstance.update('none');
+        }
+    });
+
     function generateYearBookmarks(pubs, { includeCitation = true, showCounts = false } = {}) {
         if (!yearFiltersContainer) return;
         yearFiltersContainer.innerHTML = '';
@@ -732,12 +743,13 @@ document.addEventListener('DOMContentLoaded', () => {
             li.dataset.year = year;
             const link = document.createElement('a');
             link.href = `#${targetId}`;
-            link.textContent = label;
+            if (year === 'citation-metrics') SiteI18n.text(link, 'publications.metrics');
+            else link.textContent = label;
             if (showCounts && count) {
                 const countLabel = document.createElement('span');
                 countLabel.className = 'pub-year-count';
                 countLabel.textContent = count;
-                countLabel.setAttribute('aria-label', `${count} ${count === 1 ? 'publication' : 'publications'}`);
+                SiteI18n.attr(countLabel, 'aria-label', 'publications.count', { count });
                 link.appendChild(countLabel);
             }
             link.addEventListener('click', event => {
@@ -817,15 +829,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         const paused = motionToggle.getAttribute('aria-pressed') !== 'true';
                         lifeEmpty.dataset.paused = String(paused);
                         motionToggle.setAttribute('aria-pressed', String(paused));
-                        const label = paused ? 'Resume animation' : 'Pause animation';
-                        motionToggle.setAttribute('aria-label', label);
-                        motionToggle.title = label;
+                        const key = paused ? 'life.play' : 'life.pause';
+                        SiteI18n.attr(motionToggle, 'aria-label', key);
+                        SiteI18n.attr(motionToggle, 'title', key);
                     });
                     motionToggle.hidden = false;
                     lifeEmpty.dataset.motionReady = '';
                 }
             } else {
-                container.innerHTML = '<p>No content loaded.</p>';
+                container.replaceChildren(SiteI18n.element('p', '', 'common.noContent'));
             }
             return;
         }
@@ -846,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // "All" button
             const allBtn = document.createElement('button');
             allBtn.className = 'filter-btn active';
-            allBtn.textContent = 'All';
+            SiteI18n.text(allBtn, 'common.all');
             allBtn.onclick = () => {
                 setActiveBtn(filterContainer, allBtn);
                 if (isHighlightsPage) {
@@ -892,7 +904,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderGridItems(container, items) {
         container.innerHTML = '';
         if(items.length === 0) {
-            container.innerHTML = '<p>No items for this period.</p>';
+            container.replaceChildren(SiteI18n.element('p', '', 'common.noPeriod'));
             return;
         }
 
@@ -1128,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderHighlightsByYear(container, items) {
         container.innerHTML = '';
         if(items.length === 0) {
-            container.innerHTML = '<p>No items for this period.</p>';
+            container.replaceChildren(SiteI18n.element('p', '', 'common.noPeriod'));
             return;
         }
 
