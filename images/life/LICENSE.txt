@@ -1,0 +1,14 @@
+Copyright (c) Yumin Zheng (Hanson-Zheng). All rights reserved.
+
+The original photographs in this directory are not covered by the repository's
+MIT source-code license. Republication or other reuse requires prior written
+permission. Attribution alone is not permission.
+
+Unless otherwise expressly authorized in writing, approved republication must
+keep the complete image and preserve the author's credit, ZYM logo, website
+address, white signature strip and watermark. No cropping, retouching,
+recoloring, filters, AI editing, redrawing, collage, overlays, watermark removal
+or other alteration is permitted.
+
+See ../../ASSET_LICENSE.md for the full notice, exceptions and third-party
+scope. Permission requests: yumin004@e.ntu.edu.sg

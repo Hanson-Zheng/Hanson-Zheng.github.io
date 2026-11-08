@@ -242,6 +242,10 @@ ul {
     cursor: pointer;
 }
 
+.nav-mobile-actions { display: none; }
+.theme-toggle-item[hidden] { display: none; }
+.theme-toggle-btn:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }
+
 .theme-toggle-item {
     display: flex;
     align-items: center;
@@ -716,6 +720,12 @@ footer {
     
     .nav-links { display: none; } /* Simplified for now */
     .mobile-menu-btn { display: block; }
+    .nav-mobile-actions { display: flex; align-items: center; gap: 12px; flex: none; }
+    .nav-mobile-actions .theme-toggle-btn { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; }
+    .nav-mobile-actions .theme-toggle-btn span { display: none; }
+    .nav-mobile-actions .mobile-menu-btn { display: grid; place-items: center; width: 40px; height: 40px; }
+
+
     
     .hero { padding: var(--home-mobile-padding-top, 40px) 0 var(--home-mobile-padding-bottom, 40px); }
     .hero-content { text-align: center; }

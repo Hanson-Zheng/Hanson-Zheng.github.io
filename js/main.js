@@ -160,6 +160,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         themeToggleItem.appendChild(themeToggleBtn);
         navLinksContainer.appendChild(themeToggleItem);
+        const menuButton = document.querySelector('.mobile-menu-btn');
+        if (menuButton) {
+            const actions = document.createElement('div');
+            actions.className = 'nav-mobile-actions';
+            menuButton.before(actions);
+            actions.append(menuButton);
+            const compactNavigation = matchMedia('(max-width: 768px)');
+            let themeHadFocus = false;
+            document.addEventListener('focusin', event => { themeHadFocus = event.target === themeToggleBtn; });
+            document.addEventListener('pointerdown', event => {
+                if (!themeToggleBtn.contains(event.target)) themeHadFocus = false;
+            }, { capture: true });
+            const placeThemeButton = () => {
+                const focused = themeHadFocus || document.activeElement === themeToggleBtn;
+                if (compactNavigation.matches) actions.insertBefore(themeToggleBtn, menuButton);
+                else themeToggleItem.append(themeToggleBtn);
+                themeToggleItem.hidden = compactNavigation.matches;
+                if (focused) themeToggleBtn.focus({ preventScroll: true });
+            };
+            compactNavigation.addEventListener('change', placeThemeButton);
+            placeThemeButton();
+        }
     }
 
     setupThemeToggle();

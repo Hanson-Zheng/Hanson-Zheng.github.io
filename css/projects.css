@@ -22,8 +22,28 @@
 .project-rail-toolbar { display: none; }
 .home-page .hero-text { max-width: none; }
 .home-section-title { font-size: 1.1rem; font-weight: 700; line-height: 1.2; letter-spacing: normal; color: var(--primary-color); }
-.hero-buttons { flex-wrap: wrap; }
-.hero-buttons > .project-controls { margin-left: auto; }
+.home-page .hero-buttons { flex-direction: row; flex-wrap: wrap; container: home-actions / inline-size; }
+.hero-primary-actions { display: flex; align-items: stretch; gap: clamp(10px, 2cqw, 20px); flex: 0 1 300px; min-width: 0; }
+.home-page .hero-primary-actions .btn { display: inline-flex; align-items: center; justify-content: center; flex: 1 1 0; width: auto; min-width: 0; max-width: none; min-height: 44px; padding: 10px clamp(12px, 2cqw, 24px); font-size: clamp(0.875rem, 2.2cqw, 1rem); white-space: nowrap; text-align: center; }
+.hero-secondary-actions { display: flex; align-items: center; justify-content: space-between; gap: clamp(12px, 3cqw, 20px); flex: 1 0 auto; min-width: 0; }
+.hero-secondary-actions .social-links { margin-left: 0; gap: clamp(8px, 3cqw, 15px); flex: none; }
+.hero-secondary-actions .social-links a { font-size: clamp(1rem, 6cqw, 1.25rem); }
+.hero-secondary-actions .project-controls { margin-left: auto; }
+.hero-secondary-actions .project-control { width: clamp(32px, 10cqw, 40px); height: clamp(32px, 10cqw, 40px); }
+@container home-actions (max-width: 600px) {
+    .hero-primary-actions, .hero-secondary-actions { flex: 1 1 100%; max-width: 440px; margin-inline: auto; }
+}
+@container home-actions (max-width: 240px) {
+    .hero-primary-actions { flex-direction: column; }
+    .home-page .hero-primary-actions .btn { flex: 0 0 auto; width: 100%; }
+}
+@container home-actions (max-width: 220px) {
+    .hero-secondary-actions { gap: 8px; }
+    .hero-secondary-actions .social-links { gap: 5px; }
+    .hero-secondary-actions .social-links a { font-size: 0.875rem; }
+    .hero-secondary-actions .project-controls { gap: 4px; }
+    .hero-secondary-actions .project-control { width: 28px; height: 28px; }
+}
 .projects-eyebrow { margin-bottom: 9px; color: var(--light-text); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
 .project-controls { display: flex; gap: 8px; flex-shrink: 0; }
 .project-controls[hidden] { display: none; }
@@ -149,10 +169,6 @@
     .home-page .intro { font-size: 1rem; margin-bottom: 6px; }
     .home-page .profile-about { font-size: 0.95rem; line-height: 1.65; }
     .home-page .hero-buttons { margin-top: 20px; gap: 10px; }
-    .home-page .hero-buttons .btn { padding: 10px 18px; }
-    .hero-buttons { flex-direction: row; justify-content: center; }
-    .hero-buttons .btn { flex: 0 0 100%; }
-    .hero-buttons .social-links { margin-left: 0; }
     .project-showcase { margin-top: var(--home-mobile-film-gap, 28px); }
     .project-showcase + .education { margin-top: 48px; }
     .projects-eyebrow { font-size: 0.55rem; letter-spacing: 0.12em; }

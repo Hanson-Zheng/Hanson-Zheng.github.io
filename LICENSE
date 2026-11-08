@@ -1,4 +1,29 @@
-MIT License
+LICENSE SCOPE
+=============
+
+The MIT License below applies to the website's source code only. It does not
+license the original ZYM logo, its SVG source, favicon/branding variants, or
+original photographs and other original visual works by Yumin Zheng
+(Hanson-Zheng). Those assets are reserved separately under ASSET_LICENSE.md.
+
+The original ZYM logo may not be copied, traced, reused, modified, adapted,
+extracted, or incorporated into another identity without prior written
+permission from Yumin Zheng. All rights reserved.
+
+Original photographs require prior written permission for republication.
+Unless separately authorized in writing, approved republication must keep the
+photograph intact, preserve its credit, logo, website address and watermark,
+and must not crop, retouch, recolor, redraw, apply AI edits, overlay, or otherwise
+alter the image. Attribution alone does not grant permission.
+
+Third-party software, fonts, icons, maps, figures, covers and other third-party
+materials remain subject to their own licenses or permissions. This notice
+does not restrict third-party or public-domain rights, statutory exceptions,
+GitHub service permissions, or valid permissions previously granted.
+
+See ASSET_LICENSE.md for the complete asset notice and permission contact.
+
+MIT License (website source code only)
 
 Copyright (c) 2026 Hanson-Zheng
 

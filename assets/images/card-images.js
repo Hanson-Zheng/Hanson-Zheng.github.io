@@ -149,6 +149,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/bali/bali.jpg": {
+    "src": "assets/images/cards/bali-c6b731ac50-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/bali-c6b731ac50-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/bali-c6b731ac50-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/bali-c6b731ac50-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/bangkok/chao-phraya-river.jpg": {
     "src": "assets/images/cards/chao-phraya-river-880320b6e0-960w.webp",
     "sources": [
@@ -162,6 +179,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/chao-phraya-river-880320b6e0-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/barcelona/turo-de-la-rovira.jpg": {
+    "src": "assets/images/cards/turo-de-la-rovira-03bf36f7b0-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/turo-de-la-rovira-03bf36f7b0-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/turo-de-la-rovira-03bf36f7b0-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/turo-de-la-rovira-03bf36f7b0-1440w.webp",
         "width": 1440
       }
     ]
@@ -180,6 +214,57 @@ const cardImageAssets = {
       {
         "src": "assets/images/cards/beijing-night-fe2c94ac0b-1440w.webp",
         "width": 1440
+      }
+    ]
+  },
+  "images/life/cambridge/newtons-apple-tree.jpg": {
+    "src": "assets/images/cards/newtons-apple-tree-6995a9ebdb-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/newtons-apple-tree-6995a9ebdb-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/newtons-apple-tree-6995a9ebdb-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/newtons-apple-tree-6995a9ebdb-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/doha/hamad-airport-dawn.jpg": {
+    "src": "assets/images/cards/hamad-airport-dawn-24c985898a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/hamad-airport-dawn-24c985898a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/hamad-airport-dawn-24c985898a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/hamad-airport-dawn-24c985898a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/frankfurt/frankfurt-airport-icbc.jpg": {
+    "src": "assets/images/cards/frankfurt-airport-icbc-f992f9c8c1-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/frankfurt-airport-icbc-f992f9c8c1-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/frankfurt-airport-icbc-f992f9c8c1-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/frankfurt-airport-icbc-f992f9c8c1-1291w.webp",
+        "width": 1291
       }
     ]
   },
@@ -251,6 +336,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/london/tower-bridge.jpg": {
+    "src": "assets/images/cards/tower-bridge-24db2d5650-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/tower-bridge-24db2d5650-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/tower-bridge-24db2d5650-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/tower-bridge-24db2d5650-1291w.webp",
+        "width": 1291
+      }
+    ]
+  },
   "images/life/manila/sm-mall-of-asia.jpg": {
     "src": "assets/images/cards/sm-mall-of-asia-ef5e3a0338-960w.webp",
     "sources": [
@@ -268,19 +370,53 @@ const cardImageAssets = {
       }
     ]
   },
-  "images/life/ntu-eee/ntu-eee.jpg": {
-    "src": "assets/images/cards/ntu-eee-a629b45fea-960w.webp",
+  "images/life/munich/bmw-museum.jpg": {
+    "src": "assets/images/cards/bmw-museum-d66c11f5a5-960w.webp",
     "sources": [
       {
-        "src": "assets/images/cards/ntu-eee-a629b45fea-480w.webp",
+        "src": "assets/images/cards/bmw-museum-d66c11f5a5-480w.webp",
         "width": 480
       },
       {
-        "src": "assets/images/cards/ntu-eee-a629b45fea-960w.webp",
+        "src": "assets/images/cards/bmw-museum-d66c11f5a5-960w.webp",
         "width": 960
       },
       {
-        "src": "assets/images/cards/ntu-eee-a629b45fea-1440w.webp",
+        "src": "assets/images/cards/bmw-museum-d66c11f5a5-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/paris/louvre.jpg": {
+    "src": "assets/images/cards/louvre-5235a90d30-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/louvre-5235a90d30-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/louvre-5235a90d30-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/louvre-5235a90d30-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/prague/prague-castle-vltava.jpg": {
+    "src": "assets/images/cards/prague-castle-vltava-9819a83e65-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/prague-castle-vltava-9819a83e65-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/prague-castle-vltava-9819a83e65-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/prague-castle-vltava-9819a83e65-1440w.webp",
         "width": 1440
       }
     ]
@@ -332,6 +468,57 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/angkor-wat-075ec8bf0a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/singapore/ntu-eee.jpg": {
+    "src": "assets/images/cards/ntu-eee-a629b45fea-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/ntu-eee-a629b45fea-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/ntu-eee-a629b45fea-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/ntu-eee-a629b45fea-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/vienna/belvedere.jpg": {
+    "src": "assets/images/cards/belvedere-39b8256ad3-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/belvedere-39b8256ad3-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/belvedere-39b8256ad3-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/belvedere-39b8256ad3-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/vienna/votivkirche.jpg": {
+    "src": "assets/images/cards/votivkirche-ae974403fc-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/votivkirche-ae974403fc-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/votivkirche-ae974403fc-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/votivkirche-ae974403fc-1440w.webp",
         "width": 1440
       }
     ]
