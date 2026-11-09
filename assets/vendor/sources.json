@@ -183,9 +183,23 @@
         "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json",
         "bytes": 990435,
         "sha256": "e188975fbbc581ef98991df03a9cda3bc87b8af52bf1d63a273abda5de603b04"
+      },
+      {
+        "file": "assets/maps/countries-50m-pacific.geo.json",
+        "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json",
+        "bytes": 985639,
+        "sha256": "9abfa25e6e57eb56f7896fdc80073dfb10b7d40427a25bcb4b2894ba479f6f1b"
+      },
+      {
+        "file": "assets/maps/countries-50m-wrapped.geo.json",
+        "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json",
+        "bytes": 990102,
+        "sha256": "410cae8cf10595c16d59174665e5f67ceb878962cf667cb8c621f02e0e3e1b05"
       }
     ],
-    "preparation": "Date-line split, 0.018-degree topology-preserving simplification, 4-decimal coordinates; local/prepare_travel_map.py (Shapely 2)."
+    "preparation": "Date-line split, 0.018-degree topology-preserving simplification, 4-decimal coordinates; local/prepare_travel_map.py (Shapely 2).",
+    "pacificPreparation": "Derived from countries-50m.geo.json: display longitudes -30 to 330, clip and wrap at 30 W, merge old date-line seams; local/prepare_pacific_map.py (Shapely 2).",
+    "wrappedPreparation": "Join date-line polygon parts around each country largest landmass, without clipping Greenland at 30 W; repeated at runtime. local/prepare_wrapped_map.py (Shapely 2)."
   },
   "leaflet-markercluster": {
     "version": "1.5.3",

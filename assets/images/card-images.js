@@ -183,6 +183,40 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/bangkok/first-a380-flight.jpg": {
+    "src": "assets/images/cards/first-a380-flight-67058fd4fd-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/first-a380-flight-67058fd4fd-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/first-a380-flight-67058fd4fd-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/first-a380-flight-67058fd4fd-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/bangkok/grand-palace.jpg": {
+    "src": "assets/images/cards/grand-palace-4d9455991a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/grand-palace-4d9455991a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/grand-palace-4d9455991a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/grand-palace-4d9455991a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/barcelona/turo-de-la-rovira.jpg": {
     "src": "assets/images/cards/turo-de-la-rovira-03bf36f7b0-960w.webp",
     "sources": [
@@ -217,6 +251,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/bohol/sunset-by-the-water.jpg": {
+    "src": "assets/images/cards/sunset-by-the-water-9b54d39f50-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/sunset-by-the-water-9b54d39f50-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/sunset-by-the-water-9b54d39f50-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/sunset-by-the-water-9b54d39f50-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/cambridge/newtons-apple-tree.jpg": {
     "src": "assets/images/cards/newtons-apple-tree-6995a9ebdb-960w.webp",
     "sources": [
@@ -247,6 +298,57 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/ferry-terminal-f6930e0454-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/changsha/xiang-river-evening.jpg": {
+    "src": "assets/images/cards/xiang-river-evening-529660a435-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/xiang-river-evening-529660a435-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/xiang-river-evening-529660a435-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/xiang-river-evening-529660a435-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/chengdu/ifs-climbing-panda.jpg": {
+    "src": "assets/images/cards/ifs-climbing-panda-56389fbe6e-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/ifs-climbing-panda-56389fbe6e-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/ifs-climbing-panda-56389fbe6e-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/ifs-climbing-panda-56389fbe6e-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/chongqing/liziba-railway.jpg": {
+    "src": "assets/images/cards/liziba-railway-2da8501fb1-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/liziba-railway-2da8501fb1-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/liziba-railway-2da8501fb1-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/liziba-railway-2da8501fb1-1440w.webp",
         "width": 1440
       }
     ]
@@ -353,6 +455,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/krabi/limestone-cliffs-and-sea.jpg": {
+    "src": "assets/images/cards/limestone-cliffs-and-sea-c47c90ccd7-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/limestone-cliffs-and-sea-c47c90ccd7-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/limestone-cliffs-and-sea-c47c90ccd7-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/limestone-cliffs-and-sea-c47c90ccd7-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/kuala-lumpur/petronas-twin-towers.jpg": {
     "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-960w.webp",
     "sources": [
@@ -367,6 +486,23 @@ const cardImageAssets = {
       {
         "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-1291w.webp",
         "width": 1291
+      }
+    ]
+  },
+  "images/life/lintong/terracotta-warriors.jpg": {
+    "src": "assets/images/cards/terracotta-warriors-223038bda9-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/terracotta-warriors-223038bda9-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/terracotta-warriors-223038bda9-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/terracotta-warriors-223038bda9-1440w.webp",
+        "width": 1440
       }
     ]
   },
@@ -455,6 +591,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/ordos/grassland-sunset.jpg": {
+    "src": "assets/images/cards/grassland-sunset-cf893dce3a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/grassland-sunset-cf893dce3a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/grassland-sunset-cf893dce3a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/grassland-sunset-cf893dce3a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/paris/louvre.jpg": {
     "src": "assets/images/cards/louvre-5235a90d30-960w.webp",
     "sources": [
@@ -472,6 +625,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/phuket/patong-beach.jpg": {
+    "src": "assets/images/cards/patong-beach-0f0e5e423f-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/patong-beach-0f0e5e423f-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/patong-beach-0f0e5e423f-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/patong-beach-0f0e5e423f-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/prague/prague-castle-vltava.jpg": {
     "src": "assets/images/cards/prague-castle-vltava-9819a83e65-960w.webp",
     "sources": [
@@ -485,6 +655,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/prague-castle-vltava-9819a83e65-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/qingdao/may-fourth-square.jpg": {
+    "src": "assets/images/cards/may-fourth-square-b6523069ec-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/may-fourth-square-b6523069ec-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/may-fourth-square-b6523069ec-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/may-fourth-square-b6523069ec-1440w.webp",
         "width": 1440
       }
     ]
@@ -591,6 +778,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/weihai/hit-main-building-at-night.jpg": {
+    "src": "assets/images/cards/hit-main-building-at-night-ebe4b631af-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/hit-main-building-at-night-ebe4b631af-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-at-night-ebe4b631af-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/hit-main-building-at-night-ebe4b631af-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/weihai/hit-main-building.jpg": {
     "src": "assets/images/cards/hit-main-building-8eb1b5ed7f-960w.webp",
     "sources": [
@@ -604,6 +808,74 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/hit-main-building-8eb1b5ed7f-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/wuhan/yellow-crane-tower-at-night.jpg": {
+    "src": "assets/images/cards/yellow-crane-tower-at-night-04ce07d5d2-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/yellow-crane-tower-at-night-04ce07d5d2-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/yellow-crane-tower-at-night-04ce07d5d2-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/yellow-crane-tower-at-night-04ce07d5d2-1291w.webp",
+        "width": 1291
+      }
+    ]
+  },
+  "images/life/xian/city-wall-at-dusk.jpg": {
+    "src": "assets/images/cards/city-wall-at-dusk-dac1907bf8-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/city-wall-at-dusk-dac1907bf8-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/city-wall-at-dusk-dac1907bf8-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/city-wall-at-dusk-dac1907bf8-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/yueyang/yueyang-tower.jpg": {
+    "src": "assets/images/cards/yueyang-tower-ae1a88a208-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/yueyang-tower-ae1a88a208-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/yueyang-tower-ae1a88a208-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/yueyang-tower-ae1a88a208-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/yuncheng/guanque-tower.jpg": {
+    "src": "assets/images/cards/guanque-tower-5fe2c4550b-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/guanque-tower-5fe2c4550b-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/guanque-tower-5fe2c4550b-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/guanque-tower-5fe2c4550b-1440w.webp",
         "width": 1440
       }
     ]

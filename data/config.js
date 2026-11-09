@@ -43,6 +43,8 @@ const configData = {
         "cardPublicationStyle": "badge" // "badge": venue/year DOI links only; "full": include paper titles. Cards only.
     },
     "travelMap": {
+        "horizontalWrap": true, // Repeat the world horizontally, including countries and photo pins.
+        "worldLayout": "pacific", // "pacific": Eurasia left, Americas right; "atlantic": previous layout.
         "showSummary": false, // true: show the place/country counts above the map.
         "showDates": false, // Keep visits undated; set true to display an optional entry date.
         "colors": { // 地图配色：海洋、未到访陆地、国界、已到访、选中/悬停、图钉。

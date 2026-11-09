@@ -21,6 +21,11 @@
         const worldButton = document.getElementById('travel-world');
         const announcement = document.getElementById('travel-announcement');
         const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+        const pacificLayout = typeof configData !== 'undefined' && configData.travelMap?.worldLayout === 'pacific';
+        const horizontalWrap = typeof configData === 'undefined' || configData.travelMap?.horizontalWrap !== false;
+        // Stored coordinates stay conventional; only their display position wraps.
+        const displayCoordinates = ([latitude, longitude]) => [latitude, !horizontalWrap && pacificLayout && longitude < -30 ? longitude + 360 : longitude];
+        const worldBounds = pacificLayout ? [[-55, -30], [82, 330]] : [[-55, -175], [80, 180]];
         const showDates = typeof configData !== 'undefined' && configData.travelMap?.showDates === true;
         const entries = (typeof travelData === 'undefined' || !Array.isArray(travelData) ? [] : travelData)
             .filter(entry => entry && typeof entry.place === 'string' && entry.place.trim()
@@ -44,6 +49,9 @@
         let map = null;
         let countries = null;
         let markerLayer = null;
+        let pinIcon = null;
+        let countryFeatures = null;
+        const worldOffsets = new Set();
         let photoIndex = 0;
         let photos = [];
         let loading = false;
@@ -192,23 +200,82 @@
             }, 'label', { attribute: 'title' });
         }
         window.addEventListener('site:languagechange', () => {
-            markers.forEach((marker, entry) => labelPin(marker, entry));
+            forEachPin((marker, entry) => labelPin(marker, entry));
             if (!selected) return;
             SiteI18n.text(announcement, 'life.placeAnnouncement', { place: SiteI18n.value(selected, 'place'), country: SiteI18n.value(selected, 'country'), count: photos.length });
             const frame = story.querySelector('.travel-photo-button');
             if (frame && photos[photoIndex]) SiteI18n.attr(frame, 'aria-label', 'life.enlarge', { title: SiteI18n.value(photos[photoIndex], 'alt') });
         });
 
-        function updateCountries() {
-            countries?.eachLayer(layer => {
-                const key = countryKey(layer.feature.properties.name);
-                layer.getElement()?.classList.toggle('is-selected', !!selected && key === countryKey(selected.country));
-            });
+        function forEachPin(callback) {
+            markers.forEach((copies, entry) => copies.forEach(marker => callback(marker, entry)));
         }
 
-        function selectPlace(entry, pan = true) {
+        function addCountryWorld(offset) {
+            if (!countryFeatures) return;
+            L.geoJSON(countryFeatures, {
+                filter: feature => feature.properties.name !== 'Antarctica',
+                coordsToLatLng: coordinates => L.latLng(coordinates[1], coordinates[0] + offset),
+                style: feature => ({
+                    className: `travel-country${visited.has(countryKey(feature.properties.name)) ? ' is-visited' : ''}`,
+                    weight: 0.7, fillOpacity: 1
+                }),
+                onEachFeature(feature, layer) {
+                    const label = ['344', '446', '158'].includes(String(feature.id))
+                        ? `${feature.properties.name}, China` : feature.properties.name;
+                    const regionZh = { '344': '中国香港', '446': '中国澳门', '158': '中国台湾' };
+                    const nameZh = regionZh[String(feature.id)] || entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))?.countryZh;
+                    layer.bindTooltip(SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }), { sticky: true });
+                    if (visited.has(countryKey(feature.properties.name))) {
+                        layer.on('click', event => selectPlace(entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name)), true, event.latlng?.lng));
+                    }
+                }
+            }).addTo(countries);
+        }
+
+        function ensureWorldCopies() {
+            // Reuse a bounded pool of copies; resizing never duplicates an existing world.
+            const radius = horizontalWrap ? Math.max(2, Math.ceil(map.getSize().x / 512)) : 0;
+            for (let world = -radius; world <= radius; world += 1) {
+                const offset = world * 360;
+                if (worldOffsets.has(offset)) continue;
+                worldOffsets.add(offset);
+                entries.forEach(entry => {
+                    const coordinates = displayCoordinates(entry.coordinates);
+                    coordinates[1] += offset;
+                    const marker = L.marker(coordinates, { icon: pinIcon, title: `${entry.place}, ${entry.country}`, keyboard: true, autoPanOnFocus: true, travelEntry: entry });
+                    marker.bindTooltip(SiteI18n.content(element('span', ''), entry, 'place', { keepDetached: true }), { direction: 'top' });
+                    marker.on('click', () => selectPlace(entry, true, marker.getLatLng().lng));
+                    marker.on('add', () => {
+                        const pin = marker.getElement();
+                        labelPin(marker, entry);
+                        pin.setAttribute('aria-pressed', String(selected === entry));
+                        pin.classList.toggle('is-selected', selected === entry);
+                        pin.onkeydown = event => {
+                            if (event.key !== ' ') return;
+                            event.preventDefault();
+                            selectPlace(entry, true, marker.getLatLng().lng);
+                        };
+                    });
+                    if (!markers.has(entry)) markers.set(entry, new Set());
+                    markers.get(entry).add(marker);
+                    markerLayer.addLayer(marker);
+                });
+                addCountryWorld(offset);
+            }
+            updateCountries();
+        }
+
+        function updateCountries() {
+            countries?.eachLayer(group => group.eachLayer(layer => {
+                const key = countryKey(layer.feature.properties.name);
+                layer.getElement()?.classList.toggle('is-selected', !!selected && key === countryKey(selected.country));
+            }));
+        }
+
+        function selectPlace(entry, pan = true, anchorLongitude = map?.getCenter().lng) {
             selected = entry;
-            markers.forEach((marker, candidate) => {
+            forEachPin((marker, candidate) => {
                 const pin = marker.getElement();
                 pin?.classList.toggle('is-selected', candidate === entry);
                 pin?.setAttribute('aria-pressed', String(candidate === entry));
@@ -220,7 +287,11 @@
             SiteI18n.text(announcement, 'life.placeAnnouncement', { place: SiteI18n.value(entry, 'place'), country: SiteI18n.value(entry, 'country'), count: photos.length });
             if (pan && map) {
                 worldView = false;
-                map.setView(entry.coordinates, Math.max(map.getZoom(), 3.5), { animate: !reducedMotion.matches });
+                const coordinates = displayCoordinates(entry.coordinates);
+                if (horizontalWrap && Number.isFinite(anchorLongitude)) {
+                    coordinates[1] += 360 * Math.round((anchorLongitude - coordinates[1]) / 360);
+                }
+                map.setView(coordinates, Math.max(map.getZoom(), 3.5), { animate: !reducedMotion.matches });
             }
         }
 
@@ -234,7 +305,7 @@
         function fitWorld() {
             if (!map) return;
             worldView = true;
-            map.fitBounds([[-55, -175], [80, 180]], { padding: [14, 14], animate: false });
+            map.fitBounds(worldBounds, { padding: [14, 14], animate: false });
         }
 
         function createMap() {
@@ -243,7 +314,8 @@
                 minZoom: 0, maxZoom: 7, zoomSnap: 0.25, zoomDelta: 0.5,
                 scrollWheelZoom: false, zoomAnimation: !reducedMotion.matches,
                 fadeAnimation: !reducedMotion.matches, markerZoomAnimation: !reducedMotion.matches,
-                attributionControl: true, maxBounds: [[-85, -220], [85, 220]], maxBoundsViscosity: 0.7
+                worldCopyJump: horizontalWrap,
+                attributionControl: true, maxBounds: horizontalWrap ? null : (pacificLayout ? [[-85, -70], [85, 370]] : [[-85, -220], [85, 220]]), maxBoundsViscosity: 0.7
             });
             map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
             map.attributionControl.addAttribution('<a href="https://www.naturalearthdata.com/">Natural Earth</a>');
@@ -279,7 +351,7 @@
                 });
             }, { passive: false });
             fitWorld();
-            const icon = L.divIcon({
+            pinIcon = L.divIcon({
                 className: 'travel-pin', iconSize: [28, 36], iconAnchor: [14, 35], tooltipAnchor: [0, -30],
                 html: '<svg viewBox="0 0 28 36" aria-hidden="true"><path d="M14 34S2 23 2 14a12 12 0 1 1 24 0c0 9-12 20-12 20Z"/><circle cx="14" cy="14" r="4"/></svg>'
             });
@@ -290,7 +362,7 @@
                 iconCreateFunction(cluster) {
                     const count = cluster.getChildCount();
                     cluster.options.title = SiteI18n.t('life.nearby', { count });
-                    const current = selected && cluster.getAllChildMarkers().includes(markers.get(selected));
+                    const current = selected && cluster.getAllChildMarkers().some(marker => marker.options.travelEntry === selected);
                     return L.divIcon({
                         className: `travel-cluster${current ? ' is-selected' : ''}`,
                         html: String(count), iconSize: [36, 36], iconAnchor: [18, 18]
@@ -298,23 +370,17 @@
                 }
             }) : L.featureGroup();
             markerLayer.addTo(map);
-            entries.forEach(entry => {
-                const marker = L.marker(entry.coordinates, { icon, title: `${entry.place}, ${entry.country}`, keyboard: true, autoPanOnFocus: true });
-                marker.bindTooltip(SiteI18n.content(element('span', ''), entry, 'place', { keepDetached: true }), { direction: 'top' });
-                marker.on('click', () => selectPlace(entry));
-                marker.on('add', () => {
-                    const pin = marker.getElement();
-                    labelPin(marker, entry);
-                    pin.setAttribute('aria-pressed', String(selected === entry));
-                    pin.classList.toggle('is-selected', selected === entry);
-                    pin.onkeydown = event => {
-                        if (event.key !== ' ') return;
-                        event.preventDefault();
-                        selectPlace(entry);
-                    };
-                });
-                markers.set(entry, marker);
-                markerLayer.addLayer(marker);
+            countries = L.featureGroup().addTo(map);
+            ensureWorldCopies();
+            map.on('moveend', () => {
+                if (!horizontalWrap) return;
+                const center = map.getCenter();
+                const longitude = L.Util.wrapNum(center.lng, [-180, 180], true);
+                const latitude = Math.max(-85, Math.min(85, center.lat));
+                if (Math.abs(longitude - center.lng) > 1e-7 || Math.abs(latitude - center.lat) > 1e-7) {
+                    // All copies share the same content, so recentering is visually continuous.
+                    map.setView([latitude, longitude], map.getZoom(), { animate: false });
+                }
             });
             map.on('dragstart zoomstart', event => { if (event.type === 'dragstart' || event.originalEvent) worldView = false; });
             // A real user zoom should stay at their chosen scale when the viewport resizes.
@@ -323,6 +389,7 @@
             const resize = () => {
                 fitting = true;
                 map.invalidateSize({ pan: false });
+                ensureWorldCopies();
                 if (worldView) fitWorld();
                 fitting = false;
             };
@@ -350,26 +417,13 @@
             const timeout = setTimeout(() => controller.abort(), 12000);
             try {
                 if (!map) createMap();
-                const response = await fetch(new URL('assets/maps/countries-50m.geo.json', root), { signal: controller.signal });
+                const atlasFile = horizontalWrap ? 'countries-50m-wrapped.geo.json' : (pacificLayout ? 'countries-50m-pacific.geo.json' : 'countries-50m.geo.json');
+                const response = await fetch(new URL(`assets/maps/${atlasFile}`, root), { signal: controller.signal });
                 if (!response.ok) throw new Error(`Map data: ${response.status}`);
                 const features = await response.json();
-                countries = L.geoJSON(features, {
-                    filter: feature => feature.properties.name !== 'Antarctica',
-                    style: feature => ({
-                        className: `travel-country${visited.has(countryKey(feature.properties.name)) ? ' is-visited' : ''}`,
-                        weight: 0.7, fillOpacity: 1
-                    }),
-                    onEachFeature(feature, layer) {
-                        const label = ['344', '446', '158'].includes(String(feature.id))
-                            ? `${feature.properties.name}, China` : feature.properties.name;
-                        const regionZh = { '344': '中国香港', '446': '中国澳门', '158': '中国台湾' };
-                        const nameZh = regionZh[String(feature.id)] || entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))?.countryZh;
-                        layer.bindTooltip(SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }), { sticky: true });
-                        if (visited.has(countryKey(feature.properties.name))) {
-                            layer.on('click', () => selectPlace(entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))));
-                        }
-                    }
-                }).addTo(map);
+                countryFeatures = features;
+                countries.clearLayers();
+                worldOffsets.forEach(addCountryWorld);
                 updateCountries();
                 message.hidden = true;
                 canvas.dataset.state = 'ready';

@@ -89,11 +89,14 @@ const travelData = [
         "placeZh": "曼谷",
         "country": "Thailand",
         "countryZh": "泰国",
-        "coordinates": [13.7269, 100.5111],
-        "title": "Along the Chao Phraya",
-        "titleZh": "湄南河畔",
-        "description": "A view along the Chao Phraya River in Bangkok.",
-        "descriptionZh": "沿着湄南河，看看曼谷的另一面。",
+        "coordinates": [
+            13.7269,
+            100.5111
+        ],
+        "title": "Bangkok",
+        "titleZh": "曼谷",
+        "description": "An A380 at the airport, the Grand Palace, and views along the Chao Phraya River.",
+        "descriptionZh": "机场的 A380、大皇宫，还有湄南河边的风景。",
         "photos": [
             {
                 "src": "images/life/bangkok/chao-phraya-river.jpg",
@@ -101,6 +104,20 @@ const travelData = [
                 "altZh": "曼谷湄南河沿岸的景色",
                 "caption": "Chao Phraya River, Bangkok.",
                 "captionZh": "曼谷，湄南河。"
+            },
+            {
+                "src": "images/life/bangkok/first-a380-flight.jpg",
+                "alt": "An Emirates Airbus A380 parked at a gate, viewed through a terminal window in Bangkok",
+                "altZh": "从曼谷机场航站楼窗前看到停靠登机口的阿联酋航空 A380",
+                "caption": "My first A380 flight, departing from Bangkok.",
+                "captionZh": "第一次坐 A380，从曼谷出发。"
+            },
+            {
+                "src": "images/life/bangkok/grand-palace.jpg",
+                "alt": "Ornate golden roofs and spires above trees in the Grand Palace complex in Bangkok",
+                "altZh": "曼谷大皇宫内，金色屋顶和尖塔掩映在绿树之间",
+                "caption": "Golden roofs and green gardens at the Grand Palace, Bangkok.",
+                "captionZh": "曼谷大皇宫，金色屋顶下是满眼的绿。"
             }
         ]
     },
@@ -173,11 +190,14 @@ const travelData = [
         "placeZh": "威海",
         "country": "China",
         "countryZh": "中国",
-        "coordinates": [37.529, 122.0778],
+        "coordinates": [
+            37.529,
+            122.0778
+        ],
         "title": "Harbin Institute of Technology, Weihai",
         "titleZh": "哈尔滨工业大学（威海）",
-        "description": "The main building of Harbin Institute of Technology in Weihai.",
-        "descriptionZh": "哈尔滨工业大学威海校区的主楼。",
+        "description": "The main building of Harbin Institute of Technology, Weihai, by day and after dark.",
+        "descriptionZh": "同一座主楼，从白天看到灯火亮起。",
         "photos": [
             {
                 "src": "images/life/weihai/hit-main-building.jpg",
@@ -185,6 +205,13 @@ const travelData = [
                 "altZh": "哈尔滨工业大学威海校区主楼",
                 "caption": "Main building, Harbin Institute of Technology, Weihai.",
                 "captionZh": "威海，哈尔滨工业大学主楼。"
+            },
+            {
+                "src": "images/life/weihai/hit-main-building-at-night.jpg",
+                "alt": "The illuminated main building of Harbin Institute of Technology, Weihai, surrounded by campus buildings at night",
+                "altZh": "夜色中的哈尔滨工业大学威海校区，亮灯的主楼和周围校园建筑",
+                "caption": "The main building of Harbin Institute of Technology, Weihai, after dark.",
+                "captionZh": "威海，亮灯后的哈工大主楼。"
             }
         ]
     },
@@ -564,6 +591,318 @@ const travelData = [
                 "altZh": "澳门国际机场航站楼前停着一架带有特色彩绘涂装的飞机",
                 "caption": "A splash of colour at Macau International Airport.",
                 "captionZh": "澳门国际机场，彩绘机一瞥。"
+            }
+        ]
+    },
+    {
+        "id": "bohol",
+        "place": "Bohol",
+        "placeZh": "薄荷岛",
+        "country": "Philippines",
+        "countryZh": "菲律宾",
+        "coordinates": [
+            9.6405,
+            123.8565
+        ],
+        "title": "Sunset in Bohol",
+        "titleZh": "薄荷岛的日落",
+        "description": "Trees silhouetted against the sunset, with the evening colours reflected in the water.",
+        "descriptionZh": "水面映着晚霞，岸边的树渐渐成了剪影。",
+        "photos": [
+            {
+                "src": "images/life/bohol/sunset-by-the-water.jpg",
+                "alt": "Trees silhouetted against an orange sunset beside a pool overlooking the water in Bohol",
+                "altZh": "薄荷岛日落时，树木在橙色天空下形成剪影，泳池水面映着晚霞",
+                "caption": "Sunset by the water, Bohol, Philippines.",
+                "captionZh": "菲律宾薄荷岛，日落时分。"
+            }
+        ]
+    },
+    {
+        "id": "chongqing",
+        "place": "Chongqing",
+        "placeZh": "重庆",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            29.5568,
+            106.5346
+        ],
+        "title": "The railway at Liziba",
+        "titleZh": "李子坝的轨道",
+        "description": "The elevated railway runs alongside the hillside buildings at Liziba, Chongqing.",
+        "descriptionZh": "楼房、山坡和轻轨挤在同一幅画面里，这很重庆。",
+        "photos": [
+            {
+                "src": "images/life/chongqing/liziba-railway.jpg",
+                "alt": "An elevated railway beside hillside buildings and a colourful mural at Liziba in Chongqing",
+                "altZh": "重庆李子坝的高架轨道、依山而建的楼房和路边彩色壁画",
+                "caption": "Liziba, Chongqing.",
+                "captionZh": "重庆，李子坝。"
+            }
+        ]
+    },
+    {
+        "id": "phuket",
+        "place": "Phuket",
+        "placeZh": "普吉岛",
+        "country": "Thailand",
+        "countryZh": "泰国",
+        "coordinates": [
+            7.895,
+            98.295
+        ],
+        "title": "Patong Beach",
+        "titleZh": "巴东海滩",
+        "description": "Colourful PHUKET letters on the sand, with the sea and a blue sky behind them.",
+        "descriptionZh": "蓝天、海风，还有沙滩上彩色的 PHUKET 字母。",
+        "photos": [
+            {
+                "src": "images/life/phuket/patong-beach.jpg",
+                "alt": "Large colourful PHUKET letters on the sand at Patong Beach beneath a blue sky",
+                "altZh": "巴东海滩上彩色的 PHUKET 大字，身后是海面和蓝天",
+                "caption": "Patong Beach, Phuket, Thailand.",
+                "captionZh": "泰国普吉岛，巴东海滩。"
+            }
+        ]
+    },
+    {
+        "id": "krabi",
+        "place": "Krabi",
+        "placeZh": "甲米",
+        "country": "Thailand",
+        "countryZh": "泰国",
+        "coordinates": [
+            8.0108,
+            98.8378
+        ],
+        "title": "Cliffs by the sea",
+        "titleZh": "甲米的山与海",
+        "description": "Limestone cliffs rising beside the beach in Krabi, with small waves breaking on the sand.",
+        "descriptionZh": "石灰岩山壁从海边拔起，浪一阵阵推上沙滩。",
+        "photos": [
+            {
+                "src": "images/life/krabi/limestone-cliffs-and-sea.jpg",
+                "alt": "Tree-covered limestone cliffs beside a sandy beach and turquoise water in Krabi",
+                "altZh": "甲米海边覆盖绿树的石灰岩山壁、沙滩和蓝绿色海水",
+                "caption": "Along the coast of Krabi, Thailand.",
+                "captionZh": "泰国甲米，海边的山。"
+            }
+        ]
+    },
+    {
+        "id": "qingdao",
+        "place": "Qingdao",
+        "placeZh": "青岛",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            36.0609,
+            120.3807
+        ],
+        "title": "May Fourth Square",
+        "titleZh": "五四广场",
+        "description": "The red sculpture at May Fourth Square, framed by Qingdao's city skyline.",
+        "descriptionZh": "五四广场的红色雕塑，身后是青岛的高楼。",
+        "photos": [
+            {
+                "src": "images/life/qingdao/may-fourth-square.jpg",
+                "alt": "The red spiral sculpture at May Fourth Square with modern buildings behind it in Qingdao",
+                "altZh": "青岛五四广场上的红色螺旋雕塑，背后是城市高楼",
+                "caption": "May Fourth Square, Qingdao.",
+                "captionZh": "青岛，五四广场。"
+            }
+        ]
+    },
+    {
+        "id": "chengdu",
+        "place": "Chengdu",
+        "placeZh": "成都",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            30.6568,
+            104.0773
+        ],
+        "title": "The panda at Chengdu IFS",
+        "titleZh": "IFS 的大熊猫",
+        "description": "Looking up at the giant climbing panda on the facade of Chengdu IFS.",
+        "descriptionZh": "走到 IFS 楼下，抬头就能看见那只爬楼的大熊猫。",
+        "photos": [
+            {
+                "src": "images/life/chengdu/ifs-climbing-panda.jpg",
+                "alt": "The giant panda sculpture on the facade of Chengdu IFS, viewed from street level",
+                "altZh": "从街边仰望成都 IFS 外墙上的巨型熊猫雕塑",
+                "caption": "The climbing panda at Chengdu IFS.",
+                "captionZh": "成都 IFS，爬楼的大熊猫。"
+            }
+        ]
+    },
+    {
+        "id": "xian",
+        "place": "Xi'an",
+        "placeZh": "西安",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            34.2515,
+            108.9413
+        ],
+        "title": "An evening by the city wall",
+        "titleZh": "城墙边的傍晚",
+        "description": "Evening light above Xi'an's city wall, with traffic passing below the gate.",
+        "descriptionZh": "天还没黑，城墙下的车流已经热闹起来。",
+        "photos": [
+            {
+                "src": "images/life/xian/city-wall-at-dusk.jpg",
+                "alt": "Xi'an city wall and a traditional gate tower above street traffic under an evening sky",
+                "altZh": "傍晚天空下的西安城墙和城楼，墙下是街道与车流",
+                "caption": "By the city wall, Xi'an.",
+                "captionZh": "西安，城墙边的傍晚。"
+            }
+        ]
+    },
+    {
+        "id": "lintong",
+        "place": "Lintong, Xi'an",
+        "placeZh": "西安·临潼",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            34.385,
+            109.2731
+        ],
+        "title": "The Terracotta Warriors",
+        "titleZh": "兵马俑",
+        "description": "Rows of terracotta warriors beneath the exhibition hall roof in Lintong, Xi'an.",
+        "descriptionZh": "展厅里的陶俑列成一排排，远看整齐，近看各有神情。",
+        "photos": [
+            {
+                "src": "images/life/lintong/terracotta-warriors.jpg",
+                "alt": "Rows of terracotta warriors in an excavation pit beneath a large exhibition hall roof",
+                "altZh": "兵马俑展厅内，成排的陶俑立在巨大的考古坑中",
+                "caption": "Terracotta Warriors, Lintong, Xi'an.",
+                "captionZh": "西安临潼，兵马俑。"
+            }
+        ]
+    },
+    {
+        "id": "ordos",
+        "place": "Ordos",
+        "placeZh": "鄂尔多斯",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            39.1552,
+            109.2967
+        ],
+        "title": "Sunset on the grassland",
+        "titleZh": "草原日落",
+        "description": "The last orange light over the grassland in Ordos, with a wooden path leading into the distance.",
+        "descriptionZh": "太阳快落下去了，草地上的木栈道一直伸向远处。",
+        "photos": [
+            {
+                "src": "images/life/ordos/grassland-sunset.jpg",
+                "alt": "An orange sunset above the grassland in Ordos with a wooden boardwalk in the foreground",
+                "altZh": "鄂尔多斯草原上的橙色晚霞，前景是一条木栈道",
+                "caption": "Sunset over the grassland, Ordos.",
+                "captionZh": "鄂尔多斯草原，日落时分。"
+            }
+        ]
+    },
+    {
+        "id": "wuhan",
+        "place": "Wuhan",
+        "placeZh": "武汉",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            30.548,
+            114.2931
+        ],
+        "title": "Yellow Crane Tower at night",
+        "titleZh": "黄鹤楼的夜",
+        "description": "Yellow Crane Tower in Wuhan, one of China's Four Great Towers, illuminated against the night sky.",
+        "descriptionZh": "昔人已乘黄鹤去，此地空余黄鹤楼。——崔颢《黄鹤楼》",
+        "photos": [
+            {
+                "src": "images/life/wuhan/yellow-crane-tower-at-night.jpg",
+                "alt": "Yellow Crane Tower illuminated in gold and red against a dark night sky in Wuhan",
+                "altZh": "武汉黄鹤楼在夜空下亮起金色和红色灯光",
+                "caption": "Yellow Crane Tower, Wuhan.",
+                "captionZh": "武汉，黄鹤楼。"
+            }
+        ]
+    },
+    {
+        "id": "changsha",
+        "place": "Changsha",
+        "placeZh": "长沙",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            28.2419,
+            112.9723
+        ],
+        "title": "An evening by the Xiang River",
+        "titleZh": "湘江边的傍晚",
+        "description": "A quiet riverside stop in Changsha, looking across the Xiang River towards the skyline.",
+        "descriptionZh": "在湘江边歇一会儿，隔着水看对岸的天际线。",
+        "photos": [
+            {
+                "src": "images/life/changsha/xiang-river-evening.jpg",
+                "alt": "A riverside terrace overlooking the Xiang River and the opposite skyline beneath an evening sky in Changsha",
+                "altZh": "长沙湘江边的露台，隔着江面可以看到傍晚的天空和对岸天际线",
+                "caption": "By the Xiang River, Changsha.",
+                "captionZh": "长沙，湘江边。"
+            }
+        ]
+    },
+    {
+        "id": "yuncheng",
+        "place": "Yuncheng",
+        "placeZh": "运城",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            34.8396,
+            110.2652
+        ],
+        "title": "Guanque Tower",
+        "titleZh": "鹳雀楼",
+        "description": "Guanque Tower in Yongji, Yuncheng, one of China's Four Great Towers and the subject of Wang Zhihuan's poem On the Stork Tower.",
+        "descriptionZh": "欲穷千里目，更上一层楼。——王之涣《登鹳雀楼》",
+        "photos": [
+            {
+                "src": "images/life/yuncheng/guanque-tower.jpg",
+                "alt": "Guanque Tower rising above a broad stone plaza beneath a cloudy sky in Yongji, Yuncheng",
+                "altZh": "运城永济的鹳雀楼，楼前是宽阔的石铺广场，天空布满云层",
+                "caption": "Guanque Tower, Yongji, Yuncheng.",
+                "captionZh": "运城永济，鹳雀楼。"
+            }
+        ]
+    },
+    {
+        "id": "yueyang",
+        "place": "Yueyang",
+        "placeZh": "岳阳",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            29.3847,
+            113.0883
+        ],
+        "title": "Yueyang Tower",
+        "titleZh": "岳阳楼",
+        "description": "Yueyang Tower beside Dongting Lake, one of China's Four Great Towers, celebrated in Fan Zhongyan's Memorial to Yueyang Tower.",
+        "descriptionZh": "衔远山，吞长江，浩浩汤汤，横无际涯。——范仲淹《岳阳楼记》",
+        "photos": [
+            {
+                "src": "images/life/yueyang/yueyang-tower.jpg",
+                "alt": "The golden curved roofs and dark wooden facade of Yueyang Tower with visitors in the foreground",
+                "altZh": "岳阳楼金色的弯曲屋顶和深色木构立面，楼前有参观的游客",
+                "caption": "Yueyang Tower, Yueyang.",
+                "captionZh": "岳阳，岳阳楼。"
             }
         ]
     }
