@@ -1,13 +1,19 @@
 const configData = {
     "language": {
         "enabled": true, // false: English only, hide the language switch (ignores saved Chinese).
+        "translateHomeIntro": false, // 首页个人介绍暂用英文；教育经历仍随全站语言切换。
         "defaultLanguage": "en", // "en" or "zh-CN"; a visitor's saved choice takes priority when enabled.
         "chineseFont": "source-han-sans" // "source-han-sans" (思源黑体) or "lxgw-wenkai" (霞鹜文楷).
     },
     "siteName": "Yumin's Site",
+    "greeting": "Hello,|this is", // A pipe keeps the desktop line break; mobile joins the greeting.
+    "greetingZh": "嗨，",
     "name": "Zheng Yumin",
+    "nameZh": "郑煜旻", // 暂用的中文姓名，可在这里修改。
     "title": "Ph.D. Candidate | Nanyang Technological University",
+    "titleZh": "博士研究生 | 南洋理工大学",
     "introduction": "Welcome to my homepage!",
+    "introductionZh": "欢迎来到我的个人主页。",
     "email": "yumin004@e.ntu.edu.sg",
     "copyrightYear": 2026,
     "siteLayout": {
@@ -29,47 +35,83 @@ const configData = {
         "mobilePaddingTop": 40,
         "mobilePaddingBottom": 40,
         "mobileFilmGap": 28, // Space before the horizontal filmstrip on mobile.
+        "nameGapZh": 40, // 中文欢迎语到姓名之间的留白；不影响头衔与研究方向。
+        "mobileNameGapZh": 28,
         "educationGap": 56 // Space from the introduction/buttons to Education.
     },
     "projectDirectory": {
         "cardPublicationStyle": "badge" // "badge": venue/year DOI links only; "full": include paper titles. Cards only.
     },
     "travelMap": {
-        "showDates": false // Keep visits undated; set true to display an optional entry date.
+        "showSummary": false, // true: show the place/country counts above the map.
+        "showDates": false, // Keep visits undated; set true to display an optional entry date.
+        "colors": { // 地图配色：海洋、未到访陆地、国界、已到访、选中/悬停、图钉。
+            "light": {
+                "ocean": "#e4eff9",
+                "land": "#faf8f3",
+                "border": "#b7c5d0",
+                "visited": "#7d909f",
+                "selected": "#647d90",
+                "pin": "#285cc4"
+            },
+            "dark": {
+                "ocean": "#111d30",
+                "land": "#293b54",
+                "border": "#17263c",
+                "visited": "#a96c51",
+                "selected": "#e39b79",
+                "pin": "#96b8ff"
+            }
+        }
     },
     "socialLinks": [
         // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },
         // { "icon": "fab fa-github", "url": "#", "label": "GitHub" },
         // { "icon": "fab fa-linkedin", "url": "#", "label": "LinkedIn" },
-        { "icon": "fas fa-envelope", "url": "mailto:yumin004@e.ntu.edu.sg", "label": "Email" },
-        { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967", "label": "ORCID" },
-        { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/", "label": "Lee's group @ NTU" },
-        { "icon": "fas fa-graduation-cap", "url": "https://scholar.google.com/citations?user=Oi2eZTwAAAAJ&hl=en", "label": "Google Scholar" }
+        { "icon": "fas fa-envelope", "url": "mailto:yumin004@e.ntu.edu.sg", "label": "Email", "labelZh": "电子邮箱" },
+        { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967", "label": "ORCID", "labelZh": "ORCID" },
+        { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/", "label": "Lee's group @ NTU", "labelZh": "Lee 课题组 · 南洋理工大学" },
+        { "icon": "fas fa-graduation-cap", "url": "https://scholar.google.com/citations?user=Oi2eZTwAAAAJ&hl=en", "label": "Google Scholar", "labelZh": "谷歌学术" }
     ],
     "aboutMe": [
         "Passionate about Robotics, Signal Processing, and Microelectronics.",
         // "Currently pursuing a Ph.D. at Nanyang Technological University (NTU), Singapore."
     ],
+    "aboutMeZh": [
+        "机器人 | 信号处理 | 微电子与植入式系统"
+    ],
     "education": [
         {
             "year": "2023 - Present",
+            "yearZh": "2023 — 至今",
             "degree": "Ph.D. in Electrical and Electronic Engineering",
-            "institution": "Nanyang Technological University (NTU)"
+            "degreeZh": "博士研究生（电气与电子工程）",
+            "institution": "Nanyang Technological University (NTU)",
+            "institutionZh": "南洋理工大学（NTU）"
         },
         {
             "year": "2021 - 2022",
+            "yearZh": "2021 — 2022",
             "degree": "M.Sc. in Computer Control and Automation",
-            "institution": "Nanyang Technological University (NTU)"
+            "degreeZh": "理学硕士（计算机控制与自动化）",
+            "institution": "Nanyang Technological University (NTU)",
+            "institutionZh": "南洋理工大学（NTU）"
         },
         {
             "year": "2017 - 2021",
+            "yearZh": "2017 — 2021",
             "degree": "B.M. in Financial Management",
-            "institution": "Harbin Institute of Technology (HIT)"
+            "degreeZh": "管理学学士（财务管理）",
+            "institution": "Harbin Institute of Technology (HIT)",
+            "institutionZh": "哈尔滨工业大学（HIT）"
         },
         {
             "year": "2017 - 2021",
+            "yearZh": "2017 — 2021",
             "degree": "B.E. in Measurement and Control Technology and Instruments",
-            "institution": "Harbin Institute of Technology (HIT)"
+            "degreeZh": "工学学士（测控技术与仪器）",
+            "institution": "Harbin Institute of Technology (HIT)",
+            "institutionZh": "哈尔滨工业大学（HIT）"
         }
     ],
     // "avatar": ""

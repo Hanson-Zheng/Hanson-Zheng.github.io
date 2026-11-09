@@ -79,6 +79,18 @@ function renderSiteAuthors(container, data, highlightNames = [], { showNotes = t
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Visible link labels and their accessible names follow the same content language.
+    const newsLinkLabels = new WeakMap();
+    function refreshNewsLinkLabel(link, record) {
+        link.setAttribute('aria-label', `${record.label.textContent}: ${SiteI18n.value(record.item, 'title')}`);
+    }
+    window.addEventListener('site:languagechange', () => {
+        document.querySelectorAll('.news-links a').forEach(link => {
+            const record = newsLinkLabels.get(link);
+            if (record) refreshNewsLinkLabel(link, record);
+        });
+    });
+
     // Shared geometry lives in config.js; CSS keeps fallbacks for missing data.
     const siteLayout = typeof configData === 'undefined' ? {} : configData.siteLayout ?? {};
     const homeLayout = typeof configData === 'undefined' ? {} : configData.homeLayout ?? {};
@@ -100,6 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
         '--home-mobile-padding-top': `${pixels(homeLayout.mobilePaddingTop, 40)}px`,
         '--home-mobile-padding-bottom': `${pixels(homeLayout.mobilePaddingBottom, 40)}px`,
         '--home-mobile-film-gap': `${pixels(homeLayout.mobileFilmGap, 28)}px`,
+        '--home-name-gap-zh': `${pixels(homeLayout.nameGapZh, 40)}px`,
+        '--home-mobile-name-gap-zh': `${pixels(homeLayout.mobileNameGapZh, 28)}px`,
         '--home-education-gap': `${pixels(homeLayout.educationGap, 56)}px`
     };
     Object.entries(geometry).forEach(([name, value]) => document.documentElement.style.setProperty(name, value));
@@ -224,6 +238,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // Spend the free space beside the logo before reducing actual item spacing.
+    const navigationContainer = document.querySelector('.nav-container');
+    const navigationLogo = navigationContainer?.querySelector('.logo');
+    const desktopNavigation = matchMedia('(min-width: 769px)');
+    let navigationFitFrame = 0;
+    function fitNavigation() {
+        if (!navigationContainer || !navLinksContainer || !navigationLogo) return;
+        if (!desktopNavigation.matches) {
+            navigationContainer.removeAttribute('data-nav-density');
+            navLinksContainer.style.removeProperty('--nav-item-gap');
+            return;
+        }
+        const style = getComputedStyle(navigationContainer);
+        const available = navigationContainer.clientWidth - parseFloat(style.paddingLeft)
+            - parseFloat(style.paddingRight) - navigationLogo.getBoundingClientRect().width
+            - (parseFloat(style.columnGap) || 24);
+        const items = [...navLinksContainer.children].filter(item => getComputedStyle(item).display !== 'none');
+        const gaps = Math.max(1, items.length - 1);
+        let gap = 30;
+        for (const density of ['comfortable', 'compact', 'minimal']) {
+            navigationContainer.dataset.navDensity = density;
+            const itemWidth = items.reduce((sum, item) => sum + item.getBoundingClientRect().width, 0);
+            const room = (available - itemWidth) / gaps;
+            gap = Math.max(12, Math.min(30, room));
+            if (room >= 12) break;
+        }
+        navLinksContainer.style.setProperty('--nav-item-gap', `${gap}px`);
+    }
+    function scheduleNavigationFit() {
+        if (navigationFitFrame) return;
+        navigationFitFrame = requestAnimationFrame(() => {
+            navigationFitFrame = 0;
+            fitNavigation();
+        });
+    }
+    if (navigationContainer) {
+        new ResizeObserver(scheduleNavigationFit).observe(navigationContainer);
+        desktopNavigation.addEventListener('change', scheduleNavigationFit);
+        window.addEventListener('resize', scheduleNavigationFit, { passive: true });
+        window.addEventListener('site:languagechange', scheduleNavigationFit);
+        document.querySelector('.theme-toggle-btn')?.addEventListener('click', scheduleNavigationFit);
+        document.fonts?.ready.then(scheduleNavigationFit);
+        document.fonts?.addEventListener('loadingdone', scheduleNavigationFit);
+        scheduleNavigationFit();
+    }
+
     // --- 1. Home Profile & Shared Contact ---
     if (typeof configData !== 'undefined') {
         const nameEl = document.getElementById('profile-name');
@@ -236,51 +296,117 @@ document.addEventListener('DOMContentLoaded', () => {
         const aboutEl = document.getElementById('profile-about');
         const educationEl = document.getElementById('profile-education');
 
-        // Common Header Info
-        if (nameEl) nameEl.innerHTML = `<span class="hero-greeting">Hello,<br class="hero-desktop-break"> this is</span> <span class="hero-name"><span class="highlight">${configData.name}</span>.</span>`;
-        if (titleEl) {
-            // Keep the title editable in config.js; pipes become mobile line breaks.
-            const titleParts = String(configData.title ?? '').split('|').map(part => part.trim()).filter(Boolean);
-            titleEl.replaceChildren();
-            titleParts.forEach((part, index) => {
-                if (index) {
-                    const separator = document.createElement('span');
-                    separator.className = 'profile-title-separator';
-                    separator.textContent = ' | ';
-                    titleEl.append(separator);
-                }
-                const segment = document.createElement('span');
-                segment.className = 'profile-title-part';
-                segment.textContent = part;
-                titleEl.append(segment);
-            });
+        // Keep the opening English independently of translated education and site navigation.
+        const translateHomeIntro = configData.language?.translateHomeIntro === true;
+        const introSource = translateHomeIntro ? configData
+            : Object.fromEntries(Object.entries(configData).filter(([key]) => !key.endsWith('Zh')));
+
+        const profileField = (tag, className, source, field, options = {}) => {
+            const node = document.createElement(tag);
+            if (className) node.className = className;
+            return SiteI18n.content(node, source, field, options);
+        };
+
+        // Keep the greeting's line breaks separate from the name and its blue highlight.
+        if (nameEl) {
+            const greeting = document.createElement('span');
+            greeting.className = 'hero-greeting';
+            const welcome = profileField('span', 'hero-welcome', introSource, 'introduction');
+            const name = document.createElement('span');
+            name.className = 'hero-name';
+            const ending = document.createElement('span');
+            name.append(profileField('span', 'highlight', introSource, 'name'), ending);
+            nameEl.replaceChildren(greeting, welcome, document.createTextNode(' '), name);
+            const greetingData = {
+                greeting: typeof configData.greeting === 'string' ? configData.greeting : 'Hello,|this is',
+                greetingZh: introSource.greetingZh
+            };
+            const originalPageTitle = document.title;
+            const updateGreeting = () => {
+                const chinese = translateHomeIntro && SiteI18n.language === 'zh-CN';
+                document.title = chinese ? `${SiteI18n.value(introSource, 'name')} | ${SiteI18n.t('nav.home')}` : originalPageTitle;
+                nameEl.dataset.profileLanguage = chinese ? 'zh-CN' : 'en';
+                nameEl.lang = chinese ? 'zh-CN' : 'en';
+                welcome.hidden = !chinese;
+                if (!chinese) welcome.replaceChildren();
+                if (introEl) introEl.hidden = chinese;
+                greeting.lang = chinese && typeof greetingData.greetingZh === 'string' && greetingData.greetingZh.trim() ? 'zh-CN' : 'en';
+                greeting.replaceChildren();
+                SiteI18n.value(greetingData, 'greeting').split('|').forEach((part, index) => {
+                    if (index) {
+                        const lineBreak = document.createElement('br');
+                        lineBreak.className = 'hero-desktop-break';
+                        greeting.append(lineBreak, document.createTextNode(' '));
+                    }
+                    greeting.append(document.createTextNode(part.trim()));
+                });
+                ending.textContent = chinese ? '' : '.';
+            };
+            updateGreeting();
+            window.addEventListener('site:languagechange', updateGreeting);
         }
-        if (introEl) introEl.innerHTML = configData.introduction;
-        
-        // Biography below the welcome text
+        if (titleEl) {
+            // Pipes keep the desktop separator and the existing mobile two-line layout.
+            const updateTitle = () => {
+                const chinese = translateHomeIntro && SiteI18n.language === 'zh-CN';
+                titleEl.lang = chinese && typeof configData.titleZh === 'string' && configData.titleZh.trim() ? 'zh-CN' : 'en';
+                const parts = SiteI18n.value(introSource, 'title').split('|').map(part => part.trim()).filter(Boolean);
+                titleEl.replaceChildren();
+                parts.forEach((part, index) => {
+                    if (index) {
+                        const separator = document.createElement('span');
+                        separator.className = 'profile-title-separator';
+                        separator.textContent = chinese ? ' \u00B7 ' : ' | ';
+                        titleEl.append(separator);
+                    }
+                    const segment = document.createElement('span');
+                    segment.className = 'profile-title-part';
+                    segment.textContent = part;
+                    titleEl.append(segment);
+                });
+            };
+            updateTitle();
+            window.addEventListener('site:languagechange', updateTitle);
+        }
+        if (introEl) SiteI18n.content(introEl, introSource, 'introduction');
+
         if (aboutEl) {
-            const paragraphs = Array.isArray(configData.aboutMe)
-                ? configData.aboutMe
-                : configData.aboutMe ? [configData.aboutMe] : [];
-            aboutEl.innerHTML = paragraphs.map(para => `<p>${para}</p>`).join('');
+            const asParagraphs = value => Array.isArray(value) ? value : value ? [value] : [];
+            const source = { paragraphs: asParagraphs(introSource.aboutMe), paragraphsZh: asParagraphs(introSource.aboutMeZh) };
+            const count = Math.max(source.paragraphs.length, source.paragraphsZh.length);
+            aboutEl.replaceChildren(...Array.from({ length: count }, (_, index) => profileField('p', '', source, 'paragraphs', { index, hideEmpty: true })));
         }
 
-        // Compact education timeline on Home
+        // Each education field keeps its English source beside an optional Chinese version.
         if (educationEl && Array.isArray(configData.education)) {
-            educationEl.innerHTML = configData.education.map(item => `
-                <li class="education-item">
-                    <div class="education-year">${item.year}</div>
-                    <div class="education-details">
-                        <div class="education-degree">
-                            ${item.degree}
-                            ${item.thesis ? `<a href="${item.thesis}" target="_blank" rel="noopener noreferrer" class="education-thesis"><i class="fas fa-link"></i> Thesis</a>` : ''}
-                        </div>
-                        <div class="education-institution">${item.institution}</div>
-                    </div>
-                </li>
-            `).join('');
+            educationEl.replaceChildren(...configData.education.map(item => {
+                const row = document.createElement('li');
+                row.className = 'education-item';
+                const details = document.createElement('div');
+                details.className = 'education-details';
+                const degree = document.createElement('div');
+                degree.className = 'education-degree';
+                degree.append(profileField('span', 'education-degree-text', item, 'degree'));
+                if (item.thesis) {
+                    const thesis = document.createElement('a');
+                    thesis.className = 'education-thesis';
+                    thesis.href = item.thesis;
+                    thesis.target = '_blank';
+                    thesis.rel = 'noopener noreferrer';
+                    const icon = document.createElement('i');
+                    icon.className = 'fas fa-link';
+                    icon.setAttribute('aria-hidden', 'true');
+                    const label = document.createElement('span');
+                    SiteI18n.text(label, 'common.thesis');
+                    thesis.append(icon, document.createTextNode(' '), label);
+                    degree.append(document.createTextNode(' '), thesis);
+                }
+                details.append(degree, profileField('div', 'education-institution', item, 'institution'));
+                row.append(profileField('div', 'education-year', item, 'year'), details);
+                return row;
+            }));
         }
-        
+
         // Contact
         if (contactEmailEl) {
             contactEmailEl.textContent = configData.email;
@@ -300,8 +426,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 anchor.href = link.url;
                 anchor.target = '_blank';
                 anchor.rel = 'noopener noreferrer';
-                anchor.title = link.label || link.url;
-                anchor.setAttribute('aria-label', anchor.title);
+                const label = { label: link.label || link.url, labelZh: link.labelZh };
+                SiteI18n.content(anchor, label, 'label', { attribute: 'title' });
+                SiteI18n.content(anchor, label, 'label', { attribute: 'aria-label' });
                 const icon = document.createElement('i');
                 icon.className = link.icon;
                 icon.setAttribute('aria-hidden', 'true');
@@ -925,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
             image.className = 'news-image-img';
             applySiteCardImage(image, item.image,
                 '(max-width: 768px) calc(100vw - 60px), (min-width: 1600px) 480px, min(720px, calc((100vw - 72px) / 2))');
-            image.alt = item.imageAlt || item.title || '';
+            SiteI18n.content(image, { imageAlt: item.imageAlt || item.title || '', imageAltZh: item.imageAltZh || (!item.imageAlt ? item.titleZh : undefined) }, 'imageAlt', { attribute: 'alt' });
             image.loading = 'lazy';
             image.decoding = 'async';
             if (['contain', 'cover'].includes(item.imageFit)) image.style.objectFit = item.imageFit;
@@ -942,10 +1069,10 @@ document.addEventListener('DOMContentLoaded', () => {
         date.textContent = item.date || '';
         const title = document.createElement('h3');
         title.className = 'news-title';
-        title.textContent = item.title || '';
+        SiteI18n.content(title, item, 'title');
         const description = document.createElement('p');
         description.className = 'news-desc';
-        description.textContent = item.description || '';
+        SiteI18n.content(description, item, 'description');
         content.append(date, title, description);
         card.append(content);
 
@@ -971,12 +1098,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.append(icon);
             }
             const labelText = document.createElement('span');
-            labelText.textContent = label;
+            const customLabel = (typeof info.label === 'string' && info.label.trim()) || (typeof info.labelZh === 'string' && info.labelZh.trim());
+            if (customLabel) SiteI18n.content(labelText, { label, labelZh: info.labelZh }, 'label');
+            else SiteI18n.text(labelText, 'common.readMore');
             link.append(labelText);
             link.href = destination.href;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.setAttribute('aria-label', `${label}: ${item.title}`);
+            const labelRecord = { label: labelText, item };
+            newsLinkLabels.set(link, labelRecord);
+            refreshNewsLinkLabel(link, labelRecord);
             linkGroup.appendChild(link);
         });
         if (linkGroup.childElementCount) {
@@ -1046,6 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             container.classList.remove('is-view-changing');
         };
         window.addEventListener('resize', cancelViewAnimation, { passive: true });
+        window.addEventListener('site:languagechange', cancelViewAnimation);
         reducedMotion.addEventListener('change', cancelViewAnimation);
         container.addEventListener('pointerdown', cancelViewAnimation);
         container.addEventListener('keydown', cancelViewAnimation);
@@ -1099,7 +1231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         date.textContent = item.date || '';
         const title = document.createElement('h3');
         title.className = 'highlight-entry-title';
-        title.textContent = item.title || '';
+        SiteI18n.content(title, item, 'title');
         const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         arrow.setAttribute('viewBox', '0 0 20 20');
         arrow.setAttribute('fill', 'none');

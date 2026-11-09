@@ -27,6 +27,8 @@ const siteTranslations = {
     },
     // 通用按钮与提示
     common: {
+        thesis: {"en": "Thesis", "zh-CN": "学位论文"},
+        readMore: {"en": "Read more", "zh-CN": "了解更多"},
         search: {"en": "Search", "zh-CN": "搜索"},
         keywords: {"en": "Keywords…", "zh-CN": "输入关键词…"},
         clear: {"en": "Clear search", "zh-CN": "清除搜索"},
@@ -144,7 +146,7 @@ const siteTranslations = {
         world: {"en": "World view", "zh-CN": "世界全景"},
         wholeWorld: {"en": "Show the whole world", "zh-CN": "查看世界全景"},
         legend: {"en": "Places with stories", "zh-CN": "足迹"},
-        zoomHint: {"en": "Alt + scroll to zoom", "zh-CN": "按住 Alt + 滚轮缩放"},
+        zoomHint: {"en": "Scroll to zoom", "zh-CN": "滚轮缩放"},
         selected: {"en": "Selected place photographs", "zh-CN": "所选地点的照片"},
         soon: {"en": "New places, soon.", "zh-CN": "新的足迹，敬请期待。"},
         enableJS: {"en": "Enable JavaScript to explore the map and photographs.", "zh-CN": "请启用 JavaScript 以浏览地图和照片。"},

@@ -4,6 +4,33 @@ body, html .leaflet-container {
 }
 button, input, textarea, select { font-family: inherit; }
 .travel-photo-button .travel-photo-error { font-family: inherit; }
+/* Chinese Home: greeting, welcome, name, title, then a compact research line. */
+.home-page .hero-text h1[data-profile-language="zh-CN"] { letter-spacing: 0; margin-bottom: 8px; }
+.home-page h1[data-profile-language="zh-CN"] .hero-greeting {
+    display: block;
+    font-size: clamp(1.625rem, 3vw, 3rem);
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.015em;
+    white-space: normal;
+}
+.home-page h1[data-profile-language="zh-CN"] .hero-name {
+    display: block;
+    margin-top: var(--home-name-gap-zh, 40px);
+    font-size: clamp(3.75rem, 7vw, 6.25rem);
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+.home-page h1[data-profile-language="zh-CN"] .hero-welcome {
+    display: block;
+    font-size: clamp(1.125rem, 1.8vw, 1.75rem);
+    font-weight: 400;
+    line-height: 1.65;
+    letter-spacing: 0;
+}
+.home-page #profile-title[lang="zh-CN"] { margin-bottom: 6px; }
 .language-toggle-item { display: flex; align-items: center; }
 .language-toggle-item[hidden] { display: none; }
 .language-toggle-btn {
@@ -23,10 +50,38 @@ button, input, textarea, select { font-family: inherit; }
 }
 .language-toggle-btn:hover { color: var(--accent-color); border-color: var(--accent-color); }
 .language-toggle-btn:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }
-@media (min-width: 769px) and (max-width: 1100px) {
-    .nav-links { gap: 12px; }
-}
 @media (max-width: 768px) {
+    .home-page h1[data-profile-language="zh-CN"] .hero-name { margin-top: var(--home-mobile-name-gap-zh, 28px); }
     .nav-mobile-actions { gap: 8px; }
     .nav-mobile-actions .language-toggle-btn { min-width: 38px; height: 38px; padding: 0; }
+}
+
+/* Short Chinese labels fit in one row; English keeps the stacked mobile menu. */
+@media (max-width: 768px) {
+    html[lang="zh-CN"] .nav-links.active {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0;
+        padding: 10px 12px;
+    }
+    html[lang="zh-CN"] .nav-links > li { min-width: 0; }
+    html[lang="zh-CN"] .nav-links > li + li:not([hidden]) {
+        border-inline-start: 1px solid var(--border-color);
+    }
+    html[lang="zh-CN"] .nav-links > li > a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 48px;
+        padding: 6px 2px;
+        font-size: clamp(0.8125rem, 3.8vw, 0.95rem);
+        white-space: nowrap;
+    }
+    html[lang="zh-CN"] .nav-links a.nav-contact {
+        gap: 4px;
+        border: 0;
+        border-radius: 0;
+    }
+    html[lang="zh-CN"] .nav-links .nav-contact i { font-size: 0.6rem; }
 }

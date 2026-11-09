@@ -8,14 +8,14 @@
 .travel-heading p { margin-top: 8px; color: var(--light-text); font-size: 0.9rem; }
 .travel-heading .travel-summary { flex: none; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
 .travel-atlas {
-    --travel-ocean: #f1f5fa;
-    --travel-land: #dce4ef;
-    --travel-stroke: #fff;
-    --travel-visited: #d5a18a;
-    --travel-selected: #ad5438;
-    --travel-pin: #285cc4;
+    --travel-ocean: var(--travel-light-ocean, #e4eff9);
+    --travel-land: var(--travel-light-land, #faf8f3);
+    --travel-stroke: var(--travel-light-border, #b7c5d0);
+    --travel-visited: var(--travel-light-visited, #7d909f);
+    --travel-selected: var(--travel-light-selected, #647d90);
+    --travel-pin: var(--travel-light-pin, #285cc4);
     --travel-cluster-bg: #fff;
-    --travel-cluster-text: #285cc4;
+    --travel-cluster-text: var(--travel-pin);
     display: grid;
     grid-template-columns: minmax(0, 1.9fr) minmax(280px, 1fr);
     border: 1px solid var(--border-color);
@@ -24,14 +24,14 @@
     background: var(--bg-color);
 }
 [data-theme="dark"] .travel-atlas {
-    --travel-ocean: #111d30;
-    --travel-land: #293b54;
-    --travel-stroke: #17263c;
-    --travel-visited: #a96c51;
-    --travel-selected: #e39b79;
-    --travel-pin: #96b8ff;
+    --travel-ocean: var(--travel-dark-ocean, #111d30);
+    --travel-land: var(--travel-dark-land, #293b54);
+    --travel-stroke: var(--travel-dark-border, #17263c);
+    --travel-visited: var(--travel-dark-visited, #a96c51);
+    --travel-selected: var(--travel-dark-selected, #e39b79);
+    --travel-pin: var(--travel-dark-pin, #96b8ff);
     --travel-cluster-bg: #15233a;
-    --travel-cluster-text: #96b8ff;
+    --travel-cluster-text: var(--travel-pin);
 }
 .life-page { padding-top: calc(var(--nav-height) + 40px); }
 .life-brewing-caption { white-space: pre-line; }

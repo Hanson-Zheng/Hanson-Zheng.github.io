@@ -115,6 +115,7 @@ ul {
 
 .nav-container {
     display: flex;
+    gap: 24px;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -157,8 +158,9 @@ ul {
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: var(--nav-item-gap, 30px);
     align-items: center;
+    flex: none;
 }
 
 .nav-links a {
@@ -172,18 +174,19 @@ ul {
 }
 
 .nav-links a[aria-current] {
-    color: var(--primary-color);
-    font-weight: 600;
+    color: var(--accent-color);
 }
 
-/* A short rule marks the current page without a filled tab. */
 .nav-links > li > a:not(.nav-contact) {
     position: relative;
     display: inline-flex;
     align-items: center;
     min-height: 40px;
+    justify-content: center;
+    white-space: nowrap;
 }
-.nav-links > li > a:not(.nav-contact)::after {
+
+.nav-links > li > a[aria-current]::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -192,22 +195,7 @@ ul {
     height: 2px;
     border-radius: 2px;
     background: var(--accent-color);
-    transform: translateX(-50%) scaleX(0.45);
-    opacity: 0;
-    transition: transform 200ms ease, opacity 200ms ease;
-}
-.nav-links > li > a[aria-current]::after {
-    transform: translateX(-50%) scaleX(1);
-    opacity: 1;
-}
-@media (hover: hover) and (pointer: fine) {
-    .nav-links > li > a:not(.nav-contact):not([aria-current]):hover::after {
-        transform: translateX(-50%) scaleX(0.65);
-        opacity: 0.45;
-    }
-}
-@media (prefers-reduced-motion: reduce) {
-    .nav-links > li > a::after { transition: none; }
+    transform: translateX(-50%);
 }
 
 .nav-links a.nav-contact {
@@ -275,15 +263,15 @@ ul {
     font-size: 0.9rem;
 }
 
-@media (min-width: 769px) and (max-width: 1000px) {
-    .nav-links { gap: 16px; }
-    .nav-links a { font-size: 0.88rem; }
-    .nav-links a.nav-contact { padding: 6px 9px; font-size: 0.84rem; }
-    .theme-toggle-btn { padding: 6px 9px; }
-}
-@media (min-width: 769px) and (max-width: 860px) {
-    .nav-links { gap: 12px; }
-    .theme-toggle-btn span { display: none; }
+@media (min-width: 769px) {
+    .nav-links > li { flex: none; }
+    .nav-container[data-nav-density="compact"] .nav-links a,
+    .nav-container[data-nav-density="minimal"] .nav-links a { font-size: 0.9rem; }
+    .nav-container[data-nav-density="compact"] .nav-links a.nav-contact,
+    .nav-container[data-nav-density="minimal"] .nav-links a.nav-contact { padding: 6px 9px; font-size: 0.84rem; }
+    .nav-container[data-nav-density="compact"] .theme-toggle-btn,
+    .nav-container[data-nav-density="minimal"] .theme-toggle-btn { padding: 6px 9px; }
+    .nav-container[data-nav-density="minimal"] .theme-toggle-btn span { display: none; }
 }
 
 /* Hero Section */

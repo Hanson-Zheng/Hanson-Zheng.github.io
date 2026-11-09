@@ -4,6 +4,17 @@
     document.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById('travel-map');
         if (!canvas) return;
+        // Theme-specific variables let palette changes follow the shared theme toggle.
+        const atlas = canvas.closest('.travel-atlas');
+        const palette = typeof configData !== 'undefined' ? configData.travelMap?.colors : null;
+        for (const theme of ['light', 'dark']) {
+            for (const key of ['ocean', 'land', 'border', 'visited', 'selected', 'pin']) {
+                const color = palette?.[theme]?.[key];
+                if (atlas && typeof color === 'string' && CSS.supports('color', color)) {
+                    atlas.style.setProperty(`--travel-${theme}-${key}`, color);
+                }
+            }
+        }
         const story = document.getElementById('travel-story');
         const message = document.getElementById('travel-map-message');
         const retry = document.getElementById('travel-map-retry');
@@ -213,7 +224,11 @@
             }
         }
 
-        if (entries.length) SiteI18n.text(document.getElementById('travel-summary'), 'life.summary', { places: entries.length, countries: visited.size });
+        const summary = document.getElementById('travel-summary');
+        if (summary) {
+            SiteI18n.text(summary, 'life.summary', { places: entries.length, countries: visited.size });
+            summary.hidden = !(typeof configData !== 'undefined' && configData.travelMap?.showSummary === true);
+        }
         if (entries.length) selectPlace(entries[0], false);
 
         function fitWorld() {
@@ -243,13 +258,13 @@
             };
             zoomLabels();
             window.addEventListener('site:languagechange', zoomLabels);
-            // Keep regular scrolling for the page; Alt+wheel zooms only this map.
+            // Wheel zoom stays anchored to the pointer; modified gestures remain available to the browser.
             let wheelTarget = null;
             let wheelPoint;
             let wheelTime = 0;
             let wheelFrame = 0;
             canvas.addEventListener('wheel', event => {
-                if (!event.altKey || event.ctrlKey || event.metaKey || !event.deltaY) return;
+                if (event.ctrlKey || event.metaKey || !event.deltaY) return;
                 event.preventDefault();
                 const now = performance.now();
                 if (wheelTarget === null || now - wheelTime > 180) wheelTarget = map.getZoom();
