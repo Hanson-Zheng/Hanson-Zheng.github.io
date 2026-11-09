@@ -33,6 +33,10 @@
             ? Math.max(min, Math.min(max, labelConfig[key])) : fallback;
         const countryMinZoom = labelOption('countryMinZoom', 3, 0, 22);
         const cityMinZoom = labelOption('cityMinZoom', 4, 0, 22);
+        const cityFontSize = labelOption('cityFontSize', 15, 11, 20);
+        const cityLineHeight = Math.ceil(cityFontSize * 1.6);
+        canvas.style.setProperty('--travel-city-font-size', `${cityFontSize}px`);
+        canvas.style.setProperty('--travel-city-line-height', `${cityLineHeight}px`);
         const countryOpacity = labelOption('countryOpacity', 0.28, 0, 1);
         const countryMaxFontSize = labelOption('countryMaxFontSize', 64, 18, 120);
         const entries = (typeof travelData === 'undefined' || !Array.isArray(travelData) ? [] : travelData)
@@ -254,59 +258,79 @@
                 && !polygon.slice(1).some(ring => pointInRing(x, y, ring)));
         }
 
-        function containsCountryRectangle(record, rectangle) {
-            // Mercator maps axis-aligned screen rectangles to axis-aligned lon/lat
-            // rectangles. Keep a 3px inset from the actual national/coastal boundary.
-            const nw = map.containerPointToLatLng([rectangle.left - 3, rectangle.top - 3]);
-            const se = map.containerPointToLatLng([rectangle.right + 3, rectangle.bottom + 3]);
+        function countryRectangle(record, rectangle, padding = 0) {
+            const nw = map.containerPointToLatLng([rectangle.left - padding, rectangle.top - padding]);
+            const se = map.containerPointToLatLng([rectangle.right + padding, rectangle.bottom + padding]);
             const left = nw.lng - record.offset, right = se.lng - record.offset;
             const bottom = se.lat, top = nw.lat;
-            const corners = [[left, bottom], [left, top], [right, top], [right, bottom]];
-            function crossesRectangle(a, b) {
-                if (Math.max(a[0], b[0]) < left || Math.min(a[0], b[0]) > right
-                    || Math.max(a[1], b[1]) < bottom || Math.min(a[1], b[1]) > top) return false;
-                let lower = 0, upper = 1;
-                const dx = b[0] - a[0], dy = b[1] - a[1];
-                for (const [p, q] of [[-dx, a[0] - left], [dx, right - a[0]], [-dy, a[1] - bottom], [dy, top - a[1]]]) {
-                    if (p === 0) { if (q < 0) return false; }
-                    else {
-                        const ratio = q / p;
-                        if (p < 0) lower = Math.max(lower, ratio);
-                        else upper = Math.min(upper, ratio);
-                        if (lower > upper) return false;
-                    }
+            return { left, right, bottom, top, corners: [[left, bottom], [left, top], [right, top], [right, bottom]] };
+        }
+
+        function segmentIntersectsRectangle(a, b, rectangle) {
+            const { left, right, bottom, top } = rectangle;
+            if (Math.max(a[0], b[0]) < left || Math.min(a[0], b[0]) > right
+                || Math.max(a[1], b[1]) < bottom || Math.min(a[1], b[1]) > top) return false;
+            let lower = 0, upper = 1;
+            const dx = b[0] - a[0], dy = b[1] - a[1];
+            for (const [p, q] of [[-dx, a[0] - left], [dx, right - a[0]], [-dy, a[1] - bottom], [dy, top - a[1]]]) {
+                if (p === 0) { if (q < 0) return false; }
+                else {
+                    const ratio = q / p;
+                    if (p < 0) lower = Math.max(lower, ratio);
+                    else upper = Math.min(upper, ratio);
+                    if (lower > upper) return false;
                 }
-                return true;
             }
+            return true;
+        }
+
+        function containsCountryRectangle(record, rectangle) {
+            // Keep the complete label 3px inside a single land polygon.
+            const region = countryRectangle(record, rectangle, 3);
             return countryPolygons(record).some(polygon => {
-                if (!corners.every(([x, y]) => pointInRing(x, y, polygon[0])
+                if (!region.corners.every(([x, y]) => pointInRing(x, y, polygon[0])
                     && !polygon.slice(1).some(ring => pointInRing(x, y, ring)))) return false;
-                // Checking every ring also rejects concave coastal bites, enclaves,
-                // inland holes and sea channels wholly inside the label rectangle.
-                return polygon.every(ring => !ring.some((point, index) => index > 0 && crossesRectangle(ring[index - 1], point)));
+                return polygon.every(ring => !ring.some((point, index) => index > 0
+                    && segmentIntersectsRectangle(ring[index - 1], point, region)));
             });
         }
 
-        function cityInkForSurface(color, ocean) {
-            const key = `${ocean}|${color}`;
-            if (!cityInkCache.has(key)) {
-                // Resolve configured CSS colors, including alpha, against the ocean.
-                labelMeasure.clearRect(0, 0, 1, 1);
-                labelMeasure.fillStyle = ocean;
-                labelMeasure.fillRect(0, 0, 1, 1);
-                labelMeasure.fillStyle = color;
-                labelMeasure.fillRect(0, 0, 1, 1);
-                const pixel = labelMeasure.getImageData(0, 0, 1, 1).data;
-                const luminance = rgb => [...rgb].slice(0, 3).reduce((sum, value, index) => {
-                    const c = value / 255;
-                    return sum + [0.2126, 0.7152, 0.0722][index] * (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
-                }, 0);
-                const background = luminance(pixel);
-                const darkContrast = (background + 0.05) / (luminance([11, 18, 32]) + 0.05);
-                const lightContrast = (luminance([248, 250, 252]) + 0.05) / (background + 0.05);
-                cityInkCache.set(key, darkContrast >= lightContrast ? '#0b1220' : '#f8fafc');
+        function intersectsCountryRectangle(record, rectangle) {
+            const region = countryRectangle(record, rectangle, 1);
+            return countryPolygons(record).some(polygon =>
+                region.corners.some(([x, y]) => pointInRing(x, y, polygon[0])
+                    && !polygon.slice(1).some(ring => pointInRing(x, y, ring)))
+                || polygon.some(ring => ring.some((point, index) => index > 0
+                    && segmentIntersectsRectangle(ring[index - 1], point, region))));
+        }
+
+        function cityInkForSurfaces(colors, ocean) {
+            let darkContrast = Infinity, lightContrast = Infinity;
+            for (const color of new Set(colors)) {
+                const key = `${ocean}|${color}`;
+                if (!cityInkCache.has(key)) {
+                    labelMeasure.clearRect(0, 0, 1, 1);
+                    labelMeasure.fillStyle = ocean;
+                    labelMeasure.fillRect(0, 0, 1, 1);
+                    labelMeasure.fillStyle = color;
+                    labelMeasure.fillRect(0, 0, 1, 1);
+                    const pixel = labelMeasure.getImageData(0, 0, 1, 1).data;
+                    const luminance = rgb => [...rgb].slice(0, 3).reduce((sum, value, index) => {
+                        const c = value / 255;
+                        return sum + [0.2126, 0.7152, 0.0722][index] * (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+                    }, 0);
+                    const background = luminance(pixel);
+                    cityInkCache.set(key, {
+                        dark: (background + 0.05) / (luminance([11, 18, 32]) + 0.05),
+                        light: (luminance([248, 250, 252]) + 0.05) / (background + 0.05)
+                    });
+                }
+                const scores = cityInkCache.get(key);
+                darkContrast = Math.min(darkContrast, scores.dark);
+                lightContrast = Math.min(lightContrast, scores.light);
             }
-            return cityInkCache.get(key);
+            return { color: darkContrast >= lightContrast ? '#0b1220' : '#f8fafc',
+                contrast: Math.max(darkContrast, lightContrast) };
         }
 
         function labelNode(cache, key, pane, className) {
@@ -333,7 +357,7 @@
             const surfaceStyle = getComputedStyle(atlas);
             const surfaceColors = Object.fromEntries(['ocean', 'land', 'visited', 'selected']
                 .map(key => [key, surfaceStyle.getPropertyValue(`--travel-${key}`).trim()]));
-            const countryWeight = fontSize => SiteI18n.language === 'zh-CN' ? 500 : (fontSize < 28 ? 400 : 300);
+            const countryWeight = fontSize => fontSize < 28 ? 400 : 300;
             const textWidth = (text, fontSize, weight, spacing = 0, fontFamily = family) => {
                 labelMeasure.font = `${weight} ${fontSize}px ${fontFamily}`;
                 return labelMeasure.measureText(text).width + [...text].length * spacing;
@@ -366,27 +390,37 @@
                 || a.point.distanceTo(size.divideBy(2)) - b.point.distanceTo(size.divideBy(2)));
             for (const { marker, entry, point } of pins) {
                 const name = SiteI18n.value(entry, 'place');
-                const width = textWidth(name, 13, entry === selected ? 600 : 500) + 4;
-                const height = 20;
-                const positions = [[point.x + 23, point.y - 33], [point.x - 23 - width, point.y - 33],
-                    [point.x - width / 2, point.y - 59], [point.x - width / 2, point.y + 9]];
+                const width = textWidth(name, cityFontSize, entry === selected ? 600 : 500) + 4;
+                const height = cityLineHeight;
+                const positions = [[point.x + 23, point.y - 24 - height / 2], [point.x - 23 - width, point.y - 24 - height / 2],
+                    [point.x - width / 2, point.y - 42 - height], [point.x - width / 2, point.y + 9],
+                    [point.x + 23, point.y - 42 - height], [point.x - 23 - width, point.y - 42 - height],
+                    [point.x + 23, point.y + 9], [point.x - 23 - width, point.y + 9]];
                 for (const [x, y] of positions) {
                     const rectangle = { left: x, top: y, right: x + width, bottom: y + height };
                     if (rectangle.left < screen.left || rectangle.right > screen.right
                         || rectangle.top < screen.top || rectangle.bottom > screen.bottom
                         || obstacles.some(other => intersects(rectangle, other, 4))) continue;
+                    const nw = map.containerPointToLatLng([rectangle.left - 1, rectangle.top - 1]);
+                    const se = map.containerPointToLatLng([rectangle.right + 1, rectangle.bottom + 1]);
+                    const nearby = visibleCountries.filter(record => record.layer.getBounds().intersects(L.latLngBounds(nw, se)));
+                    const backgroundFor = record => {
+                        const key = countryKey(record.feature.properties.name);
+                        return selected && key === countryKey(selected.country) ? surfaceColors.selected
+                            : visited.has(key) ? surfaceColors.visited : surfaceColors.land;
+                    };
+                    const containing = nearby.find(record => containsCountryRectangle(record, rectangle));
+                    // If no single land polygon contains the complete word, include
+                    // every intersecting land surface and the ocean conservatively.
+                    const backgrounds = containing ? [backgroundFor(containing)] : [surfaceColors.ocean,
+                        ...nearby.filter(record => intersectsCountryRectangle(record, rectangle)).map(backgroundFor)];
+                    const ink = cityInkForSurfaces(backgrounds, surfaceColors.ocean);
+                    if (ink.contrast < 4) continue;
                     const node = labelNode(cityLabelNodes, marker, cityLabelPane, 'travel-city-label');
                     node.firstElementChild.textContent = name;
                     node.lang = SiteI18n.language;
                     node.classList.toggle('is-selected', entry === selected);
-                    const labelCenter = L.point(x + width / 2, y + height / 2);
-                    const location = map.containerPointToLatLng(labelCenter);
-                    const surface = visibleCountries.find(record => record.layer.getBounds().contains(location)
-                        && containsCountryPoint(record, labelCenter));
-                    const key = surface ? countryKey(surface.feature.properties.name) : null;
-                    const background = !surface ? surfaceColors.ocean : selected && key === countryKey(selected.country)
-                        ? surfaceColors.selected : visited.has(key) ? surfaceColors.visited : surfaceColors.land;
-                    node.style.color = cityInkForSurface(background, surfaceColors.ocean);
+                    node.style.color = ink.color;
                     L.DomUtil.setPosition(node, map.containerPointToLayerPoint(L.point(x, y)));
                     node.hidden = false;
                     if (marker.isTooltipOpen()) marker.closeTooltip();
@@ -415,7 +449,7 @@
                         nameZh: entries.find(entry => countryKey(entry.country) === countryKey(record.feature.properties.name))?.countryZh };
                     const name = SiteI18n.value(source, 'name');
                     const shown = name;
-                    const spacing = SiteI18n.language === 'zh-CN' ? 0.16 : 0.015;
+                    const spacing = SiteI18n.language === 'zh-CN' ? 0.12 : 0.015;
                     let fontSize = Math.min(countryMaxFontSize, size.x < 600 ? 42 : countryMaxFontSize, Math.max(22, height * 0.22));
                     const naturalWidth = textWidth(shown, fontSize, countryWeight(fontSize), fontSize * spacing, countryFamily);
                     fontSize = Math.min(fontSize, fontSize * Math.min(width * 0.88, 480) / naturalWidth);

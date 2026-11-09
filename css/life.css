@@ -52,11 +52,11 @@
 .travel-country-label { width: 0; height: 0; color: #29485e; font-weight: 300; line-height: 1.3; letter-spacing: 0.015em; }
 .travel-country-label > span { position: absolute; width: max-content; white-space: nowrap; transform: translate(-50%, -50%); }
 .travel-country-label[lang="en"] { font-family: "Inter Display", "Inter", sans-serif; }
-.travel-country-label[lang="zh-CN"] { font-weight: 500; letter-spacing: 0.16em; }
+.travel-country-label[lang="zh-CN"] { font-weight: 300; letter-spacing: 0.12em; }
 .travel-country-label.is-visited { color: #fff; }
 [data-theme="dark"] .travel-country-label { color: #e0e9f4; }
 [data-theme="dark"] .travel-country-label.is-visited { color: #241b18; }
-.travel-city-label { width: max-content; height: 20px; color: var(--primary-color); font-size: 13px; font-weight: 500; line-height: 20px; white-space: nowrap; text-shadow: none; }
+.travel-city-label { width: max-content; height: var(--travel-city-line-height, 24px); color: var(--primary-color); font-size: var(--travel-city-font-size, 15px); font-weight: 500; line-height: var(--travel-city-line-height, 24px); white-space: nowrap; text-shadow: none; }
 .travel-city-label.is-selected { font-weight: 600; }
 .travel-world-button, .travel-map-note { position: absolute; z-index: 1; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
 .travel-world-button { left: 14px; top: 14px; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font: inherit; font-size: 0.75rem; cursor: pointer; box-shadow: 0 3px 12px #0f172a08; }

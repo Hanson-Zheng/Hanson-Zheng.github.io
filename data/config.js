@@ -50,6 +50,7 @@ const configData = {
         "labels": { // Zoom levels: larger numbers reveal labels later.
             "countryMinZoom": 3,
             "cityMinZoom": 4,
+            "cityFontSize": 15,
             "countryOpacity": 0.28,
             "countryMaxFontSize": 64
         },
