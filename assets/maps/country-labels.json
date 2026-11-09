@@ -1,0 +1,1922 @@
+{
+  "Zimbabwe": {
+    "name": "Zimbabwe",
+    "nameZh": "津巴布韦",
+    "coordinates": [
+      -19.0304,
+      29.3591
+    ]
+  },
+  "Zambia": {
+    "name": "Zambia",
+    "nameZh": "赞比亚",
+    "coordinates": [
+      -13.1071,
+      25.4151
+    ]
+  },
+  "Yemen": {
+    "name": "Yemen",
+    "nameZh": "也门",
+    "coordinates": [
+      15.8582,
+      47.4895
+    ]
+  },
+  "Vietnam": {
+    "name": "Vietnam",
+    "nameZh": "越南",
+    "coordinates": [
+      15.9701,
+      107.8487
+    ]
+  },
+  "Venezuela": {
+    "name": "Venezuela",
+    "nameZh": "委内瑞拉",
+    "coordinates": [
+      6.3683,
+      -65.3902
+    ]
+  },
+  "Vatican": {
+    "name": "Vatican",
+    "nameZh": "梵蒂冈",
+    "coordinates": [
+      41.9026,
+      12.4345
+    ]
+  },
+  "Vanuatu": {
+    "name": "Vanuatu",
+    "nameZh": "瓦努阿图",
+    "coordinates": [
+      -15.1374,
+      167.028
+    ]
+  },
+  "Uzbekistan": {
+    "name": "Uzbekistan",
+    "nameZh": "乌兹别克斯坦",
+    "coordinates": [
+      41.3583,
+      63.4145
+    ]
+  },
+  "Uruguay": {
+    "name": "Uruguay",
+    "nameZh": "乌拉圭",
+    "coordinates": [
+      -32.526,
+      -55.8103
+    ]
+  },
+  "Micronesia": {
+    "name": "Micronesia",
+    "nameZh": "密克罗尼西亚",
+    "coordinates": [
+      6.8874,
+      158.2437
+    ]
+  },
+  "Marshall Is.": {
+    "name": "Marshall Is.",
+    "nameZh": "马绍尔群岛",
+    "coordinates": [
+      5.883,
+      169.6392
+    ]
+  },
+  "N. Mariana Is.": {
+    "name": "N. Mariana Is.",
+    "nameZh": "北马里亚纳群岛",
+    "coordinates": [
+      15.1742,
+      145.7372
+    ]
+  },
+  "U.S. Virgin Is.": {
+    "name": "U.S. Virgin Is.",
+    "nameZh": "美属维尔京群岛",
+    "coordinates": [
+      17.7278,
+      -64.7603
+    ]
+  },
+  "Guam": {
+    "name": "Guam",
+    "nameZh": "关岛",
+    "coordinates": [
+      13.4781,
+      144.7833
+    ]
+  },
+  "American Samoa": {
+    "name": "American Samoa",
+    "nameZh": "美属萨摩亚",
+    "coordinates": [
+      -14.2971,
+      -170.7214
+    ]
+  },
+  "Puerto Rico": {
+    "name": "Puerto Rico",
+    "nameZh": "波多黎各",
+    "coordinates": [
+      18.233,
+      -66.405
+    ]
+  },
+  "United States of America": {
+    "name": "United States of America",
+    "nameZh": "美国",
+    "coordinates": [
+      37.2448,
+      -99.6782
+    ]
+  },
+  "S. Geo. and the Is.": {
+    "name": "S. Geo. and the Is.",
+    "nameZh": "南乔治亚和南桑威奇群岛",
+    "coordinates": [
+      -54.424,
+      -36.4674
+    ]
+  },
+  "Br. Indian Ocean Ter.": {
+    "name": "Br. Indian Ocean Ter.",
+    "nameZh": "英属印度洋领地",
+    "coordinates": [
+      -7.3218,
+      72.4156
+    ]
+  },
+  "Saint Helena": {
+    "name": "Saint Helena",
+    "nameZh": "圣赫勒拿",
+    "coordinates": [
+      -15.935,
+      -5.7039
+    ]
+  },
+  "Pitcairn Is.": {
+    "name": "Pitcairn Is.",
+    "nameZh": "皮特凯恩群岛",
+    "coordinates": [
+      -24.3468,
+      -128.3259
+    ]
+  },
+  "Anguilla": {
+    "name": "Anguilla",
+    "nameZh": "安圭拉",
+    "coordinates": [
+      18.2113,
+      -63.0849
+    ]
+  },
+  "Falkland Is.": {
+    "name": "Falkland Is.",
+    "nameZh": "福克兰群岛",
+    "coordinates": [
+      -51.7939,
+      -58.7695
+    ]
+  },
+  "Cayman Is.": {
+    "name": "Cayman Is.",
+    "nameZh": "开曼群岛",
+    "coordinates": [
+      19.338,
+      -81.2251
+    ]
+  },
+  "Bermuda": {
+    "name": "Bermuda",
+    "nameZh": "百慕大",
+    "coordinates": [
+      32.338,
+      -64.7245
+    ]
+  },
+  "British Virgin Is.": {
+    "name": "British Virgin Is.",
+    "nameZh": "英属维尔京群岛",
+    "coordinates": [
+      18.4248,
+      -64.6199
+    ]
+  },
+  "Turks and Caicos Is.": {
+    "name": "Turks and Caicos Is.",
+    "nameZh": "特克斯和凯科斯群岛",
+    "coordinates": [
+      21.8118,
+      -71.7448
+    ]
+  },
+  "Montserrat": {
+    "name": "Montserrat",
+    "nameZh": "蒙特塞拉特",
+    "coordinates": [
+      16.773,
+      -62.186
+    ]
+  },
+  "Jersey": {
+    "name": "Jersey",
+    "nameZh": "泽西岛",
+    "coordinates": [
+      49.2068,
+      -2.1228
+    ]
+  },
+  "Guernsey": {
+    "name": "Guernsey",
+    "nameZh": "根西岛",
+    "coordinates": [
+      49.448,
+      -2.5668
+    ]
+  },
+  "Isle of Man": {
+    "name": "Isle of Man",
+    "nameZh": "马恩岛",
+    "coordinates": [
+      54.2456,
+      -4.5072
+    ]
+  },
+  "United Kingdom": {
+    "name": "United Kingdom",
+    "nameZh": "英国",
+    "coordinates": [
+      54.3731,
+      -1.9832
+    ]
+  },
+  "United Arab Emirates": {
+    "name": "United Arab Emirates",
+    "nameZh": "阿拉伯联合酋长国",
+    "coordinates": [
+      24.3438,
+      55.1185
+    ]
+  },
+  "Ukraine": {
+    "name": "Ukraine",
+    "nameZh": "乌克兰",
+    "coordinates": [
+      48.7667,
+      31.0381
+    ]
+  },
+  "Uganda": {
+    "name": "Uganda",
+    "nameZh": "乌干达",
+    "coordinates": [
+      1.313,
+      32.6751
+    ]
+  },
+  "Turkmenistan": {
+    "name": "Turkmenistan",
+    "nameZh": "土库曼斯坦",
+    "coordinates": [
+      38.9652,
+      58.9963
+    ]
+  },
+  "Turkey": {
+    "name": "Turkey",
+    "nameZh": "土耳其",
+    "coordinates": [
+      38.9479,
+      35.5083
+    ]
+  },
+  "Tunisia": {
+    "name": "Tunisia",
+    "nameZh": "突尼斯",
+    "coordinates": [
+      33.7798,
+      8.8819
+    ]
+  },
+  "Trinidad and Tobago": {
+    "name": "Trinidad and Tobago",
+    "nameZh": "特立尼达和多巴哥",
+    "coordinates": [
+      10.4028,
+      -61.2465
+    ]
+  },
+  "Tonga": {
+    "name": "Tonga",
+    "nameZh": "汤加",
+    "coordinates": [
+      -21.1638,
+      -175.2516
+    ]
+  },
+  "Togo": {
+    "name": "Togo",
+    "nameZh": "多哥",
+    "coordinates": [
+      8.6668,
+      1.0167
+    ]
+  },
+  "Timor-Leste": {
+    "name": "Timor-Leste",
+    "nameZh": "东帝汶",
+    "coordinates": [
+      -8.9276,
+      125.6846
+    ]
+  },
+  "Thailand": {
+    "name": "Thailand",
+    "nameZh": "泰国",
+    "coordinates": [
+      13.0233,
+      101.6883
+    ]
+  },
+  "Tanzania": {
+    "name": "Tanzania",
+    "nameZh": "坦桑尼亚",
+    "coordinates": [
+      -6.3931,
+      34.2568
+    ]
+  },
+  "Tajikistan": {
+    "name": "Tajikistan",
+    "nameZh": "塔吉克斯坦",
+    "coordinates": [
+      38.8724,
+      70.9254
+    ]
+  },
+  "Taiwan": {
+    "name": "Taiwan",
+    "nameZh": "中国台湾",
+    "coordinates": [
+      23.5261,
+      120.811
+    ]
+  },
+  "Syria": {
+    "name": "Syria",
+    "nameZh": "叙利亚",
+    "coordinates": [
+      34.8587,
+      38.5547
+    ]
+  },
+  "Switzerland": {
+    "name": "Switzerland",
+    "nameZh": "瑞士",
+    "coordinates": [
+      46.8033,
+      8.4272
+    ]
+  },
+  "Sweden": {
+    "name": "Sweden",
+    "nameZh": "瑞典",
+    "coordinates": [
+      62.1999,
+      14.9336
+    ]
+  },
+  "eSwatini": {
+    "name": "eSwatini",
+    "nameZh": "斯威士兰",
+    "coordinates": [
+      -26.5672,
+      31.4489
+    ]
+  },
+  "Suriname": {
+    "name": "Suriname",
+    "nameZh": "苏里南",
+    "coordinates": [
+      3.8945,
+      -56.088
+    ]
+  },
+  "S. Sudan": {
+    "name": "S. Sudan",
+    "nameZh": "南苏丹",
+    "coordinates": [
+      7.8612,
+      29.0885
+    ]
+  },
+  "Sudan": {
+    "name": "Sudan",
+    "nameZh": "苏丹",
+    "coordinates": [
+      15.4224,
+      29.765
+    ]
+  },
+  "Sri Lanka": {
+    "name": "Sri Lanka",
+    "nameZh": "斯里兰卡",
+    "coordinates": [
+      7.9012,
+      80.66
+    ]
+  },
+  "Spain": {
+    "name": "Spain",
+    "nameZh": "西班牙",
+    "coordinates": [
+      39.9061,
+      -3.4878
+    ]
+  },
+  "South Korea": {
+    "name": "South Korea",
+    "nameZh": "韩国",
+    "coordinates": [
+      36.3968,
+      127.9822
+    ]
+  },
+  "South Africa": {
+    "name": "South Africa",
+    "nameZh": "南非",
+    "coordinates": [
+      -28.4698,
+      26.0961
+    ]
+  },
+  "Somalia": {
+    "name": "Somalia",
+    "nameZh": "索马里",
+    "coordinates": [
+      5.2242,
+      46.8361
+    ]
+  },
+  "Somaliland": {
+    "name": "Somaliland",
+    "nameZh": "索马里兰",
+    "coordinates": [
+      9.7448,
+      46.0894
+    ]
+  },
+  "Solomon Is.": {
+    "name": "Solomon Is.",
+    "nameZh": "所罗门群岛",
+    "coordinates": [
+      -9.6403,
+      160.175
+    ]
+  },
+  "Slovakia": {
+    "name": "Slovakia",
+    "nameZh": "斯洛伐克",
+    "coordinates": [
+      48.6808,
+      19.6409
+    ]
+  },
+  "Slovenia": {
+    "name": "Slovenia",
+    "nameZh": "斯洛文尼亚",
+    "coordinates": [
+      46.1584,
+      14.616
+    ]
+  },
+  "Singapore": {
+    "name": "Singapore",
+    "nameZh": "新加坡",
+    "coordinates": [
+      1.3486,
+      103.8233
+    ]
+  },
+  "Sierra Leone": {
+    "name": "Sierra Leone",
+    "nameZh": "塞拉利昂",
+    "coordinates": [
+      8.455,
+      -11.8563
+    ]
+  },
+  "Seychelles": {
+    "name": "Seychelles",
+    "nameZh": "塞舌尔",
+    "coordinates": [
+      -4.651,
+      55.4682
+    ]
+  },
+  "Serbia": {
+    "name": "Serbia",
+    "nameZh": "塞尔维亚",
+    "coordinates": [
+      44.2097,
+      21.0069
+    ]
+  },
+  "Senegal": {
+    "name": "Senegal",
+    "nameZh": "塞内加尔",
+    "coordinates": [
+      14.5614,
+      -14.6647
+    ]
+  },
+  "Saudi Arabia": {
+    "name": "Saudi Arabia",
+    "nameZh": "沙特阿拉伯",
+    "coordinates": [
+      24.2318,
+      44.6707
+    ]
+  },
+  "S茫o Tom茅 and Principe": {
+    "name": "S茫o Tom茅 and Principe",
+    "nameZh": "圣多美和普林西比",
+    "coordinates": [
+      0.1742,
+      6.5915
+    ]
+  },
+  "San Marino": {
+    "name": "San Marino",
+    "nameZh": "圣马力诺",
+    "coordinates": [
+      43.9588,
+      12.4584
+    ]
+  },
+  "Samoa": {
+    "name": "Samoa",
+    "nameZh": "萨摩亚",
+    "coordinates": [
+      -13.6218,
+      -172.4427
+    ]
+  },
+  "St. Vin. and Gren.": {
+    "name": "St. Vin. and Gren.",
+    "nameZh": "圣文森特和格林纳丁斯",
+    "coordinates": [
+      13.249,
+      -61.2038
+    ]
+  },
+  "Saint Lucia": {
+    "name": "Saint Lucia",
+    "nameZh": "圣卢西亚",
+    "coordinates": [
+      13.9382,
+      -60.9624
+    ]
+  },
+  "St. Kitts and Nevis": {
+    "name": "St. Kitts and Nevis",
+    "nameZh": "圣基茨和尼维斯",
+    "coordinates": [
+      17.3129,
+      -62.7285
+    ]
+  },
+  "Rwanda": {
+    "name": "Rwanda",
+    "nameZh": "卢旺达",
+    "coordinates": [
+      -1.8916,
+      29.9793
+    ]
+  },
+  "Russia": {
+    "name": "Russia",
+    "nameZh": "俄罗斯",
+    "coordinates": [
+      59.4674,
+      88.3821
+    ]
+  },
+  "Romania": {
+    "name": "Romania",
+    "nameZh": "罗马尼亚",
+    "coordinates": [
+      45.9214,
+      24.2907
+    ]
+  },
+  "Qatar": {
+    "name": "Qatar",
+    "nameZh": "卡塔尔",
+    "coordinates": [
+      25.2265,
+      51.1745
+    ]
+  },
+  "Portugal": {
+    "name": "Portugal",
+    "nameZh": "葡萄牙",
+    "coordinates": [
+      39.6024,
+      -8.3057
+    ]
+  },
+  "Poland": {
+    "name": "Poland",
+    "nameZh": "波兰",
+    "coordinates": [
+      51.9731,
+      19.1694
+    ]
+  },
+  "Philippines": {
+    "name": "Philippines",
+    "nameZh": "菲律宾",
+    "coordinates": [
+      15.55,
+      120.7262
+    ]
+  },
+  "Peru": {
+    "name": "Peru",
+    "nameZh": "秘鲁",
+    "coordinates": [
+      -9.2453,
+      -75.794
+    ]
+  },
+  "Paraguay": {
+    "name": "Paraguay",
+    "nameZh": "巴拉圭",
+    "coordinates": [
+      -23.4372,
+      -58.4748
+    ]
+  },
+  "Papua New Guinea": {
+    "name": "Papua New Guinea",
+    "nameZh": "巴布亚新几内亚",
+    "coordinates": [
+      -6.637,
+      144.3598
+    ]
+  },
+  "Panama": {
+    "name": "Panama",
+    "nameZh": "巴拿马",
+    "coordinates": [
+      8.4159,
+      -81.468
+    ]
+  },
+  "Palau": {
+    "name": "Palau",
+    "nameZh": "帕劳",
+    "coordinates": [
+      7.5948,
+      134.6058
+    ]
+  },
+  "Pakistan": {
+    "name": "Pakistan",
+    "nameZh": "巴基斯坦",
+    "coordinates": [
+      30.3937,
+      70.0963
+    ]
+  },
+  "Oman": {
+    "name": "Oman",
+    "nameZh": "阿曼",
+    "coordinates": [
+      20.9594,
+      57.0442
+    ]
+  },
+  "Norway": {
+    "name": "Norway",
+    "nameZh": "挪威",
+    "coordinates": [
+      64.5366,
+      12.3481
+    ]
+  },
+  "North Korea": {
+    "name": "North Korea",
+    "nameZh": "朝鲜",
+    "coordinates": [
+      40.3888,
+      126.8298
+    ]
+  },
+  "Nigeria": {
+    "name": "Nigeria",
+    "nameZh": "尼日利亚",
+    "coordinates": [
+      9.066,
+      7.8726
+    ]
+  },
+  "Niger": {
+    "name": "Niger",
+    "nameZh": "尼日尔",
+    "coordinates": [
+      18.0698,
+      9.9036
+    ]
+  },
+  "Nicaragua": {
+    "name": "Nicaragua",
+    "nameZh": "尼加拉瓜",
+    "coordinates": [
+      12.8305,
+      -85.5437
+    ]
+  },
+  "New Zealand": {
+    "name": "New Zealand",
+    "nameZh": "新西兰",
+    "coordinates": [
+      -43.5792,
+      171.2332
+    ]
+  },
+  "Niue": {
+    "name": "Niue",
+    "nameZh": "纽埃",
+    "coordinates": [
+      -19.0581,
+      -169.8698
+    ]
+  },
+  "Cook Is.": {
+    "name": "Cook Is.",
+    "nameZh": "库克群岛",
+    "coordinates": [
+      -21.209,
+      -159.7934
+    ]
+  },
+  "Netherlands": {
+    "name": "Netherlands",
+    "nameZh": "荷兰",
+    "coordinates": [
+      52.1432,
+      5.5767
+    ]
+  },
+  "Aruba": {
+    "name": "Aruba",
+    "nameZh": "阿鲁巴",
+    "coordinates": [
+      12.499,
+      -69.9705
+    ]
+  },
+  "Cura莽ao": {
+    "name": "Cura莽ao",
+    "nameZh": "库拉索",
+    "coordinates": [
+      12.1944,
+      -68.9851
+    ]
+  },
+  "Nepal": {
+    "name": "Nepal",
+    "nameZh": "尼泊尔",
+    "coordinates": [
+      28.4563,
+      83.0192
+    ]
+  },
+  "Nauru": {
+    "name": "Nauru",
+    "nameZh": "瑙鲁",
+    "coordinates": [
+      -0.5202,
+      166.9326
+    ]
+  },
+  "Namibia": {
+    "name": "Namibia",
+    "nameZh": "纳米比亚",
+    "coordinates": [
+      -22.945,
+      17.1952
+    ]
+  },
+  "Mozambique": {
+    "name": "Mozambique",
+    "nameZh": "莫桑比克",
+    "coordinates": [
+      -18.605,
+      34.6982
+    ]
+  },
+  "Morocco": {
+    "name": "Morocco",
+    "nameZh": "摩洛哥",
+    "coordinates": [
+      28.6672,
+      -9.9026
+    ]
+  },
+  "W. Sahara": {
+    "name": "W. Sahara",
+    "nameZh": "西撒哈拉",
+    "coordinates": [
+      24.191,
+      -12.6036
+    ]
+  },
+  "Montenegro": {
+    "name": "Montenegro",
+    "nameZh": "黑山",
+    "coordinates": [
+      42.6872,
+      19.2877
+    ]
+  },
+  "Mongolia": {
+    "name": "Mongolia",
+    "nameZh": "蒙古",
+    "coordinates": [
+      46.8085,
+      105.4249
+    ]
+  },
+  "Moldova": {
+    "name": "Moldova",
+    "nameZh": "摩尔多瓦",
+    "coordinates": [
+      46.897,
+      28.9188
+    ]
+  },
+  "Monaco": {
+    "name": "Monaco",
+    "nameZh": "摩纳哥",
+    "coordinates": [
+      43.7601,
+      7.4157
+    ]
+  },
+  "Mexico": {
+    "name": "Mexico",
+    "nameZh": "墨西哥",
+    "coordinates": [
+      23.6338,
+      -102.237
+    ]
+  },
+  "Mauritius": {
+    "name": "Mauritius",
+    "nameZh": "毛里求斯",
+    "coordinates": [
+      -20.2698,
+      57.5865
+    ]
+  },
+  "Mauritania": {
+    "name": "Mauritania",
+    "nameZh": "毛里塔尼亚",
+    "coordinates": [
+      20.969,
+      -11.4712
+    ]
+  },
+  "Malta": {
+    "name": "Malta",
+    "nameZh": "马耳他",
+    "coordinates": [
+      35.9142,
+      14.4244
+    ]
+  },
+  "Mali": {
+    "name": "Mali",
+    "nameZh": "马里",
+    "coordinates": [
+      17.9926,
+      -0.7798
+    ]
+  },
+  "Maldives": {
+    "name": "Maldives",
+    "nameZh": "马尔代夫",
+    "coordinates": [
+      4.2,
+      73.505
+    ]
+  },
+  "Malaysia": {
+    "name": "Malaysia",
+    "nameZh": "马来西亚",
+    "coordinates": [
+      3.8398,
+      114.5515
+    ]
+  },
+  "Malawi": {
+    "name": "Malawi",
+    "nameZh": "马拉维",
+    "coordinates": [
+      -13.292,
+      33.7441
+    ]
+  },
+  "Madagascar": {
+    "name": "Madagascar",
+    "nameZh": "马达加斯加",
+    "coordinates": [
+      -18.908,
+      46.6883
+    ]
+  },
+  "Macedonia": {
+    "name": "Macedonia",
+    "nameZh": "北马其顿",
+    "coordinates": [
+      41.59,
+      21.7321
+    ]
+  },
+  "Luxembourg": {
+    "name": "Luxembourg",
+    "nameZh": "卢森堡",
+    "coordinates": [
+      49.8031,
+      6.0992
+    ]
+  },
+  "Lithuania": {
+    "name": "Lithuania",
+    "nameZh": "立陶宛",
+    "coordinates": [
+      55.1674,
+      24.1474
+    ]
+  },
+  "Liechtenstein": {
+    "name": "Liechtenstein",
+    "nameZh": "列支敦士登",
+    "coordinates": [
+      47.14,
+      9.5395
+    ]
+  },
+  "Libya": {
+    "name": "Libya",
+    "nameZh": "利比亚",
+    "coordinates": [
+      26.4434,
+      17.3269
+    ]
+  },
+  "Liberia": {
+    "name": "Liberia",
+    "nameZh": "利比里亚",
+    "coordinates": [
+      6.3908,
+      -9.5928
+    ]
+  },
+  "Lesotho": {
+    "name": "Lesotho",
+    "nameZh": "莱索托",
+    "coordinates": [
+      -29.5965,
+      28.1917
+    ]
+  },
+  "Lebanon": {
+    "name": "Lebanon",
+    "nameZh": "黎巴嫩",
+    "coordinates": [
+      33.8596,
+      35.9188
+    ]
+  },
+  "Latvia": {
+    "name": "Latvia",
+    "nameZh": "拉脱维亚",
+    "coordinates": [
+      56.912,
+      24.4331
+    ]
+  },
+  "Laos": {
+    "name": "Laos",
+    "nameZh": "老挝",
+    "coordinates": [
+      18.2078,
+      104.675
+    ]
+  },
+  "Kyrgyzstan": {
+    "name": "Kyrgyzstan",
+    "nameZh": "吉尔吉斯斯坦",
+    "coordinates": [
+      41.2282,
+      75.081
+    ]
+  },
+  "Kuwait": {
+    "name": "Kuwait",
+    "nameZh": "科威特",
+    "coordinates": [
+      29.2219,
+      47.3749
+    ]
+  },
+  "Kosovo": {
+    "name": "Kosovo",
+    "nameZh": "科索沃",
+    "coordinates": [
+      42.5892,
+      20.8985
+    ]
+  },
+  "Kiribati": {
+    "name": "Kiribati",
+    "nameZh": "基里巴斯",
+    "coordinates": [
+      1.879,
+      -157.3756
+    ]
+  },
+  "Kenya": {
+    "name": "Kenya",
+    "nameZh": "肯尼亚",
+    "coordinates": [
+      0.4494,
+      37.5359
+    ]
+  },
+  "Kazakhstan": {
+    "name": "Kazakhstan",
+    "nameZh": "哈萨克斯坦",
+    "coordinates": [
+      48.0376,
+      66.3367
+    ]
+  },
+  "Jordan": {
+    "name": "Jordan",
+    "nameZh": "约旦",
+    "coordinates": [
+      31.3615,
+      36.2617
+    ]
+  },
+  "Japan": {
+    "name": "Japan",
+    "nameZh": "日本",
+    "coordinates": [
+      37.4974,
+      139.8408
+    ]
+  },
+  "Jamaica": {
+    "name": "Jamaica",
+    "nameZh": "牙买加",
+    "coordinates": [
+      18.1002,
+      -77.159
+    ]
+  },
+  "Italy": {
+    "name": "Italy",
+    "nameZh": "意大利",
+    "coordinates": [
+      42.5206,
+      12.6704
+    ]
+  },
+  "Israel": {
+    "name": "Israel",
+    "nameZh": "以色列",
+    "coordinates": [
+      31.424,
+      34.6557
+    ]
+  },
+  "Palestine": {
+    "name": "Palestine",
+    "nameZh": "巴勒斯坦领土",
+    "coordinates": [
+      31.9492,
+      35.2603
+    ]
+  },
+  "Ireland": {
+    "name": "Ireland",
+    "nameZh": "爱尔兰",
+    "coordinates": [
+      53.4452,
+      -8.1031
+    ]
+  },
+  "Iraq": {
+    "name": "Iraq",
+    "nameZh": "伊拉克",
+    "coordinates": [
+      33.1583,
+      42.479
+    ]
+  },
+  "Iran": {
+    "name": "Iran",
+    "nameZh": "伊朗",
+    "coordinates": [
+      32.4457,
+      54.0476
+    ]
+  },
+  "Indonesia": {
+    "name": "Indonesia",
+    "nameZh": "印度尼西亚",
+    "coordinates": [
+      0.1343,
+      113.3424
+    ]
+  },
+  "India": {
+    "name": "India",
+    "nameZh": "印度",
+    "coordinates": [
+      21.7979,
+      80.237
+    ]
+  },
+  "Iceland": {
+    "name": "Iceland",
+    "nameZh": "冰岛",
+    "coordinates": [
+      64.9618,
+      -18.578
+    ]
+  },
+  "Hungary": {
+    "name": "Hungary",
+    "nameZh": "匈牙利",
+    "coordinates": [
+      47.1843,
+      19.1186
+    ]
+  },
+  "Honduras": {
+    "name": "Honduras",
+    "nameZh": "洪都拉斯",
+    "coordinates": [
+      14.4858,
+      -87.2461
+    ]
+  },
+  "Haiti": {
+    "name": "Haiti",
+    "nameZh": "海地",
+    "coordinates": [
+      18.9404,
+      -72.2369
+    ]
+  },
+  "Guyana": {
+    "name": "Guyana",
+    "nameZh": "圭亚那",
+    "coordinates": [
+      4.8501,
+      -58.9581
+    ]
+  },
+  "Guinea-Bissau": {
+    "name": "Guinea-Bissau",
+    "nameZh": "几内亚比绍",
+    "coordinates": [
+      11.802,
+      -14.6071
+    ]
+  },
+  "Guinea": {
+    "name": "Guinea",
+    "nameZh": "几内亚",
+    "coordinates": [
+      9.9497,
+      -9.6693
+    ]
+  },
+  "Guatemala": {
+    "name": "Guatemala",
+    "nameZh": "危地马拉",
+    "coordinates": [
+      15.8069,
+      -90.2977
+    ]
+  },
+  "Grenada": {
+    "name": "Grenada",
+    "nameZh": "格林纳达",
+    "coordinates": [
+      12.1196,
+      -61.679
+    ]
+  },
+  "Greece": {
+    "name": "Greece",
+    "nameZh": "希腊",
+    "coordinates": [
+      39.0694,
+      21.8095
+    ]
+  },
+  "Ghana": {
+    "name": "Ghana",
+    "nameZh": "加纳",
+    "coordinates": [
+      7.9897,
+      -1.0535
+    ]
+  },
+  "Germany": {
+    "name": "Germany",
+    "nameZh": "德国",
+    "coordinates": [
+      51.0678,
+      10.4655
+    ]
+  },
+  "Georgia": {
+    "name": "Georgia",
+    "nameZh": "格鲁吉亚",
+    "coordinates": [
+      42.34,
+      43.6407
+    ]
+  },
+  "Gambia": {
+    "name": "Gambia",
+    "nameZh": "冈比亚",
+    "coordinates": [
+      13.4416,
+      -14.3516
+    ]
+  },
+  "Gabon": {
+    "name": "Gabon",
+    "nameZh": "加蓬",
+    "coordinates": [
+      -0.811,
+      11.6169
+    ]
+  },
+  "France": {
+    "name": "France",
+    "nameZh": "法国",
+    "coordinates": [
+      46.6826,
+      2.1715
+    ]
+  },
+  "St. Pierre and Miquelon": {
+    "name": "St. Pierre and Miquelon",
+    "nameZh": "圣皮埃尔和密克隆群岛",
+    "coordinates": [
+      46.9352,
+      -56.3201
+    ]
+  },
+  "Wallis and Futuna Is.": {
+    "name": "Wallis and Futuna Is.",
+    "nameZh": "瓦利斯和富图纳",
+    "coordinates": [
+      -14.284,
+      -178.133
+    ]
+  },
+  "St-Martin": {
+    "name": "St-Martin",
+    "nameZh": "法属圣马丁",
+    "coordinates": [
+      18.0864,
+      -63.0559
+    ]
+  },
+  "St-Barth茅lemy": {
+    "name": "St-Barth茅lemy",
+    "nameZh": "圣巴泰勒米",
+    "coordinates": [
+      17.8962,
+      -62.8383
+    ]
+  },
+  "Fr. Polynesia": {
+    "name": "Fr. Polynesia",
+    "nameZh": "法属波利尼西亚",
+    "coordinates": [
+      -17.6389,
+      -149.468
+    ]
+  },
+  "New Caledonia": {
+    "name": "New Caledonia",
+    "nameZh": "新喀里多尼亚",
+    "coordinates": [
+      -21.1743,
+      165.1883
+    ]
+  },
+  "Fr. S. Antarctic Lands": {
+    "name": "Fr. S. Antarctic Lands",
+    "nameZh": "法属南部领地",
+    "coordinates": [
+      -49.1873,
+      70.2372
+    ]
+  },
+  "脜land": {
+    "name": "脜land",
+    "nameZh": "奥兰群岛",
+    "coordinates": [
+      60.2469,
+      20.0508
+    ]
+  },
+  "Finland": {
+    "name": "Finland",
+    "nameZh": "芬兰",
+    "coordinates": [
+      64.9341,
+      27.4433
+    ]
+  },
+  "Fiji": {
+    "name": "Fiji",
+    "nameZh": "斐济",
+    "coordinates": [
+      -17.7865,
+      177.9855
+    ]
+  },
+  "Ethiopia": {
+    "name": "Ethiopia",
+    "nameZh": "埃塞俄比亚",
+    "coordinates": [
+      9.1728,
+      38.9433
+    ]
+  },
+  "Estonia": {
+    "name": "Estonia",
+    "nameZh": "爱沙尼亚",
+    "coordinates": [
+      58.6168,
+      25.5023
+    ]
+  },
+  "Eritrea": {
+    "name": "Eritrea",
+    "nameZh": "厄立特里亚",
+    "coordinates": [
+      15.1768,
+      38.1052
+    ]
+  },
+  "Eq. Guinea": {
+    "name": "Eq. Guinea",
+    "nameZh": "赤道几内亚",
+    "coordinates": [
+      1.6768,
+      10.5028
+    ]
+  },
+  "El Salvador": {
+    "name": "El Salvador",
+    "nameZh": "萨尔瓦多",
+    "coordinates": [
+      13.7741,
+      -88.9121
+    ]
+  },
+  "Egypt": {
+    "name": "Egypt",
+    "nameZh": "埃及",
+    "coordinates": [
+      26.9165,
+      29.441
+    ]
+  },
+  "Ecuador": {
+    "name": "Ecuador",
+    "nameZh": "厄瓜多尔",
+    "coordinates": [
+      -1.7276,
+      -78.2686
+    ]
+  },
+  "Dominican Rep.": {
+    "name": "Dominican Rep.",
+    "nameZh": "多米尼加共和国",
+    "coordinates": [
+      18.7946,
+      -70.1458
+    ]
+  },
+  "Dominica": {
+    "name": "Dominica",
+    "nameZh": "多米尼克",
+    "coordinates": [
+      15.4632,
+      -61.3574
+    ]
+  },
+  "Djibouti": {
+    "name": "Djibouti",
+    "nameZh": "吉布提",
+    "coordinates": [
+      11.7846,
+      42.4017
+    ]
+  },
+  "Greenland": {
+    "name": "Greenland",
+    "nameZh": "格陵兰",
+    "coordinates": [
+      71.7011,
+      -37.6394
+    ]
+  },
+  "Faeroe Is.": {
+    "name": "Faeroe Is.",
+    "nameZh": "法罗群岛",
+    "coordinates": [
+      62.18,
+      -6.8622
+    ]
+  },
+  "Denmark": {
+    "name": "Denmark",
+    "nameZh": "丹麦",
+    "coordinates": [
+      56.2645,
+      9.266
+    ]
+  },
+  "Czechia": {
+    "name": "Czechia",
+    "nameZh": "捷克",
+    "coordinates": [
+      49.8188,
+      15.5159
+    ]
+  },
+  "N. Cyprus": {
+    "name": "N. Cyprus",
+    "nameZh": "北塞浦路斯",
+    "coordinates": [
+      35.317,
+      33.4526
+    ]
+  },
+  "Cyprus": {
+    "name": "Cyprus",
+    "nameZh": "塞浦路斯",
+    "coordinates": [
+      34.8517,
+      32.9604
+    ]
+  },
+  "Cuba": {
+    "name": "Cuba",
+    "nameZh": "古巴",
+    "coordinates": [
+      21.5262,
+      -77.958
+    ]
+  },
+  "Croatia": {
+    "name": "Croatia",
+    "nameZh": "克罗地亚",
+    "coordinates": [
+      44.7357,
+      15.3391
+    ]
+  },
+  "C么te d'Ivoire": {
+    "name": "C么te d'Ivoire",
+    "nameZh": "科特迪瓦",
+    "coordinates": [
+      7.5366,
+      -5.6924
+    ]
+  },
+  "Costa Rica": {
+    "name": "Costa Rica",
+    "nameZh": "哥斯达黎加",
+    "coordinates": [
+      9.6242,
+      -83.6557
+    ]
+  },
+  "Dem. Rep. Congo": {
+    "name": "Dem. Rep. Congo",
+    "nameZh": "刚果（金）",
+    "coordinates": [
+      -4.0625,
+      22.4413
+    ]
+  },
+  "Congo": {
+    "name": "Congo",
+    "nameZh": "刚果（布）",
+    "coordinates": [
+      -0.7728,
+      15.9797
+    ]
+  },
+  "Comoros": {
+    "name": "Comoros",
+    "nameZh": "科摩罗",
+    "coordinates": [
+      -11.6836,
+      43.3216
+    ]
+  },
+  "Colombia": {
+    "name": "Colombia",
+    "nameZh": "哥伦比亚",
+    "coordinates": [
+      4.1297,
+      -72.5896
+    ]
+  },
+  "China": {
+    "name": "China",
+    "nameZh": "中国",
+    "coordinates": [
+      36.8812,
+      98.5467
+    ]
+  },
+  "Macao": {
+    "name": "Macao",
+    "nameZh": "中国澳门",
+    "coordinates": [
+      22.2128,
+      113.5037
+    ]
+  },
+  "Hong Kong": {
+    "name": "Hong Kong",
+    "nameZh": "中国香港",
+    "coordinates": [
+      22.4428,
+      114.1114
+    ]
+  },
+  "Chile": {
+    "name": "Chile",
+    "nameZh": "智利",
+    "coordinates": [
+      -35.6725,
+      -71.4994
+    ]
+  },
+  "Chad": {
+    "name": "Chad",
+    "nameZh": "乍得",
+    "coordinates": [
+      15.4224,
+      18.5434
+    ]
+  },
+  "Central African Rep.": {
+    "name": "Central African Rep.",
+    "nameZh": "中非共和国",
+    "coordinates": [
+      6.5957,
+      20.6186
+    ]
+  },
+  "Cabo Verde": {
+    "name": "Cabo Verde",
+    "nameZh": "佛得角",
+    "coordinates": [
+      15.1074,
+      -23.6464
+    ]
+  },
+  "Canada": {
+    "name": "Canada",
+    "nameZh": "加拿大",
+    "coordinates": [
+      56.8235,
+      -110.4295
+    ]
+  },
+  "Cameroon": {
+    "name": "Cameroon",
+    "nameZh": "喀麦隆",
+    "coordinates": [
+      7.4741,
+      13.6874
+    ]
+  },
+  "Cambodia": {
+    "name": "Cambodia",
+    "nameZh": "柬埔寨",
+    "coordinates": [
+      12.551,
+      105.0818
+    ]
+  },
+  "Myanmar": {
+    "name": "Myanmar",
+    "nameZh": "缅甸",
+    "coordinates": [
+      19.2772,
+      95.9283
+    ]
+  },
+  "Burundi": {
+    "name": "Burundi",
+    "nameZh": "布隆迪",
+    "coordinates": [
+      -3.3932,
+      29.9193
+    ]
+  },
+  "Burkina Faso": {
+    "name": "Burkina Faso",
+    "nameZh": "布基纳法索",
+    "coordinates": [
+      12.216,
+      -1.1985
+    ]
+  },
+  "Bulgaria": {
+    "name": "Bulgaria",
+    "nameZh": "保加利亚",
+    "coordinates": [
+      42.728,
+      25.1408
+    ]
+  },
+  "Brunei": {
+    "name": "Brunei",
+    "nameZh": "文莱",
+    "coordinates": [
+      4.5351,
+      114.4606
+    ]
+  },
+  "Brazil": {
+    "name": "Brazil",
+    "nameZh": "巴西",
+    "coordinates": [
+      -14.2234,
+      -49.7234
+    ]
+  },
+  "Botswana": {
+    "name": "Botswana",
+    "nameZh": "博茨瓦纳",
+    "coordinates": [
+      -22.3374,
+      24.4796
+    ]
+  },
+  "Bosnia and Herz.": {
+    "name": "Bosnia and Herz.",
+    "nameZh": "波斯尼亚和黑塞哥维那",
+    "coordinates": [
+      43.9388,
+      17.9116
+    ]
+  },
+  "Bolivia": {
+    "name": "Bolivia",
+    "nameZh": "玻利维亚",
+    "coordinates": [
+      -16.3065,
+      -64.0064
+    ]
+  },
+  "Bhutan": {
+    "name": "Bhutan",
+    "nameZh": "不丹",
+    "coordinates": [
+      27.511,
+      90.3293
+    ]
+  },
+  "Benin": {
+    "name": "Benin",
+    "nameZh": "贝宁",
+    "coordinates": [
+      9.2544,
+      2.301
+    ]
+  },
+  "Belize": {
+    "name": "Belize",
+    "nameZh": "伯利兹",
+    "coordinates": [
+      17.1376,
+      -88.7308
+    ]
+  },
+  "Belgium": {
+    "name": "Belgium",
+    "nameZh": "比利时",
+    "coordinates": [
+      50.4993,
+      4.8483
+    ]
+  },
+  "Belarus": {
+    "name": "Belarus",
+    "nameZh": "白俄罗斯",
+    "coordinates": [
+      53.7378,
+      27.939
+    ]
+  },
+  "Barbados": {
+    "name": "Barbados",
+    "nameZh": "巴巴多斯",
+    "coordinates": [
+      13.2281,
+      -59.5744
+    ]
+  },
+  "Bangladesh": {
+    "name": "Bangladesh",
+    "nameZh": "孟加拉国",
+    "coordinates": [
+      23.6806,
+      89.868
+    ]
+  },
+  "Bahrain": {
+    "name": "Bahrain",
+    "nameZh": "巴林",
+    "coordinates": [
+      26.012,
+      50.5437
+    ]
+  },
+  "Bahamas": {
+    "name": "Bahamas",
+    "nameZh": "巴哈马",
+    "coordinates": [
+      24.7308,
+      -78.0282
+    ]
+  },
+  "Azerbaijan": {
+    "name": "Azerbaijan",
+    "nameZh": "阿塞拜疆",
+    "coordinates": [
+      40.131,
+      47.7255
+    ]
+  },
+  "Austria": {
+    "name": "Austria",
+    "nameZh": "奥地利",
+    "coordinates": [
+      47.7034,
+      14.7464
+    ]
+  },
+  "Australia": {
+    "name": "Australia",
+    "nameZh": "澳大利亚",
+    "coordinates": [
+      -24.8824,
+      133.0577
+    ]
+  },
+  "Indian Ocean Ter.": {
+    "name": "Indian Ocean Ter.",
+    "nameZh": "印度洋领地",
+    "coordinates": [
+      -10.503,
+      105.653
+    ]
+  },
+  "Heard I. and McDonald Is.": {
+    "name": "Heard I. and McDonald Is.",
+    "nameZh": "赫德岛和麦克唐纳群岛",
+    "coordinates": [
+      -53.0708,
+      73.5423
+    ]
+  },
+  "Norfolk Island": {
+    "name": "Norfolk Island",
+    "nameZh": "诺福克岛",
+    "coordinates": [
+      -29.0748,
+      167.9547
+    ]
+  },
+  "Ashmore and Cartier Is.": {
+    "name": "Ashmore and Cartier Is.",
+    "nameZh": "澳大利亚",
+    "coordinates": [
+      -12.4301,
+      123.5838
+    ]
+  },
+  "Armenia": {
+    "name": "Armenia",
+    "nameZh": "亚美尼亚",
+    "coordinates": [
+      40.0832,
+      44.8487
+    ]
+  },
+  "Argentina": {
+    "name": "Argentina",
+    "nameZh": "阿根廷",
+    "coordinates": [
+      -37.0362,
+      -63.9623
+    ]
+  },
+  "Antigua and Barb.": {
+    "name": "Antigua and Barb.",
+    "nameZh": "安提瓜和巴布达",
+    "coordinates": [
+      17.0682,
+      -61.7892
+    ]
+  },
+  "Angola": {
+    "name": "Angola",
+    "nameZh": "安哥拉",
+    "coordinates": [
+      -11.9656,
+      18.8501
+    ]
+  },
+  "Andorra": {
+    "name": "Andorra",
+    "nameZh": "安道尔",
+    "coordinates": [
+      42.5301,
+      1.575
+    ]
+  },
+  "Algeria": {
+    "name": "Algeria",
+    "nameZh": "阿尔及利亚",
+    "coordinates": [
+      28.3018,
+      0.5786
+    ]
+  },
+  "Albania": {
+    "name": "Albania",
+    "nameZh": "阿尔巴尼亚",
+    "coordinates": [
+      41.1821,
+      20.0085
+    ]
+  },
+  "Afghanistan": {
+    "name": "Afghanistan",
+    "nameZh": "阿富汗",
+    "coordinates": [
+      33.9247,
+      65.1928
+    ]
+  },
+  "Siachen Glacier": {
+    "name": "Siachen Glacier",
+    "nameZh": "锡亚琴冰川",
+    "coordinates": [
+      35.2928,
+      77.1798
+    ]
+  },
+  "Sint Maarten": {
+    "name": "Sint Maarten",
+    "nameZh": "荷属圣马丁",
+    "coordinates": [
+      18.0438,
+      -63.0456
+    ]
+  }
+}

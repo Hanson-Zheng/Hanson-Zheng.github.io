@@ -230,5 +230,30 @@
     "lxgwWenKai": "https://github.com/lxgw/LxgwWenKai",
     "license": "OFL-1.1",
     "manifest": "assets/fonts/chinese-sources.json"
+  },
+  "inter-display": {
+    "source": "https://rsms.me/inter/inter.css",
+    "license": "OFL-1.1",
+    "notes": "Official static Display Light/Regular files, kept byte-for-byte unchanged.",
+    "files": [
+      {
+        "file": "assets/fonts/inter-display/InterDisplay-Light.woff2",
+        "bytes": 112976,
+        "sha256": "01dd2d491ed863177e61f6e9458813baa85453ad97b32c5c1216927d4eebfe65",
+        "source": "https://rsms.me/inter/font-files/InterDisplay-Light.woff2?v=4.1"
+      },
+      {
+        "file": "assets/fonts/inter-display/InterDisplay-Regular.woff2",
+        "bytes": 108948,
+        "sha256": "3a9463a58c3e7ba1e3cd65b5dbff91a35c508ff78a104cd1121feff83efeb787",
+        "source": "https://rsms.me/inter/font-files/InterDisplay-Regular.woff2?v=4.1"
+      },
+      {
+        "file": "assets/fonts/inter-display/OFL.txt",
+        "bytes": 4380,
+        "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+        "source": "https://raw.githubusercontent.com/rsms/inter/master/LICENSE.txt"
+      }
+    ]
   }
 }

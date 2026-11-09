@@ -8,10 +8,11 @@
         const atlas = canvas.closest('.travel-atlas');
         const palette = typeof configData !== 'undefined' ? configData.travelMap?.colors : null;
         for (const theme of ['light', 'dark']) {
-            for (const key of ['ocean', 'land', 'border', 'visited', 'selected', 'pin']) {
+            for (const key of ['ocean', 'land', 'border', 'visited', 'selected', 'selectedBorder', 'pin', 'selectedPin']) {
                 const color = palette?.[theme]?.[key];
                 if (atlas && typeof color === 'string' && CSS.supports('color', color)) {
-                    atlas.style.setProperty(`--travel-${theme}-${key}`, color);
+                    const variable = key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+                    atlas.style.setProperty(`--travel-${theme}-${variable}`, color);
                 }
             }
         }
@@ -27,6 +28,13 @@
         const displayCoordinates = ([latitude, longitude]) => [latitude, !horizontalWrap && pacificLayout && longitude < -30 ? longitude + 360 : longitude];
         const worldBounds = pacificLayout ? [[-55, -30], [82, 330]] : [[-55, -175], [80, 180]];
         const showDates = typeof configData !== 'undefined' && configData.travelMap?.showDates === true;
+        const labelConfig = typeof configData !== 'undefined' ? configData.travelMap?.labels : null;
+        const labelOption = (key, fallback, min, max) => Number.isFinite(labelConfig?.[key])
+            ? Math.max(min, Math.min(max, labelConfig[key])) : fallback;
+        const countryMinZoom = labelOption('countryMinZoom', 3, 0, 22);
+        const cityMinZoom = labelOption('cityMinZoom', 4, 0, 22);
+        const countryOpacity = labelOption('countryOpacity', 0.28, 0, 1);
+        const countryMaxFontSize = labelOption('countryMaxFontSize', 64, 18, 120);
         const entries = (typeof travelData === 'undefined' || !Array.isArray(travelData) ? [] : travelData)
             .filter(entry => entry && typeof entry.place === 'string' && entry.place.trim()
                 && typeof entry.country === 'string' && Array.isArray(entry.coordinates)
@@ -52,6 +60,16 @@
         let pinIcon = null;
         let countryFeatures = null;
         const worldOffsets = new Set();
+        const countryRenderRecords = [];
+        const countryLabelRecords = [];
+        const countryLabelNodes = new Map();
+        const cityLabelNodes = new Map();
+        const labelMeasure = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+        const cityInkCache = new Map();
+        let countryLabelData = {};
+        let countryLabelPane;
+        let cityLabelPane;
+        let labelFrame = 0;
         let photoIndex = 0;
         let photos = [];
         let loading = false;
@@ -201,11 +219,256 @@
         }
         window.addEventListener('site:languagechange', () => {
             forEachPin((marker, entry) => labelPin(marker, entry));
+            scheduleMapLabels();
             if (!selected) return;
             SiteI18n.text(announcement, 'life.placeAnnouncement', { place: SiteI18n.value(selected, 'place'), country: SiteI18n.value(selected, 'country'), count: photos.length });
             const frame = story.querySelector('.travel-photo-button');
             if (frame && photos[photoIndex]) SiteI18n.attr(frame, 'aria-label', 'life.enlarge', { title: SiteI18n.value(photos[photoIndex], 'alt') });
         });
+
+        // Labels are decorative overlays; the original pins keep all interaction.
+        function intersects(a, b, padding = 0) {
+            return a.left < b.right + padding && a.right > b.left - padding
+                && a.top < b.bottom + padding && a.bottom > b.top - padding;
+        }
+
+        function pointInRing(x, y, ring) {
+            let inside = false;
+            for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+                const a = ring[i], b = ring[j];
+                if ((a[1] > y) !== (b[1] > y)
+                    && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) inside = !inside;
+            }
+            return inside;
+        }
+
+        function countryPolygons(record) {
+            return record.feature.geometry.type === 'Polygon'
+                ? [record.feature.geometry.coordinates] : record.feature.geometry.coordinates;
+        }
+
+        function containsCountryPoint(record, point) {
+            const coordinates = map.containerPointToLatLng(point);
+            const x = coordinates.lng - record.offset, y = coordinates.lat;
+            return countryPolygons(record).some(polygon => pointInRing(x, y, polygon[0])
+                && !polygon.slice(1).some(ring => pointInRing(x, y, ring)));
+        }
+
+        function containsCountryRectangle(record, rectangle) {
+            // Mercator maps axis-aligned screen rectangles to axis-aligned lon/lat
+            // rectangles. Keep a 3px inset from the actual national/coastal boundary.
+            const nw = map.containerPointToLatLng([rectangle.left - 3, rectangle.top - 3]);
+            const se = map.containerPointToLatLng([rectangle.right + 3, rectangle.bottom + 3]);
+            const left = nw.lng - record.offset, right = se.lng - record.offset;
+            const bottom = se.lat, top = nw.lat;
+            const corners = [[left, bottom], [left, top], [right, top], [right, bottom]];
+            function crossesRectangle(a, b) {
+                if (Math.max(a[0], b[0]) < left || Math.min(a[0], b[0]) > right
+                    || Math.max(a[1], b[1]) < bottom || Math.min(a[1], b[1]) > top) return false;
+                let lower = 0, upper = 1;
+                const dx = b[0] - a[0], dy = b[1] - a[1];
+                for (const [p, q] of [[-dx, a[0] - left], [dx, right - a[0]], [-dy, a[1] - bottom], [dy, top - a[1]]]) {
+                    if (p === 0) { if (q < 0) return false; }
+                    else {
+                        const ratio = q / p;
+                        if (p < 0) lower = Math.max(lower, ratio);
+                        else upper = Math.min(upper, ratio);
+                        if (lower > upper) return false;
+                    }
+                }
+                return true;
+            }
+            return countryPolygons(record).some(polygon => {
+                if (!corners.every(([x, y]) => pointInRing(x, y, polygon[0])
+                    && !polygon.slice(1).some(ring => pointInRing(x, y, ring)))) return false;
+                // Checking every ring also rejects concave coastal bites, enclaves,
+                // inland holes and sea channels wholly inside the label rectangle.
+                return polygon.every(ring => !ring.some((point, index) => index > 0 && crossesRectangle(ring[index - 1], point)));
+            });
+        }
+
+        function cityInkForSurface(color, ocean) {
+            const key = `${ocean}|${color}`;
+            if (!cityInkCache.has(key)) {
+                // Resolve configured CSS colors, including alpha, against the ocean.
+                labelMeasure.clearRect(0, 0, 1, 1);
+                labelMeasure.fillStyle = ocean;
+                labelMeasure.fillRect(0, 0, 1, 1);
+                labelMeasure.fillStyle = color;
+                labelMeasure.fillRect(0, 0, 1, 1);
+                const pixel = labelMeasure.getImageData(0, 0, 1, 1).data;
+                const luminance = rgb => [...rgb].slice(0, 3).reduce((sum, value, index) => {
+                    const c = value / 255;
+                    return sum + [0.2126, 0.7152, 0.0722][index] * (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+                }, 0);
+                const background = luminance(pixel);
+                const darkContrast = (background + 0.05) / (luminance([11, 18, 32]) + 0.05);
+                const lightContrast = (luminance([248, 250, 252]) + 0.05) / (background + 0.05);
+                cityInkCache.set(key, darkContrast >= lightContrast ? '#0b1220' : '#f8fafc');
+            }
+            return cityInkCache.get(key);
+        }
+
+        function labelNode(cache, key, pane, className) {
+            if (!cache.has(key)) {
+                const node = element('div', `${className} leaflet-zoom-hide`);
+                node.setAttribute('aria-hidden', 'true');
+                node.append(element('span'));
+                pane.append(node);
+                cache.set(key, node);
+            }
+            return cache.get(key);
+        }
+
+        function layoutMapLabels() {
+            labelFrame = 0;
+            if (!map) return;
+            countryLabelNodes.forEach(node => { node.hidden = true; });
+            cityLabelNodes.forEach(node => { node.hidden = true; });
+            const size = map.getSize();
+            const zoom = map.getZoom();
+            const family = getComputedStyle(canvas).fontFamily;
+            const countryFamily = SiteI18n.language === 'en' ? `"Inter Display", ${family}` : family;
+            const visibleCountries = countryRenderRecords.filter(record => record.layer.getBounds().intersects(map.getBounds()));
+            const surfaceStyle = getComputedStyle(atlas);
+            const surfaceColors = Object.fromEntries(['ocean', 'land', 'visited', 'selected']
+                .map(key => [key, surfaceStyle.getPropertyValue(`--travel-${key}`).trim()]));
+            const countryWeight = fontSize => SiteI18n.language === 'zh-CN' ? 500 : (fontSize < 28 ? 400 : 300);
+            const textWidth = (text, fontSize, weight, spacing = 0, fontFamily = family) => {
+                labelMeasure.font = `${weight} ${fontSize}px ${fontFamily}`;
+                return labelMeasure.measureText(text).width + [...text].length * spacing;
+            };
+            const screen = { left: 8, top: 8, right: size.x - 8, bottom: size.y - 8 };
+            const canvasRect = canvas.getBoundingClientRect();
+            const obstacles = [...canvas.querySelectorAll('.travel-pin, .travel-cluster, .leaflet-control, .travel-world-button, .travel-map-note')]
+                .filter(node => !node.hidden && getComputedStyle(node).display !== 'none')
+                .map(node => {
+                    const r = node.getBoundingClientRect();
+                    return { left: r.left - canvasRect.left, top: r.top - canvasRect.top,
+                        right: r.right - canvasRect.left, bottom: r.bottom - canvasRect.top };
+                });
+            // Buttons/legend sit beside the map container rather than inside it.
+            canvas.parentElement.querySelectorAll('.travel-world-button, .travel-map-note').forEach(node => {
+                if (node.hidden) return;
+                const r = node.getBoundingClientRect();
+                obstacles.push({ left: r.left - canvasRect.left, top: r.top - canvasRect.top,
+                    right: r.right - canvasRect.left, bottom: r.bottom - canvasRect.top });
+            });
+            const pins = [];
+            forEachPin((marker, entry) => {
+                if (zoom < cityMinZoom) return;
+                if (!marker.getElement() || (markerLayer.getVisibleParent && markerLayer.getVisibleParent(marker) !== marker)) return;
+                const point = map.latLngToContainerPoint(marker.getLatLng());
+                if (point.x < 0 || point.y < 0 || point.x > size.x || point.y > size.y) return;
+                pins.push({ marker, entry, point });
+            });
+            pins.sort((a, b) => Number(b.entry === selected) - Number(a.entry === selected)
+                || a.point.distanceTo(size.divideBy(2)) - b.point.distanceTo(size.divideBy(2)));
+            for (const { marker, entry, point } of pins) {
+                const name = SiteI18n.value(entry, 'place');
+                const width = textWidth(name, 13, entry === selected ? 600 : 500) + 4;
+                const height = 20;
+                const positions = [[point.x + 23, point.y - 33], [point.x - 23 - width, point.y - 33],
+                    [point.x - width / 2, point.y - 59], [point.x - width / 2, point.y + 9]];
+                for (const [x, y] of positions) {
+                    const rectangle = { left: x, top: y, right: x + width, bottom: y + height };
+                    if (rectangle.left < screen.left || rectangle.right > screen.right
+                        || rectangle.top < screen.top || rectangle.bottom > screen.bottom
+                        || obstacles.some(other => intersects(rectangle, other, 4))) continue;
+                    const node = labelNode(cityLabelNodes, marker, cityLabelPane, 'travel-city-label');
+                    node.firstElementChild.textContent = name;
+                    node.lang = SiteI18n.language;
+                    node.classList.toggle('is-selected', entry === selected);
+                    const labelCenter = L.point(x + width / 2, y + height / 2);
+                    const location = map.containerPointToLatLng(labelCenter);
+                    const surface = visibleCountries.find(record => record.layer.getBounds().contains(location)
+                        && containsCountryPoint(record, labelCenter));
+                    const key = surface ? countryKey(surface.feature.properties.name) : null;
+                    const background = !surface ? surfaceColors.ocean : selected && key === countryKey(selected.country)
+                        ? surfaceColors.selected : visited.has(key) ? surfaceColors.visited : surfaceColors.land;
+                    node.style.color = cityInkForSurface(background, surfaceColors.ocean);
+                    L.DomUtil.setPosition(node, map.containerPointToLayerPoint(L.point(x, y)));
+                    node.hidden = false;
+                    if (marker.isTooltipOpen()) marker.closeTooltip();
+                    obstacles.push(rectangle);
+                    break;
+                }
+            }
+            if (zoom >= countryMinZoom && countryOpacity > 0) {
+                const bounds = map.getBounds();
+                const candidates = countryLabelRecords.filter(record => record.layer.getBounds().intersects(bounds))
+                    .map(record => {
+                        const b = record.layer.getBounds();
+                        const nw = map.latLngToContainerPoint(b.getNorthWest());
+                        const se = map.latLngToContainerPoint(b.getSouthEast());
+                        const box = { left: Math.max(screen.left, nw.x), top: Math.max(screen.top, nw.y),
+                            right: Math.min(screen.right, se.x), bottom: Math.min(screen.bottom, se.y) };
+                        return { record, box, area: (box.right - box.left) * (box.bottom - box.top),
+                            selected: selected && countryKey(record.feature.properties.name) === countryKey(selected.country) };
+                    }).sort((a, b) => Number(b.selected) - Number(a.selected) || b.area - a.area);
+                const placed = obstacles.slice();
+                for (const { record, box } of candidates) {
+                    const width = box.right - box.left, height = box.bottom - box.top;
+                    if (width < 86 || height < 46) continue;
+                    const metadata = countryLabelData[record.feature.properties.name];
+                    const source = metadata || { name: record.feature.properties.name,
+                        nameZh: entries.find(entry => countryKey(entry.country) === countryKey(record.feature.properties.name))?.countryZh };
+                    const name = SiteI18n.value(source, 'name');
+                    const shown = name;
+                    const spacing = SiteI18n.language === 'zh-CN' ? 0.16 : 0.015;
+                    let fontSize = Math.min(countryMaxFontSize, size.x < 600 ? 42 : countryMaxFontSize, Math.max(22, height * 0.22));
+                    const naturalWidth = textWidth(shown, fontSize, countryWeight(fontSize), fontSize * spacing, countryFamily);
+                    fontSize = Math.min(fontSize, fontSize * Math.min(width * 0.88, 480) / naturalWidth);
+                    if (fontSize < 18) continue;
+                    const initialFontSize = fontSize;
+                    let placedLabel = false;
+                    const fontSizes = [];
+                    for (let value = initialFontSize; value > 18; value *= 0.84) fontSizes.push(value);
+                    fontSizes.push(18);
+                    for (fontSize of fontSizes) {
+                        const labelWidth = textWidth(shown, fontSize, countryWeight(fontSize), fontSize * spacing, countryFamily);
+                        const labelHeight = fontSize * 1.3;
+                        const points = [];
+                        if (metadata?.coordinates) {
+                            const anchor = displayCoordinates(metadata.coordinates);
+                            anchor[1] += record.offset;
+                            points.push(map.latLngToContainerPoint(anchor));
+                        }
+                        for (const [x, y] of [[0.5, 0.2], [0.65, 0.2], [0.35, 0.2], [0.5, 0.34], [0.5, 0.5], [0.3, 0.34], [0.7, 0.34], [0.3, 0.6], [0.7, 0.6], [0.5, 0.72]]) {
+                            points.push(L.point(box.left + width * x, box.top + height * y));
+                        }
+                        for (const point of points) {
+                            if (point.x < screen.left + labelWidth / 2 || point.x > screen.right - labelWidth / 2
+                                || point.y < screen.top + labelHeight / 2 || point.y > screen.bottom - labelHeight / 2
+                                || !containsCountryPoint(record, point)) continue;
+                            const rectangle = { left: point.x - labelWidth / 2, top: point.y - labelHeight / 2,
+                                right: point.x + labelWidth / 2, bottom: point.y + labelHeight / 2 };
+                            if (placed.some(other => intersects(rectangle, other, 12))
+                                || !containsCountryRectangle(record, rectangle)) continue;
+                            const node = labelNode(countryLabelNodes, record.key, countryLabelPane, 'travel-country-label');
+                            node.firstElementChild.textContent = name;
+                            node.lang = SiteI18n.language;
+                            node.classList.toggle('is-visited', visited.has(countryKey(record.feature.properties.name)));
+                            node.style.fontSize = `${fontSize}px`;
+                            node.style.fontWeight = countryWeight(fontSize);
+                            node.style.opacity = countryOpacity;
+                            L.DomUtil.setPosition(node, map.containerPointToLayerPoint(point));
+                            node.hidden = false;
+                            placed.push(rectangle);
+                            placedLabel = true;
+                            break;
+                        }
+                        if (placedLabel) break;
+                    }
+                }
+            }
+        }
+
+        function scheduleMapLabels() {
+            if (!map || labelFrame) return;
+            labelFrame = requestAnimationFrame(layoutMapLabels);
+        }
+
 
         function forEachPin(callback) {
             markers.forEach((copies, entry) => copies.forEach(marker => callback(marker, entry)));
@@ -221,11 +484,18 @@
                     weight: 0.7, fillOpacity: 1
                 }),
                 onEachFeature(feature, layer) {
-                    const label = ['344', '446', '158'].includes(String(feature.id))
-                        ? `${feature.properties.name}, China` : feature.properties.name;
-                    const regionZh = { '344': '中国香港', '446': '中国澳门', '158': '中国台湾' };
-                    const nameZh = regionZh[String(feature.id)] || entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))?.countryZh;
-                    layer.bindTooltip(SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }), { sticky: true });
+                    const record = { feature, layer, offset, key: `${offset}:${feature.properties.name}` };
+                    countryRenderRecords.push(record);
+                    // Keep this region in the shared China highlight without a separate map name.
+                    const showName = String(feature.id) !== '158' && feature.properties.name !== 'Taiwan';
+                    if (showName) {
+                        countryLabelRecords.push(record);
+                        const label = ['344', '446'].includes(String(feature.id))
+                            ? `${feature.properties.name}, China` : feature.properties.name;
+                        const regionZh = { '344': '中国香港', '446': '中国澳门' };
+                        const nameZh = regionZh[String(feature.id)] || entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))?.countryZh;
+                        layer.bindTooltip(SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }), { sticky: true });
+                    }
                     if (visited.has(countryKey(feature.properties.name))) {
                         layer.on('click', event => selectPlace(entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name)), true, event.latlng?.lng));
                     }
@@ -245,6 +515,11 @@
                     coordinates[1] += offset;
                     const marker = L.marker(coordinates, { icon: pinIcon, title: `${entry.place}, ${entry.country}`, keyboard: true, autoPanOnFocus: true, travelEntry: entry });
                     marker.bindTooltip(SiteI18n.content(element('span', ''), entry, 'place', { keepDetached: true }), { direction: 'top' });
+                    marker.on('add remove move', scheduleMapLabels);
+                    marker.on('tooltipopen', () => {
+                        const cityLabel = cityLabelNodes.get(marker);
+                        if (cityLabel && !cityLabel.hidden) marker.closeTooltip();
+                    });
                     marker.on('click', () => selectPlace(entry, true, marker.getLatLng().lng));
                     marker.on('add', () => {
                         const pin = marker.getElement();
@@ -269,8 +544,11 @@
         function updateCountries() {
             countries?.eachLayer(group => group.eachLayer(layer => {
                 const key = countryKey(layer.feature.properties.name);
-                layer.getElement()?.classList.toggle('is-selected', !!selected && key === countryKey(selected.country));
+                const isSelected = !!selected && key === countryKey(selected.country);
+                layer.getElement()?.classList.toggle('is-selected', isSelected);
+                if (isSelected) layer.bringToFront();
             }));
+            scheduleMapLabels();
         }
 
         function selectPlace(entry, pan = true, anchorLongitude = map?.getCenter().lng) {
@@ -317,6 +595,16 @@
                 worldCopyJump: horizontalWrap,
                 attributionControl: true, maxBounds: horizontalWrap ? null : (pacificLayout ? [[-85, -70], [85, 370]] : [[-85, -220], [85, 220]]), maxBoundsViscosity: 0.7
             });
+            countryLabelPane = map.createPane('travelCountryLabels');
+            countryLabelPane.style.zIndex = '410';
+            countryLabelPane.style.pointerEvents = 'none';
+            cityLabelPane = map.createPane('travelCityLabels');
+            cityLabelPane.style.zIndex = '610';
+            cityLabelPane.style.pointerEvents = 'none';
+            map.on('move zoomend resize', scheduleMapLabels);
+            new MutationObserver(scheduleMapLabels).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+            document.fonts?.ready.then(scheduleMapLabels);
+            document.fonts?.addEventListener('loadingdone', scheduleMapLabels);
             map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
             map.attributionControl.addAttribution('<a href="https://www.naturalearthdata.com/">Natural Earth</a>');
             map.zoomControl.setPosition('topright');
@@ -370,6 +658,7 @@
                 }
             }) : L.featureGroup();
             markerLayer.addTo(map);
+            markerLayer.on('animationend spiderfied unspiderfied', scheduleMapLabels);
             countries = L.featureGroup().addTo(map);
             ensureWorldCopies();
             map.on('moveend', () => {
@@ -418,11 +707,16 @@
             try {
                 if (!map) createMap();
                 const atlasFile = horizontalWrap ? 'countries-50m-wrapped.geo.json' : (pacificLayout ? 'countries-50m-pacific.geo.json' : 'countries-50m.geo.json');
+                const labelDataRequest = fetch(new URL('assets/maps/country-labels.json', root), { signal: controller.signal })
+                    .then(response => response.ok ? response.json() : {}).catch(() => ({}));
                 const response = await fetch(new URL(`assets/maps/${atlasFile}`, root), { signal: controller.signal });
                 if (!response.ok) throw new Error(`Map data: ${response.status}`);
                 const features = await response.json();
                 countryFeatures = features;
+                countryLabelData = await labelDataRequest;
                 countries.clearLayers();
+                countryLabelRecords.length = 0;
+                countryRenderRecords.length = 0;
                 worldOffsets.forEach(addCountryWorld);
                 updateCountries();
                 message.hidden = true;

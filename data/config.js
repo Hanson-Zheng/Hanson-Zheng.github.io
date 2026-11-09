@@ -47,14 +47,22 @@ const configData = {
         "worldLayout": "pacific", // "pacific": Eurasia left, Americas right; "atlantic": previous layout.
         "showSummary": false, // true: show the place/country counts above the map.
         "showDates": false, // Keep visits undated; set true to display an optional entry date.
-        "colors": { // 地图配色：海洋、未到访陆地、国界、已到访、选中/悬停、图钉。
+        "labels": { // Zoom levels: larger numbers reveal labels later.
+            "countryMinZoom": 3,
+            "cityMinZoom": 4,
+            "countryOpacity": 0.28,
+            "countryMaxFontSize": 64
+        },
+        "colors": { // 地图配色：海洋、未到访陆地、国界、已到访、选中/悬停、普通及选中图钉。
             "light": {
                 "ocean": "#e4eff9",
                 "land": "#faf8f3",
                 "border": "#b7c5d0",
-                "visited": "#7d909f",
-                "selected": "#647d90",
-                "pin": "#285cc4"
+                "visited": "#a9cabc",
+                "selected": "#629987",
+                "selectedBorder": "#2e6d5b",
+                "pin": "#285cc4",
+                "selectedPin": "#f3c178"
             },
             "dark": {
                 "ocean": "#111d30",
@@ -62,7 +70,9 @@ const configData = {
                 "border": "#17263c",
                 "visited": "#a96c51",
                 "selected": "#e39b79",
-                "pin": "#96b8ff"
+                "selectedBorder": "#f7caa6",
+                "pin": "#96b8ff",
+                "selectedPin": "#f3c178"
             }
         }
     },

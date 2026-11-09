@@ -1,0 +1,15 @@
+/* Original Inter Display webfonts; SIL OFL 1.1, see OFL.txt. */
+@font-face {
+    font-family: 'Inter Display';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('InterDisplay-Light.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Inter Display';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('InterDisplay-Regular.woff2') format('woff2');
+}
