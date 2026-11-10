@@ -748,10 +748,10 @@ const travelData = [
             34.2515,
             108.9413
         ],
-        "title": "An evening by the city wall",
-        "titleZh": "城墙边的傍晚",
-        "description": "Evening light above Xi'an's city wall, with traffic passing below the gate.",
-        "descriptionZh": "天还没黑，城墙下的车流已经热闹起来。",
+        "title": "Xi'an, an ancient capital",
+        "titleZh": "古都长安",
+        "description": "One of China's oldest cities and a former imperial capital, known historically as Chang'an.",
+        "descriptionZh": "中国历史最悠久的城市之一，古称长安。",
         "photos": [
             {
                 "src": "images/life/xian/city-wall-at-dusk.jpg",
@@ -759,30 +759,13 @@ const travelData = [
                 "altZh": "傍晚天空下的西安城墙和城楼，墙下是街道与车流",
                 "caption": "By the city wall, Xi'an.",
                 "captionZh": "西安，城墙边的傍晚。"
-            }
-        ]
-    },
-    {
-        "id": "lintong",
-        "place": "Lintong, Xi'an",
-        "placeZh": "西安·临潼",
-        "country": "China",
-        "countryZh": "中国",
-        "coordinates": [
-            34.385,
-            109.2731
-        ],
-        "title": "The Terracotta Warriors",
-        "titleZh": "兵马俑",
-        "description": "Rows of terracotta warriors beneath the exhibition hall roof in Lintong, Xi'an.",
-        "descriptionZh": "展厅里的陶俑列成一排排，远看整齐，近看各有神情。",
-        "photos": [
+            },
             {
-                "src": "images/life/lintong/terracotta-warriors.jpg",
+                "src": "images/life/xian/terracotta-warriors.jpg",
                 "alt": "Rows of terracotta warriors in an excavation pit beneath a large exhibition hall roof",
                 "altZh": "兵马俑展厅内，成排的陶俑立在巨大的考古坑中",
-                "caption": "Terracotta Warriors, Lintong, Xi'an.",
-                "captionZh": "西安临潼，兵马俑。"
+                "caption": "Terracotta Warriors, Xi'an.",
+                "captionZh": "西安，兵马俑。"
             }
         ]
     },

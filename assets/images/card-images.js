@@ -149,6 +149,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/highlight/2026-11-10-chip-tapeout.jpg": {
+    "src": "assets/images/cards/2026-11-10-chip-tapeout-7039d56c8e-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/2026-11-10-chip-tapeout-7039d56c8e-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/2026-11-10-chip-tapeout-7039d56c8e-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/2026-11-10-chip-tapeout-7039d56c8e-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/bali/bali.jpg": {
     "src": "assets/images/cards/bali-c6b731ac50-960w.webp",
     "sources": [
@@ -489,23 +506,6 @@ const cardImageAssets = {
       }
     ]
   },
-  "images/life/lintong/terracotta-warriors.jpg": {
-    "src": "assets/images/cards/terracotta-warriors-223038bda9-960w.webp",
-    "sources": [
-      {
-        "src": "assets/images/cards/terracotta-warriors-223038bda9-480w.webp",
-        "width": 480
-      },
-      {
-        "src": "assets/images/cards/terracotta-warriors-223038bda9-960w.webp",
-        "width": 960
-      },
-      {
-        "src": "assets/images/cards/terracotta-warriors-223038bda9-1440w.webp",
-        "width": 1440
-      }
-    ]
-  },
   "images/life/london/tower-bridge.jpg": {
     "src": "assets/images/cards/tower-bridge-24db2d5650-960w.webp",
     "sources": [
@@ -842,6 +842,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/city-wall-at-dusk-dac1907bf8-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/xian/terracotta-warriors.jpg": {
+    "src": "assets/images/cards/terracotta-warriors-223038bda9-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/terracotta-warriors-223038bda9-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/terracotta-warriors-223038bda9-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/terracotta-warriors-223038bda9-1440w.webp",
         "width": 1440
       }
     ]

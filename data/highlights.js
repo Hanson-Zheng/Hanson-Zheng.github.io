@@ -5,6 +5,16 @@
 // imagePosition: "center" (or e.g. "50% 30%") adjusts framing; imageAlt describes the image.
 const highlightsData = [
     {
+        "date": "2026-11-10",
+        "title": "Celebrating a Successful Tape-Out",
+        "titleZh": "庆祝流片成功",
+        "image": "images/highlight/2026-11-10-chip-tapeout.jpg",
+        "imageAlt": "Microscope image of the fabricated chip, showing circuit structures and NTU markings",
+        "imageAltZh": "显微镜下的芯片，可见电路结构和南洋理工大学标记",
+        "description": "Celebrating a successful chip tape-out. Grateful for the team's hard work and support along the way.",
+        "descriptionZh": "流片成功，值得记录的一刻。感谢团队的共同努力与支持。"
+    },
+    {
         "date": "2026-10-01",
         "title": "2025 EEE Excellent Teaching Assistant Award",
         "titleZh": "获 2025 年度 EEE 优秀助教奖",
