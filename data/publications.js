@@ -1,4 +1,4 @@
-const publicationsUpdatedOn = "2026-Nov-10";
+const publicationsUpdatedOn = "2026-Nov-11";
 const publicationsData = [
   {
     "title": "An Autonomous and Hardware-Agnostic Vision-Servoed System for Microdevice Injection",
@@ -238,8 +238,8 @@ const publicationsData = [
     "citations": 73,
     "citationsByYear": {
       "2024": 10,
-      "2025": 39,
-      "2026": 24
+      "2025": 41,
+      "2026": 22
     },
     "id": "10399791_TRO2024"
   }

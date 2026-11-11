@@ -14,12 +14,14 @@
     --travel-visited: var(--travel-light-visited, #a9cabc);
     --travel-selected: var(--travel-light-selected, #629987);
     --travel-selected-border: var(--travel-light-selected-border, #2e6d5b);
+    --travel-province-border: var(--travel-light-province-border, #496e62);
     --travel-pin: var(--travel-light-pin, #285cc4);
     --travel-selected-pin: var(--travel-light-selected-pin, #f3c178);
     --travel-cluster-bg: #fff;
     --travel-cluster-text: var(--travel-pin);
     display: grid;
-    grid-template-columns: minmax(0, 1.9fr) minmax(280px, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, var(--travel-story-width, 34.48%));
+    transition: grid-template-columns 280ms ease;
     border: 1px solid var(--border-color);
     border-radius: 16px;
     overflow: hidden;
@@ -32,6 +34,7 @@
     --travel-visited: var(--travel-dark-visited, #a96c51);
     --travel-selected: var(--travel-dark-selected, #e39b79);
     --travel-selected-border: var(--travel-dark-selected-border, #f7caa6);
+    --travel-province-border: var(--travel-dark-province-border, #eed0bc);
     --travel-pin: var(--travel-dark-pin, #96b8ff);
     --travel-selected-pin: var(--travel-dark-selected-pin, #f3c178);
     --travel-cluster-bg: #15233a;
@@ -45,6 +48,7 @@
 .travel-country.is-visited { fill: var(--travel-visited); cursor: pointer; }
 .travel-country.is-selected { fill: var(--travel-selected); stroke: var(--travel-selected-border); stroke-width: 1.6; stroke-opacity: 1; }
 .travel-country.is-visited:hover { fill: var(--travel-selected); }
+.travel-province-border { fill: none; stroke: var(--travel-province-border); pointer-events: none; }
 .travel-country:focus { outline: none; }
 .travel-country:focus-visible { stroke: var(--travel-selected); stroke-width: 1.8; }
 .travel-country-label, .travel-city-label { position: absolute; pointer-events: none; user-select: none; }
@@ -58,6 +62,7 @@
 [data-theme="dark"] .travel-country-label.is-visited { color: #241b18; }
 .travel-city-label { width: max-content; height: var(--travel-city-line-height, 24px); color: var(--primary-color); font-size: var(--travel-city-font-size, 15px); font-weight: 500; line-height: var(--travel-city-line-height, 24px); white-space: nowrap; text-shadow: none; }
 .travel-city-label.is-selected { font-weight: 600; }
+.leaflet-cluster-anim .travel-city-label { visibility: hidden; }
 .travel-world-button, .travel-map-note { position: absolute; z-index: 1; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
 .travel-world-button { left: 14px; top: 14px; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font: inherit; font-size: 0.75rem; cursor: pointer; box-shadow: 0 3px 12px #0f172a08; }
 .travel-world-button[hidden] { display: none; }
@@ -93,7 +98,7 @@
 .travel-story-heading time { flex: none; color: var(--light-text); font-size: 0.72rem; }
 .travel-media { position: relative; }
 .travel-photo-button { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 9px; overflow: hidden; background: var(--bg-alt); cursor: zoom-in; }
-.travel-photo-button.is-portrait { width: min(100%, calc(var(--travel-photo-ratio) * clamp(280px, 45vh, 420px))); margin-inline: auto; }
+.travel-photo-button.is-portrait { width: min(100%, calc(var(--travel-photo-ratio) * var(--travel-photo-height, clamp(280px, 45vh, 420px)))); margin-inline: auto; }
 .travel-photo { display: block; width: 100%; height: 100%; object-fit: contain; }
 .travel-photo[hidden], .travel-photo-error[hidden] { display: none; }
 .travel-photo-error { display: grid; place-items: center; height: 100%; padding: 20px; color: var(--light-text); font: 0.85rem/1.6 Inter, sans-serif; }
@@ -128,7 +133,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .travel-country, .travel-pin svg { transition: none; }
+    .travel-atlas, .travel-country, .travel-pin svg { transition: none; }
 }
 
 .life-empty {

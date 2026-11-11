@@ -259,8 +259,8 @@ const travelData = [
     },
     {
         "id": "ntu-eee",
-        "place": "NTU EEE",
-        "placeZh": "南洋理工大学",
+        "place": "Singapore",
+        "placeZh": "新加坡",
         "country": "Singapore",
         "countryZh": "新加坡",
         "coordinates": [1.3409, 103.6805],
@@ -886,6 +886,486 @@ const travelData = [
                 "altZh": "岳阳楼金色的弯曲屋顶和深色木构立面，楼前有参观的游客",
                 "caption": "Yueyang Tower, Yueyang.",
                 "captionZh": "岳阳，岳阳楼。"
+            }
+        ]
+    },
+    {
+        "id": "huaian",
+        "place": "Huai'an",
+        "placeZh": "淮安",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            33.5084,
+            119.1369
+        ],
+        "title": "Zhou Enlai's former residence",
+        "titleZh": "周恩来故居",
+        "description": "A visit to Zhou Enlai's former residence in Huai'an, with its simple rooms and old courtyard architecture.",
+        "descriptionZh": "在淮安走进周总理故居，屋里的陈设朴素而安静。",
+        "photos": [
+            {
+                "src": "images/life/huaian/zhou-enlai-former-residence.jpg",
+                "alt": "Traditional interior of Zhou Enlai's former residence, with wooden furniture, porcelain and a display plaque",
+                "altZh": "周恩来故居内的传统房间，摆放着木制家具、瓷器和介绍牌",
+                "caption": "Zhou Enlai's former residence, Huai'an.",
+                "captionZh": "淮安，周恩来故居。"
+            }
+        ]
+    },
+    {
+        "id": "qufu",
+        "place": "Qufu",
+        "placeZh": "曲阜",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            35.6186,
+            116.9864
+        ],
+        "title": "Kong Lin in Qufu",
+        "titleZh": "曲阜孔林",
+        "description": "The old gateway to Kong Lin, the Cemetery of Confucius, among the trees in Qufu, Jining.",
+        "descriptionZh": "济宁曲阜，穿过古树间的门楼，走进孔林。",
+        "photos": [
+            {
+                "src": "images/life/qufu/cemetery-of-confucius.jpg",
+                "alt": "Visitors approaching a red-walled traditional gateway at Kong Lin in Qufu beneath tall trees",
+                "altZh": "曲阜孔林的红墙门楼，游客从高大的树木间走过",
+                "caption": "Kong Lin, Qufu, Jining.",
+                "captionZh": "济宁曲阜，孔林。"
+            }
+        ]
+    },
+    {
+        "id": "taian",
+        "place": "Tai'an",
+        "placeZh": "泰安",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            36.21,
+            117.11
+        ],
+        "title": "At the foot of Mount Tai",
+        "titleZh": "泰山脚下",
+        "description": "Stone columns lead the eye towards Mount Tai, rising beyond the square beneath a blue autumn sky.",
+        "descriptionZh": "石柱之间望见泰山，山就在眼前，路还要一步步走。",
+        "photos": [
+            {
+                "src": "images/life/taian/mount-tai.jpg",
+                "alt": "Stone columns and visitors along a broad plaza with Mount Tai rising in the background beneath a blue sky",
+                "altZh": "广场两旁立着石柱，游客走在其间，远处是蓝天下的泰山",
+                "caption": "At the foot of Mount Tai, Tai'an.",
+                "captionZh": "泰安，泰山脚下。"
+            }
+        ]
+    },
+    {
+        "id": "jinan",
+        "place": "Jinan",
+        "placeZh": "济南",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            36.6607,
+            117.0094
+        ],
+        "title": "Baotu Spring",
+        "titleZh": "趵突泉",
+        "description": "Clear spring water, willow branches and a pavilion beside Baotu Spring in Jinan.",
+        "descriptionZh": "泉水清亮，柳枝垂在岸边。到了济南，总要来趵突泉走走。",
+        "photos": [
+            {
+                "src": "images/life/jinan/baotu-spring.jpg",
+                "alt": "A traditional pavilion beside the clear water of Baotu Spring, with willow trees and visitors along the bank",
+                "altZh": "趵突泉清澈的水面、岸边亭子和垂柳，游客在池边游览",
+                "caption": "Baotu Spring, Jinan.",
+                "captionZh": "济南，趵突泉。"
+            }
+        ]
+    },
+    {
+        "id": "yantai",
+        "place": "Yantai",
+        "placeZh": "烟台",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            37.6572,
+            120.9872
+        ],
+        "title": "A classic livery after dark",
+        "titleZh": "东航旧涂装，留个纪念",
+        "description": "China Eastern's classic livery on the apron at Yantai Penglai Airport. A night-time keepsake for the aviation enthusiast in me.",
+        "descriptionZh": "烟台蓬莱机场，隔着舷窗拍下东航旧涂装。飞友的纪念，有时就是这样一张不太清楚的夜景。",
+        "photos": [
+            {
+                "src": "images/life/yantai/china-eastern-classic-livery.jpg",
+                "alt": "An aircraft in China Eastern's classic livery on a floodlit airport apron at night, seen through a window",
+                "altZh": "透过舷窗看到夜间停机坪上的东航旧涂装飞机和机场灯光",
+                "caption": "China Eastern's classic livery at Yantai Penglai Airport.",
+                "captionZh": "烟台蓬莱机场，东航旧涂装。"
+            }
+        ]
+    },
+    {
+        "id": "el-nido",
+        "place": "El Nido",
+        "placeZh": "爱妮岛",
+        "country": "Philippines",
+        "countryZh": "菲律宾",
+        "coordinates": [
+            11.18,
+            119.3905
+        ],
+        "title": "By the water in El Nido",
+        "titleZh": "爱妮岛的海边",
+        "description": "Low tide, a long jetty and the limestone hills of El Nido across a quiet stretch of blue water.",
+        "descriptionZh": "退潮后的浅滩、伸向海里的栈桥，远处是爱妮岛的山。",
+        "photos": [
+            {
+                "src": "images/life/el-nido/el-nido-shore.jpg",
+                "alt": "Shallow clear water and a long jetty with limestone hills beyond the bay in El Nido under a blue sky",
+                "altZh": "爱妮岛清浅的海水和长栈桥，海湾对面是蓝天下的石灰岩山峰",
+                "caption": "Along the shore in El Nido, Palawan, Philippines.",
+                "captionZh": "菲律宾巴拉望，爱妮岛海边。"
+            }
+        ]
+    },
+    {
+        "id": "weifang",
+        "place": "Weifang",
+        "placeZh": "潍坊",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            36.671,
+            119.0076
+        ],
+        "title": "TOEFL test day",
+        "titleZh": "去潍坊考托福",
+        "description": "An admission slip in hand outside the TOEFL test centre in Weifang. A small memory from the road to studying abroad.",
+        "descriptionZh": "去潍坊考托福，进考场前留张照片。那时的紧张，现在也成了回忆。",
+        "photos": [
+            {
+                "src": "images/life/weifang/toefl-test-day.jpg",
+                "alt": "A test admission slip held outside the entrance to the TOEFL test centre in Weifang",
+                "altZh": "潍坊托福考场门口，手中拿着准考证",
+                "caption": "Outside the TOEFL test centre, Weifang.",
+                "captionZh": "潍坊，托福考场外。"
+            }
+        ]
+    },
+    {
+        "id": "nanjing",
+        "place": "Nanjing",
+        "placeZh": "南京",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            32.0221,
+            118.7843
+        ],
+        "title": "An evening by the Qinhuai",
+        "titleZh": "秦淮夜色",
+        "description": "The illuminated gateway at Nanjing's Confucius Temple, beside the Qinhuai River, with the evening crowds passing beneath it.",
+        "descriptionZh": "夫子庙灯火亮起，秦淮河边正热闹。",
+        "photos": [
+            {
+                "src": "images/life/nanjing/confucius-temple-qinhuai.jpg",
+                "alt": "A golden-lit traditional gateway in Nanjing's Confucius Temple area with an evening crowd beneath it",
+                "altZh": "南京夫子庙夜间亮灯的传统牌坊，下面是来往的人群",
+                "caption": "Confucius Temple and the Qinhuai River area, Nanjing.",
+                "captionZh": "南京，夫子庙秦淮河畔。"
+            }
+        ]
+    },
+    {
+        "id": "changzhou",
+        "place": "Changzhou",
+        "placeZh": "常州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            31.7157,
+            119.9439
+        ],
+        "title": "Wujin Radio and Television Tower",
+        "titleZh": "武进广播电视塔",
+        "description": "The colourful lights of Wujin Radio and Television Tower above the streets of Changzhou after dark.",
+        "descriptionZh": "走在常州武进的街头，抬头是亮着彩灯的广播电视塔。",
+        "photos": [
+            {
+                "src": "images/life/changzhou/wujin-radio-tv-tower.jpg",
+                "alt": "Wujin Radio and Television Tower illuminated in several colours above street-level buildings at night",
+                "altZh": "夜间亮着彩色灯光的武进广播电视塔，前景是街边楼房",
+                "caption": "Wujin Radio and Television Tower, Changzhou.",
+                "captionZh": "常州，武进广播电视塔。"
+            }
+        ]
+    },
+    {
+        "id": "wenzhou",
+        "place": "Wenzhou",
+        "placeZh": "温州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            27.9127,
+            120.8515
+        ],
+        "title": "Longwan Airport after dark",
+        "titleZh": "龙湾机场的夜晚",
+        "description": "Apron lights and the terminal at Wenzhou Longwan Airport, seen from the aircraft window at night.",
+        "descriptionZh": "舷窗外是龙湾机场的灯光，又一段旅程从这里接上。",
+        "photos": [
+            {
+                "src": "images/life/wenzhou/longwan-airport-at-night.jpg",
+                "alt": "Wenzhou Longwan Airport terminal and apron illuminated by floodlights at night",
+                "altZh": "夜间探照灯下的温州龙湾机场航站楼和停机坪",
+                "caption": "Wenzhou Longwan Airport at night.",
+                "captionZh": "温州，夜里的龙湾机场。"
+            }
+        ]
+    },
+    {
+        "id": "xiamen",
+        "place": "Xiamen",
+        "placeZh": "厦门",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            24.5396,
+            118.1289
+        ],
+        "title": "Through Gaoqi's round windows",
+        "titleZh": "高崎的圆窗",
+        "description": "XiamenAir's United Dream aircraft, framed by Gaoqi Airport's familiar round windows. A little aviation memory from an old terminal worth remembering.",
+        "descriptionZh": "高崎熟悉的圆窗，把厦航“联合梦想号”框进了画面。飞机想拍，老航站楼也想多留几张。",
+        "photos": [
+            {
+                "src": "images/life/xiamen/gaoqi-round-windows.jpg",
+                "alt": "A blue XiamenAir aircraft on the apron framed by the large circular windows of Gaoqi Airport's terminal",
+                "altZh": "厦门高崎机场航站楼的大圆窗，窗外是停机坪上的蓝色厦航飞机",
+                "caption": "XiamenAir's United Dream through the round windows at Gaoqi Airport.",
+                "captionZh": "厦门高崎机场，圆窗里的厦航“联合梦想号”。"
+            }
+        ]
+    },
+    {
+        "id": "hangzhou",
+        "place": "Hangzhou",
+        "placeZh": "杭州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            30.2421,
+            120.2109
+        ],
+        "title": "A night by the Qiantang River",
+        "titleZh": "钱塘江边的夜晚",
+        "description": "City lights across the Qiantang River, with their reflections stretching over the dark water in Hangzhou.",
+        "descriptionZh": "钱塘江边吹吹风，看对岸的灯光落在水上。",
+        "photos": [
+            {
+                "src": "images/life/hangzhou/qiantang-river-at-night.jpg",
+                "alt": "The illuminated Hangzhou skyline across the Qiantang River with reflections on dark water under a cloudy night sky",
+                "altZh": "夜色中钱塘江对岸亮灯的杭州楼群，灯光倒映在江面上",
+                "caption": "By the Qiantang River, Hangzhou.",
+                "captionZh": "杭州，钱塘江边。"
+            }
+        ]
+    },
+    {
+        "id": "huzhou",
+        "place": "Huzhou",
+        "placeZh": "湖州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            31.0466,
+            119.9849
+        ],
+        "title": "Along the shore of Lake Tai",
+        "titleZh": "太湖岸边",
+        "description": "Colourful bicycle sculptures beside Lake Tai in Huzhou, with a wide grey sky above the water.",
+        "descriptionZh": "太湖岸边，一排彩色自行车对着湖面。天阴着，走走也舒服。",
+        "photos": [
+            {
+                "src": "images/life/huzhou/taihu-lakeside.jpg",
+                "alt": "Colourful bicycle sculptures on a lakeside promenade in Huzhou with Lake Tai and a cloudy sky behind them",
+                "altZh": "湖州太湖岸边的彩色自行车雕塑，背后是湖面和阴云密布的天空",
+                "caption": "The shore of Lake Tai, Huzhou.",
+                "captionZh": "湖州，太湖沿岸。"
+            }
+        ]
+    },
+    {
+        "id": "quzhou",
+        "place": "Quzhou",
+        "placeZh": "衢州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            28.5297,
+            118.5653
+        ],
+        "title": "Mount Jianglang",
+        "titleZh": "江郎山",
+        "description": "Three distinctive rock peaks beyond a quiet pond at Mount Jianglang in Jiangshan, Quzhou, Zhejiang.",
+        "descriptionZh": "到了江郎山，不会就江郎才尽了吧？",
+        "photos": [
+            {
+                "src": "images/life/quzhou/jianglang-mountain.jpg",
+                "alt": "Three steep peaks of Mount Jianglang beyond a pond, trees and a large stone marker beneath a hazy sky",
+                "altZh": "江郎山的三座陡峭山峰，前景是池塘、树木和大石景观牌",
+                "caption": "Mount Jianglang, Jiangshan, Quzhou, Zhejiang.",
+                "captionZh": "浙江衢州江山，江郎山。"
+            }
+        ]
+    },
+    {
+        "id": "taizhou",
+        "place": "Taizhou",
+        "placeZh": "台州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            28.688,
+            120.6062
+        ],
+        "title": "Shenxianju",
+        "titleZh": "神仙居",
+        "description": "Rocky peaks and green slopes above the tiled-roof buildings at Shenxianju in Xianju, Taizhou.",
+        "descriptionZh": "神仙居，真的有神仙住在这里吗？",
+        "photos": [
+            {
+                "src": "images/life/taizhou/shenxianju.jpg",
+                "alt": "Jagged rocky peaks rising above green slopes and traditional tiled-roof buildings at Shenxianju under a blue sky",
+                "altZh": "蓝天下的神仙居，奇峰立在绿色山坡上，前景是传统瓦顶建筑",
+                "caption": "Shenxianju, Xianju, Taizhou, Zhejiang.",
+                "captionZh": "浙江台州仙居，神仙居。"
+            }
+        ]
+    },
+    {
+        "id": "hanzhong",
+        "place": "Hanzhong",
+        "placeZh": "汉中",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            33.68,
+            106.73
+        ],
+        "title": "The meadows of Mount Zibai",
+        "titleZh": "紫柏山的草甸",
+        "description": "Yellow wildflowers among the grasses of Mount Zibai's subalpine meadows in Liuba, Hanzhong.",
+        "descriptionZh": "紫柏山的亚高山草甸，绿草间开着一片黄花。",
+        "photos": [
+            {
+                "src": "images/life/hanzhong/zibai-subalpine-meadow.jpg",
+                "alt": "Yellow wildflowers in a lush green meadow on Mount Zibai, with wooded slopes and white clouds behind",
+                "altZh": "紫柏山绿草间盛开的黄色野花，远处是林木覆盖的山坡和白云",
+                "caption": "Subalpine meadow on Mount Zibai, Liuba, Hanzhong.",
+                "captionZh": "汉中留坝，紫柏山亚高山草甸。"
+            }
+        ]
+    },
+    {
+        "id": "luan",
+        "place": "Lu'an",
+        "placeZh": "六安",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            31.7484,
+            116.5004
+        ],
+        "title": "A morning in Lu'an",
+        "titleZh": "六安的清晨",
+        "description": "The morning sun above Lu'an, with trees and quiet streets in the foreground.",
+        "descriptionZh": "太阳从楼群旁升起，路上的车还不多。",
+        "photos": [
+            {
+                "src": "images/life/luan/city-at-dawn.jpg",
+                "alt": "A low morning sun above the Lu'an skyline, with trees, a road and a few cars in the foreground",
+                "altZh": "清晨的太阳升在六安楼群旁，前景是树木、道路和不多的车辆",
+                "caption": "Morning light over Lu'an, Anhui.",
+                "captionZh": "安徽六安，城市清晨。"
+            }
+        ]
+    },
+    {
+        "id": "nanyang",
+        "place": "Nanyang",
+        "placeZh": "南阳",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            32.9943,
+            112.554
+        ],
+        "title": "Colonel Sanders meets Zhuge Liang",
+        "titleZh": "拿起羽扇的肯德基爷爷",
+        "description": "In Nanyang, Colonel Sanders wears Zhuge Liang-inspired robes and carries a feather fan outside a KFC restaurant.",
+        "descriptionZh": "到了南阳，肯德基爷爷也入乡随俗，拿起了诸葛亮的羽扇。",
+        "photos": [
+            {
+                "src": "images/life/nanyang/kfc-zhuge-liang.jpg",
+                "alt": "A Colonel Sanders figure in blue traditional robes holding a feather fan outside a KFC restaurant in Nanyang",
+                "altZh": "南阳一家肯德基门外，肯德基爷爷穿着蓝色古装，手持羽扇",
+                "caption": "A Zhuge Liang-inspired Colonel Sanders in Nanyang.",
+                "captionZh": "南阳，诸葛亮造型的肯德基爷爷。"
+            }
+        ]
+    },
+    {
+        "id": "shiyan",
+        "place": "Shiyan",
+        "placeZh": "十堰",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            32.5095,
+            111.0905
+        ],
+        "title": "A welcome to Wudang Mountain",
+        "titleZh": "武当山脚下",
+        "description": "At the foot of Wudang Mountain in Shiyan, a street-side gateway celebrates its Tai Chi tradition.",
+        "descriptionZh": "武当山脚下，抬头就是“天下太极出武当”。",
+        "photos": [
+            {
+                "src": "images/life/shiyan/wudang-mountain-gateway.jpg",
+                "alt": "A red gateway displaying Chinese words about Wudang's Tai Chi tradition beside a street with scooters and traditional-style buildings",
+                "altZh": "武当山脚下写着“天下太极出武当”的红色门楼，街上有电动车和行人",
+                "caption": "At the foot of Wudang Mountain, Shiyan, Hubei.",
+                "captionZh": "湖北十堰，武当山脚下。"
+            }
+        ]
+    },
+    {
+        "id": "xiangyang",
+        "place": "Xiangyang",
+        "placeZh": "襄阳",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            32.0919,
+            112.0799
+        ],
+        "title": "The Flying Horse emblem",
+        "titleZh": "马踏飞燕",
+        "description": "The Flying Horse tourism emblem on its tall pedestal in Xiangyang, with trees behind it.",
+        "descriptionZh": "马踏飞燕立在街头，给襄阳留一张到此一游。",
+        "photos": [
+            {
+                "src": "images/life/xiangyang/flying-horse-emblem.jpg",
+                "alt": "A Flying Horse sculpture atop a globe and a tall stone pedestal in Xiangyang, with trees in the background",
+                "altZh": "襄阳的马踏飞燕雕塑，立在球形底座和高石台上，背后是树木",
+                "caption": "The Flying Horse emblem in Xiangyang, Hubei.",
+                "captionZh": "湖北襄阳，马踏飞燕标志。"
             }
         ]
     }

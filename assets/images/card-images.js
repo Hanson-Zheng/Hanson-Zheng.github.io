@@ -336,6 +336,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/changzhou/wujin-radio-tv-tower.jpg": {
+    "src": "assets/images/cards/wujin-radio-tv-tower-5c819fda4a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/wujin-radio-tv-tower-5c819fda4a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/wujin-radio-tv-tower-5c819fda4a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/wujin-radio-tv-tower-5c819fda4a-1291w.webp",
+        "width": 1291
+      }
+    ]
+  },
   "images/life/chengdu/ifs-climbing-panda.jpg": {
     "src": "assets/images/cards/ifs-climbing-panda-56389fbe6e-960w.webp",
     "sources": [
@@ -387,6 +404,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/el-nido/el-nido-shore.jpg": {
+    "src": "assets/images/cards/el-nido-shore-7bda96a73f-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/el-nido-shore-7bda96a73f-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/el-nido-shore-7bda96a73f-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/el-nido-shore-7bda96a73f-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/frankfurt/frankfurt-airport-icbc.jpg": {
     "src": "assets/images/cards/frankfurt-airport-icbc-f992f9c8c1-960w.webp",
     "sources": [
@@ -421,6 +455,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/hangzhou/qiantang-river-at-night.jpg": {
+    "src": "assets/images/cards/qiantang-river-at-night-4705374bc0-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/qiantang-river-at-night-4705374bc0-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/qiantang-river-at-night-4705374bc0-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/qiantang-river-at-night-4705374bc0-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/hanoi/ho-chi-minh-mausoleum.jpg": {
     "src": "assets/images/cards/ho-chi-minh-mausoleum-26c6ef20d9-960w.webp",
     "sources": [
@@ -434,6 +485,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/ho-chi-minh-mausoleum-26c6ef20d9-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/hanzhong/zibai-subalpine-meadow.jpg": {
+    "src": "assets/images/cards/zibai-subalpine-meadow-42ff09dd8b-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/zibai-subalpine-meadow-42ff09dd8b-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/zibai-subalpine-meadow-42ff09dd8b-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/zibai-subalpine-meadow-42ff09dd8b-1440w.webp",
         "width": 1440
       }
     ]
@@ -468,6 +536,57 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/victoria-harbour-e8e2de7e2a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/huaian/zhou-enlai-former-residence.jpg": {
+    "src": "assets/images/cards/zhou-enlai-former-residence-9e9393537a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/zhou-enlai-former-residence-9e9393537a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/zhou-enlai-former-residence-9e9393537a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/zhou-enlai-former-residence-9e9393537a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/huzhou/taihu-lakeside.jpg": {
+    "src": "assets/images/cards/taihu-lakeside-ae9317446b-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/taihu-lakeside-ae9317446b-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/taihu-lakeside-ae9317446b-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/taihu-lakeside-ae9317446b-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/jinan/baotu-spring.jpg": {
+    "src": "assets/images/cards/baotu-spring-fab55b6006-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/baotu-spring-fab55b6006-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/baotu-spring-fab55b6006-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/baotu-spring-fab55b6006-1440w.webp",
         "width": 1440
       }
     ]
@@ -523,6 +642,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/luan/city-at-dawn.jpg": {
+    "src": "assets/images/cards/city-at-dawn-51f97f28e9-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/city-at-dawn-51f97f28e9-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/city-at-dawn-51f97f28e9-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/city-at-dawn-51f97f28e9-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/macau/airport-special-livery.jpg": {
     "src": "assets/images/cards/airport-special-livery-eae75e3887-960w.webp",
     "sources": [
@@ -571,6 +707,40 @@ const cardImageAssets = {
       {
         "src": "assets/images/cards/bmw-museum-d66c11f5a5-1440w.webp",
         "width": 1440
+      }
+    ]
+  },
+  "images/life/nanjing/confucius-temple-qinhuai.jpg": {
+    "src": "assets/images/cards/confucius-temple-qinhuai-045fbaf54a-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/confucius-temple-qinhuai-045fbaf54a-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/confucius-temple-qinhuai-045fbaf54a-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/confucius-temple-qinhuai-045fbaf54a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/nanyang/kfc-zhuge-liang.jpg": {
+    "src": "assets/images/cards/kfc-zhuge-liang-87957381d3-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/kfc-zhuge-liang-87957381d3-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/kfc-zhuge-liang-87957381d3-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/kfc-zhuge-liang-87957381d3-1291w.webp",
+        "width": 1291
       }
     ]
   },
@@ -676,6 +846,40 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/qufu/cemetery-of-confucius.jpg": {
+    "src": "assets/images/cards/cemetery-of-confucius-a2da0f14cc-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/cemetery-of-confucius-a2da0f14cc-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/cemetery-of-confucius-a2da0f14cc-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/cemetery-of-confucius-a2da0f14cc-979w.webp",
+        "width": 979
+      }
+    ]
+  },
+  "images/life/quzhou/jianglang-mountain.jpg": {
+    "src": "assets/images/cards/jianglang-mountain-3d38c46084-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/jianglang-mountain-3d38c46084-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/jianglang-mountain-3d38c46084-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/jianglang-mountain-3d38c46084-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/shanghai/lujiazui.jpg": {
     "src": "assets/images/cards/lujiazui-2ad98b93d7-960w.webp",
     "sources": [
@@ -706,6 +910,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/hit-main-building-2e1fb0c03b-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/shiyan/wudang-mountain-gateway.jpg": {
+    "src": "assets/images/cards/wudang-mountain-gateway-3866dee134-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/wudang-mountain-gateway-3866dee134-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/wudang-mountain-gateway-3866dee134-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/wudang-mountain-gateway-3866dee134-1440w.webp",
         "width": 1440
       }
     ]
@@ -744,6 +965,40 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/taian/mount-tai.jpg": {
+    "src": "assets/images/cards/mount-tai-de4e567e85-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/mount-tai-de4e567e85-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/mount-tai-de4e567e85-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/mount-tai-de4e567e85-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/taizhou/shenxianju.jpg": {
+    "src": "assets/images/cards/shenxianju-a0a95668fe-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/shenxianju-a0a95668fe-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/shenxianju-a0a95668fe-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/shenxianju-a0a95668fe-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/vienna/belvedere.jpg": {
     "src": "assets/images/cards/belvedere-39b8256ad3-960w.webp",
     "sources": [
@@ -774,6 +1029,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/votivkirche-ae974403fc-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/weifang/toefl-test-day.jpg": {
+    "src": "assets/images/cards/toefl-test-day-8ca623f668-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/toefl-test-day-8ca623f668-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/toefl-test-day-8ca623f668-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/toefl-test-day-8ca623f668-1440w.webp",
         "width": 1440
       }
     ]
@@ -812,6 +1084,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/wenzhou/longwan-airport-at-night.jpg": {
+    "src": "assets/images/cards/longwan-airport-at-night-57aa24d962-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/longwan-airport-at-night-57aa24d962-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/longwan-airport-at-night-57aa24d962-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/longwan-airport-at-night-57aa24d962-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/wuhan/yellow-crane-tower-at-night.jpg": {
     "src": "assets/images/cards/yellow-crane-tower-at-night-04ce07d5d2-960w.webp",
     "sources": [
@@ -826,6 +1115,23 @@ const cardImageAssets = {
       {
         "src": "assets/images/cards/yellow-crane-tower-at-night-04ce07d5d2-1291w.webp",
         "width": 1291
+      }
+    ]
+  },
+  "images/life/xiamen/gaoqi-round-windows.jpg": {
+    "src": "assets/images/cards/gaoqi-round-windows-4979b51a8f-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/gaoqi-round-windows-4979b51a8f-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/gaoqi-round-windows-4979b51a8f-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/gaoqi-round-windows-4979b51a8f-1440w.webp",
+        "width": 1440
       }
     ]
   },
@@ -859,6 +1165,40 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/terracotta-warriors-223038bda9-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/xiangyang/flying-horse-emblem.jpg": {
+    "src": "assets/images/cards/flying-horse-emblem-ed154abfe8-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/flying-horse-emblem-ed154abfe8-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/flying-horse-emblem-ed154abfe8-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/flying-horse-emblem-ed154abfe8-1291w.webp",
+        "width": 1291
+      }
+    ]
+  },
+  "images/life/yantai/china-eastern-classic-livery.jpg": {
+    "src": "assets/images/cards/china-eastern-classic-livery-849f1dd5e6-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/china-eastern-classic-livery-849f1dd5e6-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/china-eastern-classic-livery-849f1dd5e6-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/china-eastern-classic-livery-849f1dd5e6-1440w.webp",
         "width": 1440
       }
     ]

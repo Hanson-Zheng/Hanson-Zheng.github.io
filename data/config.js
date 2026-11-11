@@ -47,6 +47,20 @@ const configData = {
         "worldLayout": "pacific", // "pacific": Eurasia left, Americas right; "atlantic": previous layout.
         "showSummary": false, // true: show the place/country counts above the map.
         "showDates": false, // Keep visits undated; set true to display an optional entry date.
+        "detail": { // 分级底图：全景用 50m，放大后按需加载 10m。
+            "enabled": true, // false: 始终使用 50m。
+            "minZoom": 4.5 // 切换到 10m 的缩放级别；缩小半级后恢复 50m，避免反复切换。
+        },
+        "provinceBorders": { // 中国省界：放大到指定级别才加载和显示。
+            "enabled": true,
+            "minZoom": 4
+        },
+        "photoLayout": { // 电脑端按当前照片比例调整地图与相册的分栏；手机仍上下排列。
+            "adaptive": true, // false: 恢复固定分栏。
+            "targetHeight": 420, // 计算照片理想宽度时的高度上限，CSS px；矮屏会适当缩小。
+            "minStoryWidth": 300, // 相册及介绍栏的理想最小宽度，CSS px。
+            "maxStoryShare": 0.46 // 横图最多占整个地图/相册区域的比例。
+        },
         "labels": { // Zoom levels: larger numbers reveal labels later.
             "countryMinZoom": 3,
             "cityMinZoom": 4,
@@ -62,6 +76,7 @@ const configData = {
                 "visited": "#a9cabc",
                 "selected": "#629987",
                 "selectedBorder": "#2e6d5b",
+                "provinceBorder": "#496e62",
                 "pin": "#285cc4",
                 "selectedPin": "#f3c178"
             },
@@ -72,6 +87,7 @@ const configData = {
                 "visited": "#a96c51",
                 "selected": "#e39b79",
                 "selectedBorder": "#f7caa6",
+                "provinceBorder": "#eed0bc",
                 "pin": "#96b8ff",
                 "selectedPin": "#f3c178"
             }

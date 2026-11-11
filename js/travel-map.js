@@ -8,7 +8,7 @@
         const atlas = canvas.closest('.travel-atlas');
         const palette = typeof configData !== 'undefined' ? configData.travelMap?.colors : null;
         for (const theme of ['light', 'dark']) {
-            for (const key of ['ocean', 'land', 'border', 'visited', 'selected', 'selectedBorder', 'pin', 'selectedPin']) {
+            for (const key of ['ocean', 'land', 'border', 'visited', 'selected', 'selectedBorder', 'provinceBorder', 'pin', 'selectedPin']) {
                 const color = palette?.[theme]?.[key];
                 if (atlas && typeof color === 'string' && CSS.supports('color', color)) {
                     const variable = key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
@@ -28,6 +28,21 @@
         const displayCoordinates = ([latitude, longitude]) => [latitude, !horizontalWrap && pacificLayout && longitude < -30 ? longitude + 360 : longitude];
         const worldBounds = pacificLayout ? [[-55, -30], [82, 330]] : [[-55, -175], [80, 180]];
         const showDates = typeof configData !== 'undefined' && configData.travelMap?.showDates === true;
+        const detailConfig = typeof configData !== 'undefined' ? configData.travelMap?.detail : null;
+        const detailEnabled = detailConfig?.enabled !== false;
+        const detailMinZoom = Number.isFinite(detailConfig?.minZoom)
+            ? Math.max(1, Math.min(7, detailConfig.minZoom)) : 4.5;
+        const provinceConfig = typeof configData !== 'undefined' ? configData.travelMap?.provinceBorders : null;
+        const provinceBordersEnabled = provinceConfig?.enabled !== false;
+        const provinceMinZoom = Number.isFinite(provinceConfig?.minZoom)
+            ? Math.max(0, Math.min(7, provinceConfig.minZoom)) : 4;
+        const photoLayout = typeof configData !== 'undefined' ? configData.travelMap?.photoLayout : null;
+        const adaptivePhotoLayout = photoLayout?.adaptive !== false;
+        const photoLayoutOption = (key, fallback, min, max) => Number.isFinite(photoLayout?.[key])
+            ? Math.max(min, Math.min(max, photoLayout[key])) : fallback;
+        const photoTargetHeight = photoLayoutOption('targetHeight', 420, 200, 600);
+        const minStoryWidth = photoLayoutOption('minStoryWidth', 300, 280, 600);
+        const maxStoryShare = photoLayoutOption('maxStoryShare', 0.46, 0.35, 0.6);
         const labelConfig = typeof configData !== 'undefined' ? configData.travelMap?.labels : null;
         const labelOption = (key, fallback, min, max) => Number.isFinite(labelConfig?.[key])
             ? Math.max(min, Math.min(max, labelConfig[key])) : fallback;
@@ -60,14 +75,27 @@
         let selected = null;
         let map = null;
         let countries = null;
+        let provinceBorders = null;
+        let provinceFeatures = null;
+        let provinceRequest = null;
+        const provinceWorldOffsets = new Set();
         let markerLayer = null;
         let pinIcon = null;
         let countryFeatures = null;
+        let baseCountryFeatures = null;
+        let baseCountryLabels = {};
+        let detailedCountryFeatures = null;
+        let detailRequest = null;
+        let detailRetryAfter = 0;
+        let currentResolution = '50m';
+        let detailRenderBounds = null;
+        let detailViewFrame = 0;
         const worldOffsets = new Set();
         const countryRenderRecords = [];
         const countryLabelRecords = [];
         const countryLabelNodes = new Map();
         const cityLabelNodes = new Map();
+        const countryTooltipNodes = new Map();
         const labelMeasure = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
         const cityInkCache = new Map();
         let countryLabelData = {};
@@ -76,6 +104,8 @@
         let labelFrame = 0;
         let photoIndex = 0;
         let photos = [];
+        let currentPhotoRatio = null;
+        let photoLayoutFrame = 0;
         let loading = false;
         let worldView = true;
 
@@ -103,6 +133,38 @@
                 const src = photoUrl(photo?.src);
                 return src ? [{ src, alt: photo.alt || entry.title || entry.place, altZh: photo.altZh || entry.titleZh || entry.placeZh, caption: photo.caption || '', captionZh: photo.captionZh }] : [];
             });
+        }
+
+        function updatePhotoLayout() {
+            photoLayoutFrame = 0;
+            if (!atlas) return;
+            if (!adaptivePhotoLayout || !currentPhotoRatio || matchMedia('(max-width: 900px)').matches) {
+                atlas.style.removeProperty('--travel-story-width');
+                atlas.style.removeProperty('--travel-photo-height');
+                return;
+            }
+            // Derive the sidebar from the image, not from its current column width,
+            // so resizing the grid cannot feed back into another width calculation.
+            const padding = getComputedStyle(story);
+            const horizontalPadding = parseFloat(padding.paddingLeft) + parseFloat(padding.paddingRight);
+            const photoHeight = Math.min(photoTargetHeight, Math.max(280, innerHeight * 0.45));
+            const desiredWidth = currentPhotoRatio * photoHeight + horizontalPadding;
+            const storyWidth = Math.min(atlas.clientWidth * maxStoryShare, Math.max(minStoryWidth, desiredWidth));
+            atlas.style.setProperty('--travel-story-width', `${Math.round(storyWidth)}px`);
+            atlas.style.setProperty('--travel-photo-height', `${photoHeight}px`);
+            const image = story.querySelector('.travel-photo');
+            if (image?.hasAttribute('srcset')) {
+                image.sizes = `(max-width: 900px) calc(100vw - 60px), ${Math.ceil(storyWidth - horizontalPadding)}px`;
+            }
+        }
+
+        function schedulePhotoLayout() {
+            if (!photoLayoutFrame) photoLayoutFrame = requestAnimationFrame(updatePhotoLayout);
+        }
+
+        if (atlas && adaptivePhotoLayout) {
+            new ResizeObserver(schedulePhotoLayout).observe(atlas);
+            window.addEventListener('resize', schedulePhotoLayout);
         }
 
         // The full-size photograph is loaded only when the viewer is opened.
@@ -149,9 +211,12 @@
             frame.classList.remove('is-portrait');
             SiteI18n.content(image, photo, 'alt', { attribute: 'alt' });
             image.addEventListener('load', () => {
+                if (!image.isConnected) return;
                 frame.style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
                 frame.style.setProperty('--travel-photo-ratio', image.naturalWidth / image.naturalHeight);
                 frame.classList.toggle('is-portrait', image.naturalHeight > image.naturalWidth);
+                currentPhotoRatio = image.naturalWidth / image.naturalHeight;
+                schedulePhotoLayout();
             }, { once: true });
             applySiteCardImage(image, photo.src, '(max-width: 900px) calc(100vw - 60px), 440px');
             image.addEventListener('error', () => requestAnimationFrame(() => {
@@ -205,6 +270,8 @@
                 media.append(frame, navigation);
                 story.append(media, element('p', 'travel-photo-caption'));
             } else {
+                currentPhotoRatio = null;
+                schedulePhotoLayout();
                 story.append(SiteI18n.element('p', 'travel-no-photos', 'life.photosSoon'));
             }
             if (entry.title) story.append(SiteI18n.content(element('h5', 'travel-story-title'), entry, 'title'));
@@ -364,13 +431,22 @@
             };
             const screen = { left: 8, top: 8, right: size.x - 8, bottom: size.y - 8 };
             const canvasRect = canvas.getBoundingClientRect();
-            const obstacles = [...canvas.querySelectorAll('.travel-pin, .travel-cluster, .leaflet-control, .travel-world-button, .travel-map-note')]
-                .filter(node => !node.hidden && getComputedStyle(node).display !== 'none')
-                .map(node => {
-                    const r = node.getBoundingClientRect();
-                    return { left: r.left - canvasRect.left, top: r.top - canvasRect.top,
-                        right: r.right - canvasRect.left, bottom: r.bottom - canvasRect.top };
-                });
+            const visible = node => {
+                const style = getComputedStyle(node);
+                return node.isConnected && !node.hidden && style.display !== 'none'
+                    && style.visibility !== 'hidden' && Number(style.opacity) > 0;
+            };
+            const rectangleOf = node => {
+                const r = node.getBoundingClientRect();
+                return { left: r.left - canvasRect.left, top: r.top - canvasRect.top,
+                    right: r.right - canvasRect.left, bottom: r.bottom - canvasRect.top };
+            };
+            const pinBoxes = [...canvas.querySelectorAll('.travel-pin, .travel-cluster')]
+                .filter(visible).map(node => ({ node, rectangle: rectangleOf(node.querySelector('svg') || node) }));
+            const obstacles = [
+                ...pinBoxes.map(item => item.rectangle),
+                ...[...canvas.querySelectorAll('.leaflet-control')].filter(visible).map(rectangleOf)
+            ];
             // Buttons/legend sit beside the map container rather than inside it.
             canvas.parentElement.querySelectorAll('.travel-world-button, .travel-map-note').forEach(node => {
                 if (node.hidden) return;
@@ -379,28 +455,45 @@
                     right: r.right - canvasRect.left, bottom: r.bottom - canvasRect.top });
             });
             const pins = [];
+            const clustering = !!canvas.querySelector('.leaflet-cluster-anim');
             forEachPin((marker, entry) => {
-                if (zoom < cityMinZoom) return;
-                if (!marker.getElement() || (markerLayer.getVisibleParent && markerLayer.getVisibleParent(marker) !== marker)) return;
+                if (zoom < cityMinZoom || clustering) return;
+                const pin = marker.getElement();
+                if (!pin || !visible(pin) || (markerLayer.getVisibleParent && markerLayer.getVisibleParent(marker) !== marker)) return;
+                const box = pinBoxes.find(item => item.node === pin);
+                if (!box) return;
                 const point = map.latLngToContainerPoint(marker.getLatLng());
                 if (point.x < 0 || point.y < 0 || point.x > size.x || point.y > size.y) return;
-                pins.push({ marker, entry, point });
+                pins.push({ marker, entry, point, pin, pinRectangle: box.rectangle });
             });
             pins.sort((a, b) => Number(b.entry === selected) - Number(a.entry === selected)
                 || a.point.distanceTo(size.divideBy(2)) - b.point.distanceTo(size.divideBy(2)));
-            for (const { marker, entry, point } of pins) {
+            for (const { marker, entry, pin, pinRectangle } of pins) {
                 const name = SiteI18n.value(entry, 'place');
-                const width = textWidth(name, cityFontSize, entry === selected ? 600 : 500) + 4;
+                const width = Math.ceil(textWidth(name, cityFontSize, entry === selected ? 600 : 500));
                 const height = cityLineHeight;
-                const positions = [[point.x + 23, point.y - 24 - height / 2], [point.x - 23 - width, point.y - 24 - height / 2],
-                    [point.x - width / 2, point.y - 42 - height], [point.x - width / 2, point.y + 9],
-                    [point.x + 23, point.y - 42 - height], [point.x - 23 - width, point.y - 42 - height],
-                    [point.x + 23, point.y + 9], [point.x - 23 - width, point.y + 9]];
-                for (const [x, y] of positions) {
+                // Measure the visible icon, including its selected scale. Each
+                // candidate stays 5px from it; never send a city name diagonally away.
+                const centreX = (pinRectangle.left + pinRectangle.right) / 2;
+                const centreY = pinRectangle.top + (pinRectangle.bottom - pinRectangle.top) * 0.4;
+                const positions = [
+                    { side: 'right', x: pinRectangle.right + 5, y: centreY - height / 2 },
+                    { side: 'left', x: pinRectangle.left - 5 - width, y: centreY - height / 2 },
+                    { side: 'above', x: centreX - width / 2, y: pinRectangle.top - 5 - height },
+                    { side: 'below', x: centreX - width / 2, y: pinRectangle.bottom + 5 }
+                ];
+                const previousSide = cityLabelNodes.get(marker)?.dataset.side;
+                positions.sort((a, b) => Number(b.side === previousSide) - Number(a.side === previousSide));
+                const distance = (a, b) => Math.hypot(Math.max(b.left - a.right, a.left - b.right, 0),
+                    Math.max(b.top - a.bottom, a.top - b.bottom, 0));
+                for (const { x, y, side } of positions) {
                     const rectangle = { left: x, top: y, right: x + width, bottom: y + height };
                     if (rectangle.left < screen.left || rectangle.right > screen.right
                         || rectangle.top < screen.top || rectangle.bottom > screen.bottom
                         || obstacles.some(other => intersects(rectangle, other, 4))) continue;
+                    // A nearby cluster or another pin must not look like the label's owner.
+                    const ownDistance = distance(rectangle, pinRectangle);
+                    if (pinBoxes.some(other => other.node !== pin && distance(rectangle, other.rectangle) < ownDistance + 2)) continue;
                     const nw = map.containerPointToLatLng([rectangle.left - 1, rectangle.top - 1]);
                     const se = map.containerPointToLatLng([rectangle.right + 1, rectangle.bottom + 1]);
                     const nearby = visibleCountries.filter(record => record.layer.getBounds().intersects(L.latLngBounds(nw, se)));
@@ -419,6 +512,8 @@
                     const node = labelNode(cityLabelNodes, marker, cityLabelPane, 'travel-city-label');
                     node.firstElementChild.textContent = name;
                     node.lang = SiteI18n.language;
+                    node.dataset.placeId = entry.id;
+                    node.dataset.side = side;
                     node.classList.toggle('is-selected', entry === selected);
                     node.style.color = ink.color;
                     L.DomUtil.setPosition(node, map.containerPointToLayerPoint(L.point(x, y)));
@@ -511,7 +606,13 @@
         function addCountryWorld(offset) {
             if (!countryFeatures) return;
             L.geoJSON(countryFeatures, {
-                filter: feature => feature.properties.name !== 'Antarctica',
+                filter: feature => {
+                    if (feature.properties.name === 'Antarctica') return false;
+                    if (!detailRenderBounds) return true;
+                    const [west, south, east, north] = feature.bbox;
+                    return east + offset >= detailRenderBounds.getWest() && west + offset <= detailRenderBounds.getEast()
+                        && north >= detailRenderBounds.getSouth() && south <= detailRenderBounds.getNorth();
+                },
                 coordsToLatLng: coordinates => L.latLng(coordinates[1], coordinates[0] + offset),
                 style: feature => ({
                     className: `travel-country${visited.has(countryKey(feature.properties.name)) ? ' is-visited' : ''}`,
@@ -524,17 +625,127 @@
                     const showName = String(feature.id) !== '158' && feature.properties.name !== 'Taiwan';
                     if (showName) {
                         countryLabelRecords.push(record);
-                        const label = ['344', '446'].includes(String(feature.id))
-                            ? `${feature.properties.name}, China` : feature.properties.name;
-                        const regionZh = { '344': '中国香港', '446': '中国澳门' };
-                        const nameZh = regionZh[String(feature.id)] || entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))?.countryZh;
-                        layer.bindTooltip(SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }), { sticky: true });
                     }
+                    const label = !showName ? 'China' : ['344', '446'].includes(String(feature.id))
+                        ? `${feature.properties.name}, China` : feature.properties.name;
+                    const regionZh = { '158': '中国', '344': '中国香港', '446': '中国澳门' };
+                    const nameZh = !showName ? '中国' : regionZh[String(feature.id)]
+                        || countryLabelData[feature.properties.name]?.nameZh
+                        || entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name))?.countryZh;
+                    // Reuse detached tooltip bindings across resolution changes and pans.
+                    if (!countryTooltipNodes.has(record.key)) {
+                        countryTooltipNodes.set(record.key, SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }));
+                    }
+                    layer.bindTooltip(countryTooltipNodes.get(record.key), { sticky: true });
                     if (visited.has(countryKey(feature.properties.name))) {
                         layer.on('click', event => selectPlace(entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name)), true, event.latlng?.lng));
                     }
                 }
             }).addTo(countries);
+        }
+
+        function renderCountryDataset(features, resolution) {
+            countryFeatures = features;
+            currentResolution = resolution;
+            countryLabelData = resolution === '10m' ? features.labels : baseCountryLabels;
+            // A buffer covers ordinary dragging; detailed geometry outside it is
+            // kept in memory, not projected into five invisible world copies.
+            detailRenderBounds = resolution === '10m' ? map.getBounds().pad(0.8) : null;
+            countryLabelNodes.forEach(node => { node.hidden = true; });
+            countries.clearLayers();
+            countryLabelRecords.length = 0;
+            countryRenderRecords.length = 0;
+            worldOffsets.forEach(addCountryWorld);
+            canvas.dataset.resolution = resolution;
+            updateCountries();
+        }
+
+        function updateMapResolution() {
+            if (!map || !baseCountryFeatures) return;
+            const threshold = currentResolution === '10m' ? detailMinZoom - 0.5 : detailMinZoom;
+            const wantsDetail = detailEnabled && (currentResolution === '10m' ? map.getZoom() > threshold : map.getZoom() >= threshold);
+            if (!wantsDetail) {
+                if (currentResolution !== '50m') renderCountryDataset(baseCountryFeatures, '50m');
+                return;
+            }
+            if (detailedCountryFeatures) {
+                if (currentResolution !== '10m' || !detailRenderBounds.contains(map.getBounds().pad(0.1))) {
+                    renderCountryDataset(detailedCountryFeatures, '10m');
+                }
+                return;
+            }
+            if (detailRequest || Date.now() < detailRetryAfter) return;
+            canvas.dataset.detailState = 'loading';
+            detailRequest = (async () => {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 20000);
+                try {
+                    const suffix = horizontalWrap ? '-wrapped' : pacificLayout ? '-pacific' : '';
+                    const response = await fetch(new URL(`assets/maps/countries-10m${suffix}.geo.json`, root), { signal: controller.signal });
+                    if (!response.ok) throw new Error(`Detailed map data: ${response.status}`);
+                    const features = await response.json();
+                    if (!Array.isArray(features.features) || !features.labels
+                        || features.features.some(feature => !Array.isArray(feature.bbox) || feature.bbox.length !== 4)) {
+                        throw new Error('Invalid detailed map data');
+                    }
+                    // Keep the editable country-name file authoritative for text;
+                    // only the inland anchors need to follow the finer coastline.
+                    Object.entries(features.labels).forEach(([name, metadata]) => {
+                        features.labels[name] = { ...metadata, ...baseCountryLabels[name], coordinates: metadata.coordinates };
+                    });
+                    detailedCountryFeatures = features;
+                    canvas.dataset.detailState = 'ready';
+                    // The user may already have zoomed out while the request ran.
+                    updateMapResolution();
+                } catch (error) {
+                    canvas.dataset.detailState = 'error';
+                    detailRetryAfter = Date.now() + 30000;
+                    console.warn('Detailed travel map could not load; retaining 50m:', error.message);
+                } finally {
+                    clearTimeout(timeout);
+                    detailRequest = null;
+                }
+            })();
+        }
+
+        function scheduleMapResolution() {
+            if (!detailViewFrame) detailViewFrame = requestAnimationFrame(() => {
+                detailViewFrame = 0;
+                updateMapResolution();
+            });
+        }
+
+        function addProvinceWorld(offset) {
+            if (!provinceFeatures || provinceWorldOffsets.has(offset)) return;
+            L.geoJSON(provinceFeatures, {
+                pane: 'travelProvinceBorders', interactive: false,
+                coordsToLatLng: coordinates => L.latLng(coordinates[1], coordinates[0] + offset),
+                style: { className: 'travel-province-border', weight: 0.9, opacity: 0.7, dashArray: '3 3', fill: false }
+            }).addTo(provinceBorders);
+            provinceWorldOffsets.add(offset);
+        }
+
+        function updateProvinceBorders() {
+            if (!map || !provinceBorders || !provinceBordersEnabled) return;
+            if (map.getZoom() < provinceMinZoom) {
+                if (map.hasLayer(provinceBorders)) map.removeLayer(provinceBorders);
+                return;
+            }
+            if (!map.hasLayer(provinceBorders)) provinceBorders.addTo(map);
+            if (provinceRequest) return;
+            // An optional, local overlay: its failure must never hide the atlas or pins.
+            provinceRequest = (async () => {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 8000);
+                try {
+                    const response = await fetch(new URL('assets/maps/china-province-borders.geo.json', root), { signal: controller.signal });
+                    if (!response.ok) throw new Error(`Province borders: ${response.status}`);
+                    provinceFeatures = await response.json();
+                    worldOffsets.forEach(addProvinceWorld);
+                } catch (error) {
+                    console.warn('Travel province borders could not load:', error.message);
+                } finally { clearTimeout(timeout); }
+            })();
         }
 
         function ensureWorldCopies() {
@@ -571,6 +782,7 @@
                     markerLayer.addLayer(marker);
                 });
                 addCountryWorld(offset);
+                addProvinceWorld(offset);
             }
             updateCountries();
         }
@@ -603,7 +815,11 @@
                 if (horizontalWrap && Number.isFinite(anchorLongitude)) {
                     coordinates[1] += 360 * Math.round((anchorLongitude - coordinates[1]) / 360);
                 }
-                map.setView(coordinates, Math.max(map.getZoom(), 3.5), { animate: !reducedMotion.matches });
+                // The sidebar may resize as soon as its photo loads. Leaflet stops
+                // an in-flight pan during invalidateSize, so establish the target
+                // first and let the column transition keep the visual movement smooth.
+                const resizingPhotoColumns = adaptivePhotoLayout && !matchMedia('(max-width: 900px)').matches;
+                map.setView(coordinates, Math.max(map.getZoom(), 3.5), { animate: !resizingPhotoColumns && !reducedMotion.matches });
             }
         }
 
@@ -635,6 +851,12 @@
             cityLabelPane = map.createPane('travelCityLabels');
             cityLabelPane.style.zIndex = '610';
             cityLabelPane.style.pointerEvents = 'none';
+            const provincePane = map.createPane('travelProvinceBorders');
+            provincePane.style.zIndex = '405';
+            provincePane.style.pointerEvents = 'none';
+            provinceBorders = L.featureGroup();
+            map.on('zoomend', updateProvinceBorders);
+            map.on('move zoomend resize', scheduleMapResolution);
             map.on('move zoomend resize', scheduleMapLabels);
             new MutationObserver(scheduleMapLabels).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
             document.fonts?.ready.then(scheduleMapLabels);
@@ -711,7 +933,7 @@
             let fitting = false;
             const resize = () => {
                 fitting = true;
-                map.invalidateSize({ pan: false });
+                map.invalidateSize({ pan: true, animate: false, debounceMoveend: true });
                 ensureWorldCopies();
                 if (worldView) fitWorld();
                 fitting = false;
@@ -746,15 +968,12 @@
                 const response = await fetch(new URL(`assets/maps/${atlasFile}`, root), { signal: controller.signal });
                 if (!response.ok) throw new Error(`Map data: ${response.status}`);
                 const features = await response.json();
-                countryFeatures = features;
-                countryLabelData = await labelDataRequest;
-                countries.clearLayers();
-                countryLabelRecords.length = 0;
-                countryRenderRecords.length = 0;
-                worldOffsets.forEach(addCountryWorld);
-                updateCountries();
+                baseCountryFeatures = features;
+                baseCountryLabels = await labelDataRequest;
+                renderCountryDataset(features, '50m');
                 message.hidden = true;
                 canvas.dataset.state = 'ready';
+                updateMapResolution();
             } catch (error) {
                 canvas.dataset.state = 'error';
                 SiteI18n.text(message.firstElementChild, 'life.mapError');

@@ -195,11 +195,31 @@
         "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json",
         "bytes": 990102,
         "sha256": "410cae8cf10595c16d59174665e5f67ceb878962cf667cb8c621f02e0e3e1b05"
+      },
+      {
+        "file": "assets/maps/countries-10m.geo.json",
+        "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-10m.json",
+        "bytes": 5787456,
+        "sha256": "8d0e86fe25a66a61bd6c8c585ce12ebf225a9735e22a25c4d29c25f78855e22f"
+      },
+      {
+        "file": "assets/maps/countries-10m-wrapped.geo.json",
+        "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-10m.json",
+        "bytes": 5786470,
+        "sha256": "29e222ff5827ae18306f9370c1991c2e7c6e633d6c526a08bf2b472316a2c9b3"
+      },
+      {
+        "file": "assets/maps/countries-10m-pacific.geo.json",
+        "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-10m.json",
+        "bytes": 5760104,
+        "sha256": "53b7c698ea1bd7f3c78be3d31cf74cfa4a68ce80c6fd5d37d414a764e4c17401"
       }
     ],
     "preparation": "Date-line split, 0.018-degree topology-preserving simplification, 4-decimal coordinates; local/prepare_travel_map.py (Shapely 2).",
     "pacificPreparation": "Derived from countries-50m.geo.json: display longitudes -30 to 330, clip and wrap at 30 W, merge old date-line seams; local/prepare_pacific_map.py (Shapely 2).",
-    "wrappedPreparation": "Join date-line polygon parts around each country largest landmass, without clipping Greenland at 30 W; repeated at runtime. local/prepare_wrapped_map.py (Shapely 2)."
+    "wrappedPreparation": "Join date-line polygon parts around each country largest landmass, without clipping Greenland at 30 W; repeated at runtime. local/prepare_wrapped_map.py (Shapely 2).",
+    "detailedPreparation": "World Atlas 2.0.2 10m; shared-arc simplification 0.005 degrees; preserve country IDs; 5 decimal coordinates; classic, Pacific and joined date-line variants with bilingual inland anchors. local/prepare_detailed_atlas.py.",
+    "detailedSourceSha256": "3bc6f1d367a9bcec479841bae0e76092f512838411d0cef124e92eec4db45f79"
   },
   "leaflet-markercluster": {
     "version": "1.5.3",
@@ -253,6 +273,25 @@
         "bytes": 4380,
         "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
         "source": "https://raw.githubusercontent.com/rsms/inter/master/LICENSE.txt"
+      }
+    ]
+  },
+  "natural-earth-province-borders": {
+    "license": "Public domain",
+    "source": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces_lines.geojson",
+    "sourceSha256": "1a1f30ccaaf4cc9c4bde34266f0b8cbb955d3a4cf254b756912255f2ec7c75b6",
+    "sourceArchive": "local/geo-sources/ne_10m_admin_1_states_provinces_lines.geojson",
+    "preparation": "China ADM0_A3=CHN; merge lines; simplify 0.012 degrees; clip to shared 50m/10m China-group land inset 0.008 degrees; round 4 decimals. local/prepare_province_borders.py.",
+    "files": [
+      {
+        "file": "assets/maps/china-province-borders.geo.json",
+        "bytes": 110553,
+        "sha256": "7bdd3a40a5954936fd02060c57405ee69e4ec2e1bba5313f2328d9a7afc40873"
+      },
+      {
+        "file": "assets/maps/province-borders-LICENSE.txt",
+        "bytes": 206,
+        "sha256": "bd43dd83f974b190278ba58bc0e48be3e565e0e5f10e5888827919f5716b04cd"
       }
     ]
   }

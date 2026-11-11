@@ -1,0 +1,3 @@
+Natural Earth admin-1 boundary lines are in the public domain.
+Source: https://www.naturalearthdata.com/about/terms-of-use/
+Prepared China subset; simplified and clipped to the existing atlas coastline.
