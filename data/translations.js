@@ -158,6 +158,7 @@ const siteTranslations = {
         enlarge: {"en": "Enlarge photograph: {title}", "zh-CN": "放大照片：{title}"},
         photoAnnouncement: {"en": "{place}, photograph {number} of {total}.", "zh-CN": "{place}，第 {number} 张，共 {total} 张照片。"},
         photoSlow: {"en": "This photograph is taking a little longer.", "zh-CN": "照片加载较慢，请稍候。"},
+        loadingPhoto: {"en": "Loading photograph…", "zh-CN": "正在加载照片…"},
         previous: {"en": "Previous photograph", "zh-CN": "上一张照片"},
         next: {"en": "Next photograph", "zh-CN": "下一张照片"},
         photosSoon: {"en": "Photographs to follow.", "zh-CN": "照片稍后补上。"},

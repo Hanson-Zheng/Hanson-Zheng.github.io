@@ -48,13 +48,15 @@ const configData = {
         "showSummary": false, // true: show the place/country counts above the map.
         "showDates": false, // Keep visits undated; set true to display an optional entry date.
         "wheelZoom": {
-            "pixelsPerLevel": 300, // 越小越快；常见一格滚轮 120 单位，约缩放 0.4 级。200 接近最初速度。
-            "durationMs": 120, // 短暂缓动，兼顾速度与柔和；0 为直接缩放。
+            "pixelsPerLevel": 240, // 常见一格滚轮 120 单位约缩放 0.5 级；越小越快。
+            "durationMs": 0, // 默认直接响应滚轮；大于 0 可恢复缓动。
             "respectReducedMotion": false, // 地图滚轮保留跟手过渡；设 true 可遵循系统减少动态效果。
-            "maxStep": 0.5 // 单个滚轮事件的最大缩放幅度，防止设备上报大数值时突然跳远。
+            "maxStep": 0.5, // 单个滚轮事件的最大缩放幅度，防止设备上报大数值时突然跳远。
+            "settleMs": 140 // 连续滚动停下后，再更新精细底图和完整文字避让；不延迟缩放。
         },
         "placeTransition": {
             "durationMs": 320, // 点击图钉后的平移/缩放缓动；0 为立即定位。
+            "focus": "keep-visible", // "keep-visible"：视野内不平移、不自动放大；"center"：每次居中。
             "respectReducedMotion": false // true：遵循系统减少动态效果；false：保留短暂的位置过渡。
         },
         "markers": { // 图钉与数字聚合圆点，单位 CSS px；不随屏幕 DPI 放大。
@@ -73,9 +75,14 @@ const configData = {
             "enabled": true,
             "minZoom": 4
         },
-        "photoLayout": { // 电脑端按当前照片比例调整地图与相册的分栏；手机仍上下排列。
+        "photoLayout": { // 只横向调整分栏，照片切换不改变地图高度；手机仍上下排列。
             "adaptive": true, // false: 恢复固定分栏。
-            "targetHeight": 420, // 计算照片理想宽度时的高度上限，CSS px；矮屏会适当缩小。
+            "height": 680, // 电脑端地图/相册区域固定高度，CSS px。
+            "mobilePhotoHeight": 300, // 手机相册图片展示区高度，CSS px。
+            "mobilePortraitMaxHeight": 520, // 窄屏竖图可向下增高至此上限，同时不超过视口高度的 75%。
+            "transitionMs": 180, // 仅横向分栏的过渡时间；0 为直接调整。
+            "imageFadeMs": 140, // 图片加载完成后的轻微交替；0 为直接替换。
+            "targetHeight": 420, // 计算相册理想宽度时的图片高度上限，CSS px。
             "minStoryWidth": 300, // 相册及介绍栏的理想最小宽度，CSS px。
             "maxStoryShare": 0.46 // 横图最多占整个地图/相册区域的比例。
         },

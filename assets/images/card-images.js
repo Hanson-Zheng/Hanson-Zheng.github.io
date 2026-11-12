@@ -285,6 +285,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/boracay/blue-sails-on-the-beach.jpg": {
+    "src": "assets/images/cards/blue-sails-on-the-beach-8e46b059b6-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/blue-sails-on-the-beach-8e46b059b6-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/blue-sails-on-the-beach-8e46b059b6-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/blue-sails-on-the-beach-8e46b059b6-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/cambridge/newtons-apple-tree.jpg": {
     "src": "assets/images/cards/newtons-apple-tree-6995a9ebdb-960w.webp",
     "sources": [
@@ -1152,6 +1169,19 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/suzhou/tiger-hill-wangsu-terrace.jpg": {
+    "src": "assets/images/cards/tiger-hill-wangsu-terrace-4107b8ad69-853w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/tiger-hill-wangsu-terrace-4107b8ad69-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/tiger-hill-wangsu-terrace-4107b8ad69-853w.webp",
+        "width": 853
+      }
+    ]
+  },
   "images/life/taian/mount-tai.jpg": {
     "src": "assets/images/cards/mount-tai-de4e567e85-960w.webp",
     "sources": [
@@ -1437,6 +1467,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/guanque-tower-5fe2c4550b-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/zhoushan/pantuo-rock-mount-putuo.jpg": {
+    "src": "assets/images/cards/pantuo-rock-mount-putuo-b07536d5ab-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/pantuo-rock-mount-putuo-b07536d5ab-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/pantuo-rock-mount-putuo-b07536d5ab-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/pantuo-rock-mount-putuo-b07536d5ab-1440w.webp",
         "width": 1440
       }
     ]

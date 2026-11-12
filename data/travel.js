@@ -1625,5 +1625,77 @@ const travelData = [
                 "captionZh": "绍兴，鲁迅故居的厅堂。"
             }
         ]
+    },
+    {
+        "id": "boracay",
+        "place": "Boracay",
+        "placeZh": "长滩岛",
+        "country": "Philippines",
+        "countryZh": "菲律宾",
+        "coordinates": [
+            11.9689,
+            121.9239
+        ],
+        "title": "Blue sails in Boracay",
+        "titleZh": "长滩岛的蓝帆",
+        "description": "Blue-sailed boats by the shore in Boracay, with pale sand, turquoise water and people walking along the beach.",
+        "descriptionZh": "白沙、海浪，岸边还有一艘蓝帆船。",
+        "photos": [
+            {
+                "src": "images/life/boracay/blue-sails-on-the-beach.jpg",
+                "alt": "A blue-sailed boat beside a white-sand beach in Boracay, with turquoise waves and people walking by the water.",
+                "altZh": "长滩岛白沙滩边的蓝帆船，浅色海浪旁有人沿岸散步。",
+                "caption": "Blue sails by the beach, Boracay, Philippines.",
+                "captionZh": "菲律宾长滩岛，白沙滩边的蓝帆船。"
+            }
+        ]
+    },
+    {
+        "id": "zhoushan",
+        "place": "Zhoushan",
+        "placeZh": "舟山",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            29.9871,
+            122.3826
+        ],
+        "title": "Pantuo Rock, Mount Putuo",
+        "titleZh": "普陀山磐陀石",
+        "description": "A huge inscribed boulder balanced on another rock at Mount Putuo, with visitors on the path below.",
+        "descriptionZh": "上面的巨石像是悬着，底下只留了一点支撑。",
+        "photos": [
+            {
+                "src": "images/life/zhoushan/pantuo-rock-mount-putuo.jpg",
+                "alt": "Pantuo Rock at Mount Putuo: a large boulder with red and black inscriptions resting on another rock, above a path with visitors.",
+                "altZh": "普陀山磐陀石，刻有红黑题字的巨石叠在另一块岩石上，游客从下方的小路经过。",
+                "caption": "Pantuo Rock at Mount Putuo, Zhoushan.",
+                "captionZh": "舟山普陀山，磐陀石。"
+            }
+        ]
+    },
+    {
+        "id": "suzhou",
+        "place": "Suzhou",
+        "placeZh": "苏州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            31.3375,
+            120.5762
+        ],
+        "title": "A shaded gateway at Tiger Hill",
+        "titleZh": "虎丘望苏台",
+        "description": "A shaded archway at Tiger Hill in Suzhou, with a stone plaque and sunlight falling across the wall.",
+        "descriptionZh": "虎丘的树荫下，抬头看见“望苏台”三个字。",
+        "photos": [
+            {
+                "src": "images/life/suzhou/tiger-hill-wangsu-terrace.jpg",
+                "alt": "A tree-shaded archway at Tiger Hill in Suzhou, with a stone plaque above the opening and sunlight on the pale wall.",
+                "altZh": "苏州虎丘树荫下的拱门，门上刻有“望苏台”三字，浅色墙面上落着阳光。",
+                "caption": "An archway beneath the trees at Tiger Hill, Suzhou.",
+                "captionZh": "苏州虎丘，望苏台前。"
+            }
+        ]
     }
 ];

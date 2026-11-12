@@ -31,14 +31,16 @@
         const wheelConfig = typeof configData !== 'undefined' ? configData.travelMap?.wheelZoom : null;
         const wheelOption = (key, fallback, min, max) => Number.isFinite(wheelConfig?.[key])
             ? Math.max(min, Math.min(max, wheelConfig[key])) : fallback;
-        const wheelPixelsPerLevel = wheelOption('pixelsPerLevel', 300, 200, 3000);
-        const wheelDuration = wheelOption('durationMs', 120, 0, 600);
+        const wheelPixelsPerLevel = wheelOption('pixelsPerLevel', 240, 200, 3000);
+        const wheelDuration = wheelOption('durationMs', 0, 0, 600);
         const wheelRespectsReducedMotion = wheelConfig?.respectReducedMotion === true;
         const wheelMaxStep = wheelOption('maxStep', 0.5, 0.05, 0.5);
+        const wheelQuietMs = wheelOption('settleMs', 140, 60, 400);
         const placeTransition = typeof configData !== 'undefined' ? configData.travelMap?.placeTransition : null;
         const placeDuration = Number.isFinite(placeTransition?.durationMs)
             ? Math.max(0, Math.min(1200, placeTransition.durationMs)) : 320;
         const placeRespectsReducedMotion = placeTransition?.respectReducedMotion === true;
+        const keepSelectedVisible = placeTransition?.focus !== 'center';
         const markerConfig = typeof configData !== 'undefined' ? configData.travelMap?.markers : null;
         const markerOption = (key, fallback, min, max) => Number.isFinite(markerConfig?.[key])
             ? Math.max(min, Math.min(max, markerConfig[key])) : fallback;
@@ -59,6 +61,13 @@
         const photoTargetHeight = photoLayoutOption('targetHeight', 420, 200, 600);
         const minStoryWidth = photoLayoutOption('minStoryWidth', 300, 280, 600);
         const maxStoryShare = photoLayoutOption('maxStoryShare', 0.46, 0.35, 0.6);
+        const photoColumnDuration = photoLayoutOption('transitionMs', 180, 0, 400);
+        const photoFadeDuration = photoLayoutOption('imageFadeMs', 140, 0, 300);
+        const mobilePhotoHeight = photoLayoutOption('mobilePhotoHeight', 300, 220, 480);
+        const mobilePortraitMaxHeight = photoLayoutOption('mobilePortraitMaxHeight', 520, 300, 800);
+        atlas.style.setProperty('--travel-atlas-height', `${photoLayoutOption('height', 680, 560, 1000)}px`);
+        atlas.style.setProperty('--travel-mobile-photo-height', `${mobilePhotoHeight}px`);
+        atlas.style.setProperty('--travel-column-duration', `${photoColumnDuration}ms`);
         const labelConfig = typeof configData !== 'undefined' ? configData.travelMap?.labels : null;
         const labelOption = (key, fallback, min, max) => Number.isFinite(labelConfig?.[key])
             ? Math.max(min, Math.min(max, labelConfig[key])) : fallback;
@@ -124,9 +133,16 @@
         let photos = [];
         let currentPhotoRatio = null;
         let photoLayoutFrame = 0;
+        let photoRequest = 0;
+        let activePhoto = null;
+        let expandedCluster = null;
+        let focusAfterLayout = null;
+        let layoutFinishTimer = 0;
         let loading = false;
         let worldView = true;
         let wheelActive = false;
+        let wheelQuietUntil = 0;
+        const indexedCountryDatasets = new WeakSet();
         let finishWheelZoom = () => {};
         let placeFlight = null;
         let labelsMoving = false;
@@ -136,7 +152,7 @@
         const labelAnchors = new Map();
 
         function followMovingLabels(view) {
-            if (!map || !labelsMoving || wheelActive) return;
+            if (!map || !labelsMoving || (wheelActive && wheelDuration > 0)) return;
             const zoom = view?.zoom ?? map.getZoom();
             // Leaflet 1.9.4's native +/- animation supplies its destination view;
             // flyTo and dragging supply ordinary move frames instead.
@@ -146,7 +162,8 @@
             const countryLabels = [];
             const canvasBox = canvas.getBoundingClientRect();
             const pinBoxes = [...canvas.querySelectorAll('.travel-pin, .travel-cluster')].flatMap(pin => {
-                if (Number(getComputedStyle(pin).opacity) === 0) return [];
+                const style = getComputedStyle(pin);
+                if (Number(style.opacity) === 0 || style.visibility === 'hidden') return [];
                 const box = (pin.querySelector('svg') || pin).getBoundingClientRect();
                 return [{ pin, rectangle: { left: box.left - canvasBox.left, top: box.top - canvasBox.top,
                     right: box.right - canvasBox.left, bottom: box.bottom - canvasBox.top } }];
@@ -197,15 +214,17 @@
             // Sidebar resizing can emit moveend during a flight. Wait for a short
             // quiet interval instead of rebuilding labels at those intermediate views.
             labelSettleTimer = setTimeout(() => {
-                if (wheelActive || placeFlight) {
+                if (wheelActive || placeFlight || performance.now() < wheelQuietUntil) {
                     settleMapLabels();
                     return;
                 }
+                updateMapResolution();
+                updateProvinceBorders();
                 labelsMoving = false;
                 if (labelFrame) cancelAnimationFrame(labelFrame);
                 layoutMapLabels();
                 canvas.classList.remove('is-map-moving');
-            }, labelMotionSettleMs);
+            }, Math.max(labelMotionSettleMs, wheelQuietUntil - performance.now()));
         }
 
         function stopPlaceFlight() {
@@ -261,21 +280,32 @@
         function updatePhotoLayout() {
             photoLayoutFrame = 0;
             if (!atlas) return;
-            if (!adaptivePhotoLayout || !currentPhotoRatio || matchMedia('(max-width: 900px)').matches) {
+            const padding = getComputedStyle(story);
+            const horizontalPadding = parseFloat(padding.paddingLeft) + parseFloat(padding.paddingRight);
+            if (matchMedia('(max-width: 900px)').matches) {
                 atlas.style.removeProperty('--travel-story-width');
-                atlas.style.removeProperty('--travel-photo-height');
+                const width = Math.max(1, story.clientWidth - horizontalPadding);
+                const limit = Math.max(mobilePhotoHeight, Math.min(mobilePortraitMaxHeight, innerHeight * 0.75));
+                const height = currentPhotoRatio && currentPhotoRatio < 1
+                    ? Math.max(mobilePhotoHeight, Math.min(width / currentPhotoRatio, limit)) : mobilePhotoHeight;
+                const value = `${Math.round(height)}px`;
+                if (atlas.style.getPropertyValue('--travel-mobile-stage-height') !== value) {
+                    atlas.style.setProperty('--travel-mobile-stage-height', value);
+                }
+                return;
+            }
+            atlas.style.removeProperty('--travel-mobile-stage-height');
+            if (!adaptivePhotoLayout || !currentPhotoRatio) {
+                atlas.style.removeProperty('--travel-story-width');
                 return;
             }
             // Derive the sidebar from the image, not from its current column width,
             // so resizing the grid cannot feed back into another width calculation.
-            const padding = getComputedStyle(story);
-            const horizontalPadding = parseFloat(padding.paddingLeft) + parseFloat(padding.paddingRight);
-            const photoHeight = Math.min(photoTargetHeight, Math.max(280, innerHeight * 0.45));
+            const photoHeight = Math.min(photoTargetHeight, story.querySelector('.travel-photo-button')?.clientHeight || photoTargetHeight);
             const desiredWidth = currentPhotoRatio * photoHeight + horizontalPadding;
             const storyWidth = Math.min(atlas.clientWidth * maxStoryShare, Math.max(minStoryWidth, desiredWidth));
             atlas.style.setProperty('--travel-story-width', `${Math.round(storyWidth)}px`);
-            atlas.style.setProperty('--travel-photo-height', `${photoHeight}px`);
-            const image = story.querySelector('.travel-photo');
+            const image = activePhoto || story.querySelector('.travel-photo');
             if (image?.hasAttribute('srcset')) {
                 image.sizes = `(max-width: 900px) calc(100vw - 60px), ${Math.ceil(storyWidth - horizontalPadding)}px`;
             }
@@ -318,36 +348,65 @@
         }
 
         function showPhoto(index, announce = true) {
+            const request = ++photoRequest;
+            activePhoto?.getAnimations().forEach(animation => animation.cancel());
             photoIndex = (index + photos.length) % photos.length;
             const photo = photos[photoIndex];
-            const image = element('img', 'travel-photo');
-            image.decoding = 'async';
-            story.querySelector('.travel-photo').replaceWith(image);
             const frame = story.querySelector('.travel-photo-button');
             const caption = story.querySelector('.travel-photo-caption');
             const error = story.querySelector('.travel-photo-error');
-            image.hidden = false;
+            const loading = story.querySelector('.travel-photo-loading');
+            frame.querySelectorAll('.travel-photo').forEach(node => {
+                if (node !== activePhoto) node.remove();
+            });
+            const image = element('img', 'travel-photo is-pending');
+            image.decoding = 'async';
+            frame.insertBefore(image, error);
             error.hidden = true;
-            frame.disabled = false;
-            frame.style.removeProperty('aspect-ratio');
-            frame.style.removeProperty('--travel-photo-ratio');
-            frame.classList.remove('is-portrait');
+            loading.hidden = false;
+            frame.disabled = true;
+            frame.setAttribute('aria-busy', 'true');
             SiteI18n.content(image, photo, 'alt', { attribute: 'alt' });
-            image.addEventListener('load', () => {
-                if (!image.isConnected) return;
-                frame.style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
-                frame.style.setProperty('--travel-photo-ratio', image.naturalWidth / image.naturalHeight);
+            image.addEventListener('load', async () => {
+                try { await image.decode(); } catch { /* Responsive sources can change during decode. */ }
+                if (request !== photoRequest || !image.isConnected || !image.naturalWidth) return;
+                const previous = activePhoto;
+                activePhoto = image;
+                image.classList.remove('is-pending');
+                image.classList.add('is-current');
                 frame.classList.toggle('is-portrait', image.naturalHeight > image.naturalWidth);
                 currentPhotoRatio = image.naturalWidth / image.naturalHeight;
                 schedulePhotoLayout();
+                loading.hidden = true;
+                frame.disabled = false;
+                frame.setAttribute('aria-busy', 'false');
+                const duration = reducedMotion.matches ? 0 : photoFadeDuration;
+                if (previous && previous !== image) {
+                    previous.classList.remove('is-current');
+                    previous.classList.add('is-retiring');
+                    if (duration) {
+                        previous.animate([{ opacity: 1 }, { opacity: 0 }], { duration, easing: 'ease-out' });
+                    }
+                }
+                if (duration) {
+                    const fade = image.animate([{ opacity: 0 }, { opacity: 1 }], { duration, easing: 'ease-out' });
+                    fade.finished.catch(() => {}).finally(() => {
+                        if (previous && previous !== activePhoto) previous.remove();
+                    });
+                } else if (previous && previous !== image) previous.remove();
             }, { once: true });
-            applySiteCardImage(image, photo.src, '(max-width: 900px) calc(100vw - 60px), 440px');
+            const width = Math.max(220, frame.clientWidth);
+            applySiteCardImage(image, photo.src, `(max-width: 900px) calc(100vw - 60px), ${Math.ceil(width)}px`);
             image.addEventListener('error', () => requestAnimationFrame(() => {
-                // Give the shared WebP fallback time to start its original-image request.
-                if (!image.isConnected || !image.complete || image.naturalWidth || image.hasAttribute('srcset') || image.src !== photo.src) return;
-                image.hidden = true;
+                if (request !== photoRequest || !image.isConnected || !image.complete || image.naturalWidth
+                    || image.hasAttribute('srcset') || image.src !== photo.src) return;
+                frame.querySelectorAll('.travel-photo').forEach(node => node.remove());
+                activePhoto = null;
                 error.hidden = false;
+                loading.hidden = true;
+                frame.setAttribute('aria-busy', 'false');
                 frame.disabled = true;
+                SiteI18n.text(error, 'life.photoSlow');
             }));
             SiteI18n.content(caption, photo, 'caption', { hideEmpty: true });
             story.querySelector('.travel-photo-count').textContent = `${photoIndex + 1} / ${photos.length}`;
@@ -355,51 +414,77 @@
             if (announce) SiteI18n.text(announcement, 'life.photoAnnouncement', { place: SiteI18n.value(selected, 'place'), number: photoIndex + 1, total: photos.length });
         }
 
-        function showStory(entry) {
-            photos = preparePhotos(entry);
-            photoIndex = 0;
-            story.replaceChildren();
+        function ensureStoryShell() {
+            if (story.querySelector('.travel-figure')) return;
             const heading = element('div', 'travel-story-heading');
             const location = element('div');
-            location.append(SiteI18n.content(element('p', 'travel-country-name'), entry, 'country'), SiteI18n.content(element('h4', ''), entry, 'place'));
-            heading.append(location);
+            location.append(element('p', 'travel-country-name'), element('h4', ''));
+            const time = element('time');
+            time.hidden = true;
+            heading.append(location, time);
+            const figure = element('div', 'travel-figure');
+            const media = element('div', 'travel-media');
+            const frame = element('button', 'travel-photo-button');
+            frame.type = 'button';
+            const error = SiteI18n.element('span', 'travel-photo-error', 'life.photoSlow');
+            const loading = SiteI18n.element('span', 'travel-photo-loading', 'life.loadingPhoto');
+            error.hidden = loading.hidden = true;
+            frame.append(error, loading, element('span', 'travel-photo-enlarge', '\u2197'));
+            frame.addEventListener('click', showLargePhoto);
+            media.append(frame);
+            const navigation = element('div', 'travel-photo-navigation');
+            const previous = element('button', '', '\u2190');
+            const next = element('button', '', '\u2192');
+            previous.type = next.type = 'button';
+            SiteI18n.attr(previous, 'aria-label', 'life.previous');
+            SiteI18n.attr(next, 'aria-label', 'life.next');
+            previous.addEventListener('click', () => showPhoto(photoIndex - 1));
+            next.addEventListener('click', () => showPhoto(photoIndex + 1));
+            navigation.append(previous, element('span', 'travel-photo-count'), next);
+            figure.append(media, navigation, element('p', 'travel-photo-caption'));
+            const copy = element('div', 'travel-copy');
+            copy.append(element('h5', 'travel-story-title'), element('p', 'travel-description'));
+            story.replaceChildren(heading, figure, copy);
+        }
+
+        function showStory(entry) {
+            ensureStoryShell();
+            photos = preparePhotos(entry);
+            photoIndex = 0;
+            SiteI18n.content(story.querySelector('.travel-country-name'), entry, 'country');
+            SiteI18n.content(story.querySelector('.travel-story-heading h4'), entry, 'place');
+            SiteI18n.content(story.querySelector('.travel-story-title'), entry, 'title', { hideEmpty: true });
+            SiteI18n.content(story.querySelector('.travel-description'), entry, 'description', { hideEmpty: true });
+            story.querySelector('.travel-copy').scrollTop = 0;
+            const time = story.querySelector('.travel-story-heading time');
             const date = new Date(`${entry.date}T12:00:00Z`);
-            if (showDates && /^\d{4}-\d{2}-\d{2}$/.test(entry.date || '') && Number.isFinite(date.getTime())) {
-                const time = element('time', '', new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date));
+            time.hidden = !(showDates && /^\d{4}-\d{2}-\d{2}$/.test(entry.date || '') && Number.isFinite(date.getTime()));
+            if (!time.hidden) {
+                time.textContent = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date);
                 time.dateTime = entry.date;
-                heading.append(time);
             }
-            story.append(heading);
-            if (photos.length) {
-                const media = element('div', 'travel-media');
-                const frame = element('button', 'travel-photo-button');
-                frame.type = 'button';
-                const image = element('img', 'travel-photo');
-                image.decoding = 'async';
-                const error = SiteI18n.element('span', 'travel-photo-error', 'life.photoSlow');
-                error.hidden = true;
-                frame.append(image, error, element('span', 'travel-photo-enlarge', '↗'));
-                frame.addEventListener('click', showLargePhoto);
-                const navigation = element('div', 'travel-photo-navigation');
-                const previous = element('button', '', '←');
-                const next = element('button', '', '→');
-                previous.type = next.type = 'button';
-                SiteI18n.attr(previous, 'aria-label', 'life.previous');
-                SiteI18n.attr(next, 'aria-label', 'life.next');
-                previous.addEventListener('click', () => showPhoto(photoIndex - 1));
-                next.addEventListener('click', () => showPhoto(photoIndex + 1));
-                navigation.append(previous, element('span', 'travel-photo-count'), next);
-                navigation.hidden = photos.length < 2;
-                media.append(frame, navigation);
-                story.append(media, element('p', 'travel-photo-caption'));
-            } else {
+            story.querySelectorAll('.travel-photo-navigation button').forEach(button => { button.disabled = photos.length < 2; });
+            story.querySelector('.travel-photo-navigation').hidden = photos.length < 2;
+            story.querySelector('.travel-figure').classList.toggle('is-single-photo', photos.length < 2);
+            story.classList.toggle('is-single-photo', photos.length < 2);
+            if (photos.length) showPhoto(0, false);
+            else {
+                photoRequest++;
                 currentPhotoRatio = null;
                 schedulePhotoLayout();
-                story.append(SiteI18n.element('p', 'travel-no-photos', 'life.photosSoon'));
+                story.querySelectorAll('.travel-photo').forEach(node => node.remove());
+                activePhoto = null;
+                const frame = story.querySelector('.travel-photo-button');
+                frame.disabled = true;
+                frame.setAttribute('aria-busy', 'false');
+                frame.classList.remove('is-portrait');
+                const error = story.querySelector('.travel-photo-error');
+                SiteI18n.text(error, 'life.photosSoon');
+                error.hidden = false;
+                story.querySelector('.travel-photo-loading').hidden = true;
+                story.querySelector('.travel-photo-count').textContent = '0 / 0';
+                SiteI18n.content(story.querySelector('.travel-photo-caption'), { caption: '', captionZh: '' }, 'caption', { hideEmpty: true });
             }
-            if (entry.title) story.append(SiteI18n.content(element('h5', 'travel-story-title'), entry, 'title'));
-            if (entry.description) story.append(SiteI18n.content(element('p', 'travel-description'), entry, 'description'));
-            if (photos.length) showPhoto(0, false);
         }
 
         function labelPin(marker, entry) {
@@ -800,12 +885,29 @@
         }
 
         function renderCountryDataset(features, resolution) {
+            if (!indexedCountryDatasets.has(features)) {
+                features.features.forEach(feature => {
+                    if (Array.isArray(feature.bbox)) return;
+                    const box = [Infinity, Infinity, -Infinity, -Infinity];
+                    const visit = coordinates => {
+                        if (typeof coordinates[0] === 'number') {
+                            box[0] = Math.min(box[0], coordinates[0]);
+                            box[1] = Math.min(box[1], coordinates[1]);
+                            box[2] = Math.max(box[2], coordinates[0]);
+                            box[3] = Math.max(box[3], coordinates[1]);
+                        } else coordinates.forEach(visit);
+                    };
+                    visit(feature.geometry.coordinates);
+                    feature.bbox = box;
+                });
+                indexedCountryDatasets.add(features);
+            }
             countryFeatures = features;
             currentResolution = resolution;
             countryLabelData = resolution === '10m' ? features.labels : baseCountryLabels;
-            // A buffer covers ordinary dragging; detailed geometry outside it is
-            // kept in memory, not projected into five invisible world copies.
-            detailRenderBounds = resolution === '10m' ? map.getBounds().pad(0.8) : null;
+            // Cull BOTH resolutions and repeated worlds. The complete data stays
+            // cached; offscreen shapes should not be projected at every wheel tick.
+            detailRenderBounds = map.getBounds().pad(0.8);
             if (!labelsMoving) countryLabelNodes.forEach(node => { node.hidden = true; });
             countries.clearLayers();
             countryLabelRecords.length = 0;
@@ -817,14 +919,25 @@
 
         function updateMapResolution() {
             if (!map || !baseCountryFeatures || wheelActive) return;
+            const viewport = map.getBounds();
+            const outsideBuffer = !detailRenderBounds?.contains(viewport.pad(0.1));
+            if (performance.now() < wheelQuietUntil) {
+                // A large zoom-out still needs fresh land beyond the old buffer;
+                // use the inexpensive atlas rather than exposing an empty edge.
+                if (outsideBuffer) renderCountryDataset(baseCountryFeatures, '50m');
+                return;
+            }
+            const oversizedBuffer = detailRenderBounds
+                && detailRenderBounds.getEast() - detailRenderBounds.getWest()
+                    > (viewport.getEast() - viewport.getWest()) * 6;
             const threshold = currentResolution === '10m' ? detailMinZoom - 0.5 : detailMinZoom;
             const wantsDetail = detailEnabled && (currentResolution === '10m' ? map.getZoom() > threshold : map.getZoom() >= threshold);
             if (!wantsDetail) {
-                if (currentResolution !== '50m') renderCountryDataset(baseCountryFeatures, '50m');
+                if (currentResolution !== '50m' || outsideBuffer || oversizedBuffer) renderCountryDataset(baseCountryFeatures, '50m');
                 return;
             }
             if (detailedCountryFeatures) {
-                if (currentResolution !== '10m' || !detailRenderBounds.contains(map.getBounds().pad(0.1))) {
+                if (currentResolution !== '10m' || outsideBuffer || oversizedBuffer) {
                     renderCountryDataset(detailedCountryFeatures, '10m');
                 }
                 return;
@@ -881,7 +994,7 @@
         }
 
         function updateProvinceBorders() {
-            if (!map || !provinceBorders || !provinceBordersEnabled || wheelActive) return;
+            if (!map || !provinceBorders || !provinceBordersEnabled || wheelActive || performance.now() < wheelQuietUntil) return;
             if (map.getZoom() < provinceMinZoom) {
                 if (map.hasLayer(provinceBorders)) map.removeLayer(provinceBorders);
                 return;
@@ -973,6 +1086,11 @@
                 if (horizontalWrap && Number.isFinite(anchorLongitude)) {
                     coordinates[1] += 360 * Math.round((anchorLongitude - coordinates[1]) / 360);
                 }
+                if (keepSelectedVisible) {
+                    focusAfterLayout = coordinates;
+                    keepPlaceInView();
+                    return;
+                }
                 const zoom = Math.max(map.getZoom(), 3.5);
                 if (placeDuration > 0 && !(placeRespectsReducedMotion && reducedMotion.matches)) {
                     placeFlight = { coordinates, zoom, until: performance.now() + placeDuration };
@@ -980,6 +1098,18 @@
                     resumePlaceFlight();
                 } else map.setView(coordinates, zoom, { animate: false });
             }
+        }
+
+        function keepPlaceInView() {
+            if (!map || !focusAfterLayout) return;
+            const coordinates = focusAfterLayout;
+            const size = map.getSize();
+            const point = map.latLngToContainerPoint(coordinates);
+            const padding = Math.min(64, size.x * 0.15, size.y * 0.15);
+            if (point.x >= padding && point.x <= size.x - padding
+                && point.y >= padding && point.y <= size.y - padding) return;
+            const animate = placeDuration > 0 && !(placeRespectsReducedMotion && reducedMotion.matches);
+            map.panInside(coordinates, { padding: [padding, padding], animate, duration: placeDuration / 1000 });
         }
 
         const summary = document.getElementById('travel-summary');
@@ -991,6 +1121,7 @@
 
         function fitWorld() {
             if (!map) return;
+            focusAfterLayout = null;
             finishWheelZoom();
             stopPlaceFlight();
             worldView = true;
@@ -1055,11 +1186,13 @@
             let wheelLastFrame = 0;
             let wheelSegmentZoom = 0;
             let wheelFrame = 0;
+            let wheelCommitTimer = 0;
             let queuedWheelStep = 0;
             let queuedWheelPoint = null;
             let waitingForZoom = false;
             const clampZoom = value => Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), value));
             finishWheelZoom = () => {
+                clearTimeout(wheelCommitTimer);
                 if (wheelFrame) cancelAnimationFrame(wheelFrame);
                 wheelFrame = 0;
                 wheelTarget = null;
@@ -1104,8 +1237,48 @@
                 worldView = false;
                 if (!wheelActive && clampZoom(map.getZoom() + step) === map.getZoom()) return;
                 if ((wheelRespectsReducedMotion && reducedMotion.matches) || wheelDuration === 0) {
-                    finishWheelZoom();
-                    map.setZoomAround(point, clampZoom(map.getZoom() + step), { animate: false });
+                    // Apply the exact new scale NOW, without easing or a trailing
+                    // camera animation. Reuse SVG transforms between bounded commits
+                    // instead of setView's full viewreset/reprojection on every tick.
+                    if (!wheelActive) {
+                        map._stop();
+                        // Finish any previous cluster transition before direct input.
+                        // Cluster splitting/merging for this gesture runs once at its
+                        // final zoomend, retaining the animation without dragging pins.
+                        markerLayer?._processQueue?.();
+                        markerLayer?._noanimationUnspiderfy?.();
+                        wheelActive = true;
+                        wheelSegmentZoom = map.getZoom();
+                        map._moveStart(true);
+                    }
+                    const next = clampZoom(map.getZoom() + step);
+                    const anchor = map.containerPointToLatLng(point);
+                    const centre = map.unproject(map.project(anchor, next).subtract(point.subtract(map.getSize().divideBy(2))), next);
+                    map._move(map._limitCenter(centre, next, map.options.maxBounds), next);
+                    const frame = map.options.renderer._container?.getBoundingClientRect();
+                    const viewport = canvas.getBoundingClientRect();
+                    const exposedEdge = frame && (frame.left > viewport.left + 1 || frame.right < viewport.right - 1
+                        || frame.top > viewport.top + 1 || frame.bottom < viewport.bottom - 1);
+                    const bounds = map.getBounds();
+                    const outsideBuffer = detailRenderBounds && !detailRenderBounds.contains(bounds);
+                    const oversizedBuffer = detailRenderBounds && detailRenderBounds.getEast() - detailRenderBounds.getWest()
+                        > (bounds.getEast() - bounds.getWest()) * 6;
+                    if (Math.abs(next - wheelSegmentZoom) >= 1 || exposedEdge || outsideBuffer || oversizedBuffer) {
+                        if (outsideBuffer || oversizedBuffer) {
+                            const detailed = currentResolution === '10m' && next >= detailMinZoom && detailedCountryFeatures;
+                            // Reset an empty renderer before adding the new viewport.
+                            // Otherwise every newly added polygon is projected twice.
+                            countries.clearLayers();
+                            map.options.renderer._reset();
+                            renderCountryDataset(detailed || baseCountryFeatures, detailed ? '10m' : '50m');
+                        } else map.options.renderer._reset();
+                        // Only refresh SVG geometry here. A global moveEnd would
+                        // restart the cluster animation at every intermediate level.
+                        if (provinceRenderer?._map && map.hasLayer(provinceBorders)) provinceRenderer._reset();
+                        wheelSegmentZoom = next;
+                    }
+                    clearTimeout(wheelCommitTimer);
+                    wheelCommitTimer = setTimeout(finishWheelZoom, wheelQuietMs);
                     return;
                 }
                 if (!wheelActive) {
@@ -1125,10 +1298,13 @@
                 if (!wheelFrame) wheelFrame = requestAnimationFrame(animateWheel);
             };
             canvas.addEventListener('wheel', event => {
+                focusAfterLayout = null;
+                clearTimeout(layoutFinishTimer);
                 stopPlaceFlight();
                 if (event.ctrlKey || event.metaKey) { finishWheelZoom(); return; }
                 if (!event.deltaY) return;
                 event.preventDefault();
+                wheelQuietUntil = performance.now() + wheelQuietMs;
                 const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? canvas.clientHeight : 1;
                 const step = Math.max(-wheelMaxStep, Math.min(wheelMaxStep, -event.deltaY * unit / wheelPixelsPerLevel));
                 const point = map.mouseEventToContainerPoint(event);
@@ -1148,6 +1324,8 @@
                 } else applyWheelStep(step, point);
             }, { passive: false });
             ['pointerdown', 'keydown', 'click'].forEach(type => canvas.addEventListener(type, () => {
+                focusAfterLayout = null;
+                clearTimeout(layoutFinishTimer);
                 finishWheelZoom();
                 stopPlaceFlight();
             }, { capture: true }));
@@ -1163,12 +1341,20 @@
                     cluster.options.title = SiteI18n.t('life.nearby', { count });
                     const current = selected && cluster.getAllChildMarkers().some(marker => marker.options.travelEntry === selected);
                     return L.divIcon({
-                        className: `travel-cluster${current ? ' is-selected' : ''}`,
+                        className: `travel-cluster${current ? ' is-selected' : ''}${expandedCluster === cluster ? ' is-expanded' : ''}`,
                         html: String(count), iconSize: [clusterIconSize, clusterIconSize], iconAnchor: [clusterIconSize / 2, clusterIconSize / 2]
                     });
                 }
             }) : L.featureGroup();
             markerLayer.addTo(map);
+            markerLayer.on('spiderfied', event => {
+                expandedCluster = event.cluster;
+                expandedCluster.getElement()?.classList.add('is-expanded');
+            });
+            markerLayer.on('unspiderfied', () => {
+                expandedCluster?.getElement()?.classList.remove('is-expanded');
+                expandedCluster = null;
+            });
             markerLayer.on('animationend spiderfied unspiderfied', scheduleMapLabels);
             countries = L.featureGroup().addTo(map);
             ensureWorldCopies();
@@ -1196,7 +1382,11 @@
                 map.invalidateSize({ pan: true, animate: false, debounceMoveend: false });
                 updateMarkerSizes();
                 ensureWorldCopies();
-                if (worldView) fitWorld();
+                clearTimeout(layoutFinishTimer);
+                layoutFinishTimer = setTimeout(() => {
+                    if (worldView) fitWorld();
+                    else keepPlaceInView();
+                }, reducedMotion.matches ? 0 : photoColumnDuration + 40);
                 fitting = false;
                 if (placeFlight) {
                     map.on('moveend', completePlaceFlight);
