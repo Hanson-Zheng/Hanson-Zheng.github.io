@@ -319,6 +319,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/changsha/orange-isle-mao-statue.jpg": {
+    "src": "assets/images/cards/orange-isle-mao-statue-a423ff9b57-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/orange-isle-mao-statue-a423ff9b57-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/orange-isle-mao-statue-a423ff9b57-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/orange-isle-mao-statue-a423ff9b57-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/changsha/xiang-river-evening.jpg": {
     "src": "assets/images/cards/xiang-river-evening-529660a435-960w.webp",
     "sources": [
@@ -332,6 +349,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/xiang-river-evening-529660a435-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/changsha/yuelu-city-view.jpg": {
+    "src": "assets/images/cards/yuelu-city-view-e0afd65403-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/yuelu-city-view-e0afd65403-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/yuelu-city-view-e0afd65403-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/yuelu-city-view-e0afd65403-1440w.webp",
         "width": 1440
       }
     ]
@@ -370,6 +404,23 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/chizhou/jiuhua-mountain.jpg": {
+    "src": "assets/images/cards/jiuhua-mountain-e391189541-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/jiuhua-mountain-e391189541-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/jiuhua-mountain-e391189541-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/jiuhua-mountain-e391189541-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/chongqing/liziba-railway.jpg": {
     "src": "assets/images/cards/liziba-railway-2da8501fb1-960w.webp",
     "sources": [
@@ -383,6 +434,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/liziba-railway-2da8501fb1-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/desaru/desaru-seafront.jpg": {
+    "src": "assets/images/cards/desaru-seafront-4567083aba-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/desaru-seafront-4567083aba-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/desaru-seafront-4567083aba-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/desaru-seafront-4567083aba-1440w.webp",
         "width": 1440
       }
     ]
@@ -523,6 +591,40 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/hefei/street-at-night.jpg": {
+    "src": "assets/images/cards/street-at-night-66ed951ea7-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/street-at-night-66ed951ea7-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/street-at-night-66ed951ea7-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/street-at-night-66ed951ea7-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/hengdian/film-studio-palace-gate.jpg": {
+    "src": "assets/images/cards/film-studio-palace-gate-a4943eb513-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/film-studio-palace-gate-a4943eb513-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/film-studio-palace-gate-a4943eb513-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/film-studio-palace-gate-a4943eb513-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/hong-kong/victoria-harbour.jpg": {
     "src": "assets/images/cards/victoria-harbour-e8e2de7e2a-960w.webp",
     "sources": [
@@ -553,6 +655,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/zhou-enlai-former-residence-9e9393537a-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/huangshan/welcoming-pine.jpg": {
+    "src": "assets/images/cards/welcoming-pine-3459742473-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/welcoming-pine-3459742473-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/welcoming-pine-3459742473-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/welcoming-pine-3459742473-1440w.webp",
         "width": 1440
       }
     ]
@@ -591,6 +710,40 @@ const cardImageAssets = {
       }
     ]
   },
+  "images/life/jiujiang/lushan-rainy-street.jpg": {
+    "src": "assets/images/cards/lushan-rainy-street-22781372d5-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/lushan-rainy-street-22781372d5-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/lushan-rainy-street-22781372d5-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/lushan-rainy-street-22781372d5-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/johor-bahru/view-towards-singapore.jpg": {
+    "src": "assets/images/cards/view-towards-singapore-1a0080d422-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/view-towards-singapore-1a0080d422-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/view-towards-singapore-1a0080d422-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/view-towards-singapore-1a0080d422-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
   "images/life/krabi/limestone-cliffs-and-sea.jpg": {
     "src": "assets/images/cards/limestone-cliffs-and-sea-c47c90ccd7-960w.webp",
     "sources": [
@@ -608,20 +761,20 @@ const cardImageAssets = {
       }
     ]
   },
-  "images/life/kuala-lumpur/petronas-twin-towers.jpg": {
-    "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-960w.webp",
+  "images/life/kuala-lumpur/klcc-rooftop-bar-at-night.jpg": {
+    "src": "assets/images/cards/klcc-rooftop-bar-at-night-fa05997e9a-960w.webp",
     "sources": [
       {
-        "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-480w.webp",
+        "src": "assets/images/cards/klcc-rooftop-bar-at-night-fa05997e9a-480w.webp",
         "width": 480
       },
       {
-        "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-960w.webp",
+        "src": "assets/images/cards/klcc-rooftop-bar-at-night-fa05997e9a-960w.webp",
         "width": 960
       },
       {
-        "src": "assets/images/cards/petronas-twin-towers-9ca5c48f57-1291w.webp",
-        "width": 1291
+        "src": "assets/images/cards/klcc-rooftop-bar-at-night-fa05997e9a-1440w.webp",
+        "width": 1440
       }
     ]
   },
@@ -689,6 +842,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/sm-mall-of-asia-ef5e3a0338-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/mersing/rocky-shore.jpg": {
+    "src": "assets/images/cards/rocky-shore-3941db9dcd-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/rocky-shore-3941db9dcd-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/rocky-shore-3941db9dcd-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/rocky-shore-3941db9dcd-1440w.webp",
         "width": 1440
       }
     ]
@@ -893,6 +1063,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/lujiazui-2ad98b93d7-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/shaoxing/lu-xun-family-home.jpg": {
+    "src": "assets/images/cards/lu-xun-family-home-65d8735ff3-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/lu-xun-family-home-65d8735ff3-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/lu-xun-family-home-65d8735ff3-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/lu-xun-family-home-65d8735ff3-1440w.webp",
         "width": 1440
       }
     ]
@@ -1165,6 +1352,23 @@ const cardImageAssets = {
       },
       {
         "src": "assets/images/cards/terracotta-warriors-223038bda9-1440w.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "images/life/xiangtan/mao-former-residence.jpg": {
+    "src": "assets/images/cards/mao-former-residence-9d8878ec8b-960w.webp",
+    "sources": [
+      {
+        "src": "assets/images/cards/mao-former-residence-9d8878ec8b-480w.webp",
+        "width": 480
+      },
+      {
+        "src": "assets/images/cards/mao-former-residence-9d8878ec8b-960w.webp",
+        "width": 960
+      },
+      {
+        "src": "assets/images/cards/mao-former-residence-9d8878ec8b-1440w.webp",
         "width": 1440
       }
     ]

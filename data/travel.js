@@ -68,18 +68,21 @@ const travelData = [
         "placeZh": "吉隆坡",
         "country": "Malaysia",
         "countryZh": "马来西亚",
-        "coordinates": [3.1596, 101.7105],
-        "title": "Petronas Twin Towers",
-        "titleZh": "仰望双子塔",
-        "description": "Looking up at the Petronas Twin Towers in Kuala Lumpur.",
-        "descriptionZh": "在吉隆坡，抬头望向双子塔。",
+        "coordinates": [
+            3.1596,
+            101.7105
+        ],
+        "title": "KLCC from a rooftop bar",
+        "titleZh": "屋顶酒吧看 KLCC",
+        "description": "Looking towards the illuminated Petronas Twin Towers and KLCC skyline from a hotel's rooftop bar after dark.",
+        "descriptionZh": "夜幕下，在酒店屋顶酒吧远望 KLCC，双子塔亮起了灯。",
         "photos": [
             {
-                "src": "images/life/kuala-lumpur/petronas-twin-towers.jpg",
-                "alt": "Looking up at the Petronas Twin Towers in Kuala Lumpur.",
-                "altZh": "从下方向上仰望吉隆坡双子塔",
-                "caption": "Petronas Twin Towers, Kuala Lumpur.",
-                "captionZh": "吉隆坡，双子塔。"
+                "src": "images/life/kuala-lumpur/klcc-rooftop-bar-at-night.jpg",
+                "alt": "An open-air rooftop bar at night, with tables, balloons and a view of the illuminated Petronas Twin Towers and Kuala Lumpur skyline.",
+                "altZh": "夜晚的露天屋顶酒吧，桌椅与气球前方是亮灯的双子塔和吉隆坡天际线。",
+                "caption": "KLCC at night, seen from a hotel's rooftop bar in Kuala Lumpur.",
+                "captionZh": "吉隆坡，从酒店屋顶酒吧远望夜幕下的 KLCC。"
             }
         ]
     },
@@ -827,10 +830,10 @@ const travelData = [
             28.2419,
             112.9723
         ],
-        "title": "An evening by the Xiang River",
-        "titleZh": "湘江边的傍晚",
-        "description": "A quiet riverside stop in Changsha, looking across the Xiang River towards the skyline.",
-        "descriptionZh": "在湘江边歇一会儿，隔着水看对岸的天际线。",
+        "title": "Changsha",
+        "titleZh": "山水长沙",
+        "description": "Views of the city from Mount Yuelu, the Mao Zedong statue on Orange Isle, and an evening by the Xiang River.",
+        "descriptionZh": "岳麓山上望城区，橘子洲头走一走，再到湘江边歇歇脚。",
         "photos": [
             {
                 "src": "images/life/changsha/xiang-river-evening.jpg",
@@ -838,6 +841,20 @@ const travelData = [
                 "altZh": "长沙湘江边的露台，隔着江面可以看到傍晚的天空和对岸天际线",
                 "caption": "By the Xiang River, Changsha.",
                 "captionZh": "长沙，湘江边。"
+            },
+            {
+                "src": "images/life/changsha/yuelu-city-view.jpg",
+                "alt": "Changsha's skyline, the Xiang River and Orange Isle seen from the green slopes of Mount Yuelu.",
+                "altZh": "从岳麓山的绿树间望向长沙城区、湘江与橘子洲。",
+                "caption": "The Xiang River, Orange Isle and Changsha seen from Mount Yuelu.",
+                "captionZh": "从岳麓山望向湘江、橘子洲和长沙城区。"
+            },
+            {
+                "src": "images/life/changsha/orange-isle-mao-statue.jpg",
+                "alt": "The large stone sculpture of a young Mao Zedong on Orange Isle, with green shrubs beneath a cloudy sky.",
+                "altZh": "橘子洲头的青年毛泽东雕像，前方是绿植，天空云层低垂。",
+                "caption": "The statue of a young Mao Zedong on Orange Isle, Changsha.",
+                "captionZh": "长沙，橘子洲头的青年毛泽东雕像。"
             }
         ]
     },
@@ -1366,6 +1383,246 @@ const travelData = [
                 "altZh": "襄阳的马踏飞燕雕塑，立在球形底座和高石台上，背后是树木",
                 "caption": "The Flying Horse emblem in Xiangyang, Hubei.",
                 "captionZh": "湖北襄阳，马踏飞燕标志。"
+            }
+        ]
+    },
+    {
+        "id": "hefei",
+        "place": "Hefei",
+        "placeZh": "合肥",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            31.8542,
+            117.2525
+        ],
+        "title": "Hefei after dark",
+        "titleZh": "合肥街头",
+        "description": "Illuminated shop signs, evening traffic and rows of parked scooters on a street in Hefei.",
+        "descriptionZh": "合肥街头的夜色，招牌亮着，路边停满了车。",
+        "photos": [
+            {
+                "src": "images/life/hefei/street-at-night.jpg",
+                "alt": "Illuminated shops, cars and parked scooters on a Hefei street at night.",
+                "altZh": "合肥夜晚的街道，沿街招牌、汽车和停靠的电动车。",
+                "caption": "A street in Hefei after dark.",
+                "captionZh": "夜晚的合肥街头。"
+            }
+        ]
+    },
+    {
+        "id": "desaru",
+        "place": "Desaru",
+        "placeZh": "迪沙鲁",
+        "country": "Malaysia",
+        "countryZh": "马来西亚",
+        "coordinates": [
+            1.5506,
+            104.2609
+        ],
+        "title": "By the sea in Desaru",
+        "titleZh": "迪沙鲁海边",
+        "description": "A Desaru sign hangs between the trees beside the sea on Johor's east coast. A quiet spot by the water, even under grey skies.",
+        "descriptionZh": "树下挂着 DESARU 的牌子，往前就是海。阴天也适合在岸边坐一会儿。",
+        "photos": [
+            {
+                "src": "images/life/desaru/desaru-seafront.jpg",
+                "alt": "A Desaru Malaysia sign among trees beside a calm sea under cloudy skies.",
+                "altZh": "树间挂着迪沙鲁的标牌，前方是阴天下平静的海面。",
+                "caption": "The seafront at Desaru, Johor, Malaysia.",
+                "captionZh": "马来西亚柔佛，迪沙鲁海边。"
+            }
+        ]
+    },
+    {
+        "id": "mersing",
+        "place": "Mersing",
+        "placeZh": "丰盛港",
+        "country": "Malaysia",
+        "countryZh": "马来西亚",
+        "coordinates": [
+            2.4299,
+            103.8355
+        ],
+        "title": "Along the coast of Mersing",
+        "titleZh": "丰盛港的海边",
+        "description": "Clear, shallow water around the rocks along the coast of Mersing, beneath a bright blue sky.",
+        "descriptionZh": "礁石间的海水很清，阳光照下来，连水底的石头都看得清楚。",
+        "photos": [
+            {
+                "src": "images/life/mersing/rocky-shore.jpg",
+                "alt": "Rocks and clear turquoise water along the Mersing coast beneath a blue sky.",
+                "altZh": "丰盛港海边的礁石、清澈的浅水和蓝天。",
+                "caption": "The rocky coast of Mersing, Johor, Malaysia.",
+                "captionZh": "马来西亚柔佛，丰盛港海边。"
+            }
+        ]
+    },
+    {
+        "id": "johor-bahru",
+        "place": "Johor Bahru",
+        "placeZh": "新山",
+        "country": "Malaysia",
+        "countryZh": "马来西亚",
+        "coordinates": [
+            1.4668,
+            103.7651
+        ],
+        "title": "Looking towards Singapore",
+        "titleZh": "隔着长堤看新加坡",
+        "description": "Looking towards Singapore from Johor Bahru, across the Johor–Singapore Causeway.",
+        "descriptionZh": "从新山望向新加坡，新柔长堤把两岸接在一起。",
+        "photos": [
+            {
+                "src": "images/life/johor-bahru/view-towards-singapore.jpg",
+                "alt": "An elevated view of Johor Bahru's transport buildings and the Causeway towards Singapore.",
+                "altZh": "从高处望向新山的交通设施，以及通往新加坡的新柔长堤。",
+                "caption": "A view towards Singapore from Johor Bahru.",
+                "captionZh": "从新山隔着新柔长堤眺望新加坡。"
+            }
+        ]
+    },
+    {
+        "id": "xiangtan",
+        "place": "Xiangtan",
+        "placeZh": "湘潭",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            27.9121,
+            112.4898
+        ],
+        "title": "Mao Zedong's former residence",
+        "titleZh": "韶山毛主席故居",
+        "description": "Mao Zedong's former residence in Shaoshan, Xiangtan, seen across a pond covered with lotus leaves.",
+        "descriptionZh": "故居前的池塘里满是荷叶，黄墙青瓦就在绿意后面。",
+        "photos": [
+            {
+                "src": "images/life/xiangtan/mao-former-residence.jpg",
+                "alt": "Mao Zedong's former residence behind a pond filled with green lotus leaves in Shaoshan.",
+                "altZh": "韶山毛主席故居，屋前的池塘里长满荷叶。",
+                "caption": "Mao Zedong's former residence, Shaoshan, Xiangtan, Hunan.",
+                "captionZh": "湖南湘潭韶山，毛主席故居。"
+            }
+        ]
+    },
+    {
+        "id": "jiujiang",
+        "place": "Jiujiang",
+        "placeZh": "九江",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            29.4156,
+            115.8835
+        ],
+        "title": "A quiet street near Mount Lu",
+        "titleZh": "年后的庐山街头",
+        "description": "A quiet commercial street in the Mount Lu scenic area after Lunar New Year, with shop lights reflected on the wet paving.",
+        "descriptionZh": "刚过完年，街上还比较冷清，招牌的灯光映在湿漉漉的石板路上。",
+        "photos": [
+            {
+                "src": "images/life/jiujiang/lushan-rainy-street.jpg",
+                "alt": "A quiet rainy commercial street with traditional-style shopfronts, a red bridge and reflections on wet paving near Mount Lu.",
+                "altZh": "庐山景区雨天的商业街，沿街店铺、红色小桥与湿石板路上的灯光。",
+                "caption": "A rainy day in the Mount Lu scenic area, Jiujiang.",
+                "captionZh": "九江庐山，雨天的商业街。"
+            }
+        ]
+    },
+    {
+        "id": "huangshan",
+        "place": "Huangshan",
+        "placeZh": "黄山",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            30.1246,
+            118.1704
+        ],
+        "title": "The Welcoming Pine",
+        "titleZh": "黄山迎客松",
+        "description": "The Welcoming Pine beside Huangshan's granite cliffs, with cloud-covered peaks in the distance.",
+        "descriptionZh": "到了黄山，总要来和迎客松见个面。",
+        "photos": [
+            {
+                "src": "images/life/huangshan/welcoming-pine.jpg",
+                "alt": "Huangshan's Welcoming Pine growing beside a granite cliff with misty mountains behind it.",
+                "altZh": "花岗岩山崖边的黄山迎客松，远处山峰笼着云雾。",
+                "caption": "The Welcoming Pine, Huangshan.",
+                "captionZh": "黄山迎客松。"
+            }
+        ]
+    },
+    {
+        "id": "chizhou",
+        "place": "Chizhou",
+        "placeZh": "池州",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            30.4678,
+            117.8177
+        ],
+        "title": "Jiuhua Mountain",
+        "titleZh": "九华山",
+        "description": "A yellow pavilion above the valleys of Jiuhua Mountain, with layers of distant ridges beneath a cloudy sky.",
+        "descriptionZh": "亭阁立在山间，远处的山一层层淡下去。",
+        "photos": [
+            {
+                "src": "images/life/chizhou/jiuhua-mountain.jpg",
+                "alt": "A yellow pavilion on Jiuhua Mountain with valleys and distant mountain ridges under cloudy skies.",
+                "altZh": "九华山上的黄色亭阁，背后是山谷和层层远山。",
+                "caption": "Jiuhua Mountain, Chizhou, Anhui.",
+                "captionZh": "安徽池州，九华山。"
+            }
+        ]
+    },
+    {
+        "id": "hengdian",
+        "place": "Jinhua",
+        "placeZh": "金华",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            29.1351,
+            120.3114
+        ],
+        "title": "Hengdian World Studios",
+        "titleZh": "横店影视城",
+        "description": "Visitors gather beneath the palace gate at Hengdian World Studios, with towers and two large bronze-coloured sculptures framing the entrance.",
+        "descriptionZh": "宫门前人来人往，走进横店，像是进了电视剧里的场景。",
+        "photos": [
+            {
+                "src": "images/life/hengdian/film-studio-palace-gate.jpg",
+                "alt": "Visitors outside a palace gate at Hengdian World Studios, with stone walls, towers and two large bronze-coloured sculptures under a cloudy sky.",
+                "altZh": "阴天下的横店影视城宫门，城墙与楼阁前立着两座青铜色雕塑，游客往来其间。",
+                "caption": "A palace gate at Hengdian World Studios.",
+                "captionZh": "横店影视城，宫门前。"
+            }
+        ]
+    },
+    {
+        "id": "shaoxing",
+        "place": "Shaoxing",
+        "placeZh": "绍兴",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            29.9948,
+            120.5819
+        ],
+        "title": "Lu Xun's former residence",
+        "titleZh": "鲁迅故居",
+        "description": "Inside Lu Xun's family home in Shaoxing, with dark timber beams, calligraphy and traditional wooden furniture.",
+        "descriptionZh": "走进鲁迅故里，看看课本之外的老屋。",
+        "photos": [
+            {
+                "src": "images/life/shaoxing/lu-xun-family-home.jpg",
+                "alt": "A traditional hall at Lu Xun's family home in Shaoxing, with a calligraphy plaque, hanging scrolls and dark wooden furniture.",
+                "altZh": "绍兴鲁迅故居的厅堂，匾额与书画下方摆着深色木制桌椅。",
+                "caption": "Inside Lu Xun's family home, Shaoxing.",
+                "captionZh": "绍兴，鲁迅故居的厅堂。"
             }
         ]
     }

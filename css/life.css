@@ -54,7 +54,9 @@
 .travel-country-label, .travel-city-label { position: absolute; pointer-events: none; user-select: none; }
 .travel-country-label[hidden], .travel-city-label[hidden] { display: none; }
 .travel-country-label { width: 0; height: 0; color: #29485e; font-weight: 300; line-height: 1.3; letter-spacing: 0.015em; }
-.travel-country-label > span { position: absolute; width: max-content; white-space: nowrap; transform: translate(-50%, -50%); }
+.travel-country-label > span { position: absolute; width: max-content; white-space: nowrap; transform: translate(-50%, -50%) scale(var(--travel-label-motion-scale, 1)); }
+.leaflet-zoom-anim .travel-country-label, .leaflet-zoom-anim .travel-city-label,
+.leaflet-zoom-anim .travel-country-label > span { transition: transform 250ms cubic-bezier(0, 0, 0.25, 1); }
 .travel-country-label[lang="en"] { font-family: "Inter Display", "Inter", sans-serif; }
 .travel-country-label[lang="zh-CN"] { font-weight: 300; letter-spacing: 0.12em; }
 .travel-country-label.is-visited { color: #fff; }
@@ -62,7 +64,7 @@
 [data-theme="dark"] .travel-country-label.is-visited { color: #241b18; }
 .travel-city-label { width: max-content; height: var(--travel-city-line-height, 24px); color: var(--primary-color); font-size: var(--travel-city-font-size, 15px); font-weight: 500; line-height: var(--travel-city-line-height, 24px); white-space: nowrap; text-shadow: none; }
 .travel-city-label.is-selected { font-weight: 600; }
-.leaflet-cluster-anim .travel-city-label { visibility: hidden; }
+.is-wheel-zooming .travel-country-label, .is-wheel-zooming .travel-city-label { visibility: hidden; }
 .travel-world-button, .travel-map-note { position: absolute; z-index: 1; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
 .travel-world-button { left: 14px; top: 14px; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font: inherit; font-size: 0.75rem; cursor: pointer; box-shadow: 0 3px 12px #0f172a08; }
 .travel-world-button[hidden] { display: none; }
@@ -75,14 +77,16 @@
 .travel-map-message[hidden] { display: none; }
 .travel-map-message button { padding: 7px 14px; border: 1px solid var(--accent-border); border-radius: 6px; color: var(--accent-color); background: var(--bg-color); font: inherit; cursor: pointer; }
 .travel-pin { color: var(--travel-pin); background: none; border: 0; }
-.travel-pin svg { display: block; width: 28px; height: 36px; overflow: visible; filter: drop-shadow(0 2px 3px #0f172a33); transform-origin: 50% 100%; transition: transform 180ms; }
+.travel-pin svg { display: block; width: var(--travel-pin-width, 24px); height: var(--travel-pin-height, 30.857px); overflow: visible; filter: drop-shadow(0 2px 3px #0f172a33); transform-origin: 50% 100%; transition: transform 180ms; }
+/* Visual size stays modest while mouse/touch targets remain at least 44px. */
+.travel-pin::after, .travel-cluster::after { content: ''; position: absolute; left: 50%; top: 50%; width: 100%; height: 100%; min-width: 44px; min-height: 44px; transform: translate(-50%, -50%); }
 .travel-pin path { fill: var(--bg-color); stroke: var(--travel-pin); stroke-width: 1.7; }
 .travel-pin circle { fill: var(--travel-pin); }
 .travel-pin.is-selected path { fill: var(--travel-selected-pin); stroke: var(--bg-color); stroke-width: 2; }
 .travel-pin.is-selected circle { fill: #172033; }
 .travel-pin:hover svg, .travel-pin.is-selected svg { transform: scale(1.12); }
 .travel-pin:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 4px; border-radius: 8px; }
-.travel-cluster { display: grid; place-items: center; border: 2px solid var(--travel-pin); border-radius: 50%; background: var(--travel-cluster-bg); color: var(--travel-cluster-text); font: 600 0.8rem/1 Inter, sans-serif; font-variant-numeric: tabular-nums; box-shadow: 0 2px 7px #0f172a26; }
+.travel-cluster { display: grid; place-items: center; border: 2px solid var(--travel-pin); border-radius: 50%; background: var(--travel-cluster-bg); color: var(--travel-cluster-text); font: 600 var(--travel-cluster-font-size, 12.8px)/1 Inter, sans-serif; font-variant-numeric: tabular-nums; box-shadow: 0 2px 7px #0f172a26; }
 .travel-cluster.is-selected { border-color: var(--travel-selected-pin); color: var(--travel-selected-pin); box-shadow: 0 0 0 3px var(--bg-color), 0 2px 7px #0f172a40; }
 .travel-cluster:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 4px; }
 .travel-map-wrap .leaflet-control-zoom { border: 1px solid var(--border-color); box-shadow: 0 3px 12px #0f172a08; border-radius: 8px; overflow: hidden; margin: 14px; }

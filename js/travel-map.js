@@ -28,6 +28,22 @@
         const displayCoordinates = ([latitude, longitude]) => [latitude, !horizontalWrap && pacificLayout && longitude < -30 ? longitude + 360 : longitude];
         const worldBounds = pacificLayout ? [[-55, -30], [82, 330]] : [[-55, -175], [80, 180]];
         const showDates = typeof configData !== 'undefined' && configData.travelMap?.showDates === true;
+        const wheelConfig = typeof configData !== 'undefined' ? configData.travelMap?.wheelZoom : null;
+        const wheelOption = (key, fallback, min, max) => Number.isFinite(wheelConfig?.[key])
+            ? Math.max(min, Math.min(max, wheelConfig[key])) : fallback;
+        const wheelPixelsPerLevel = wheelOption('pixelsPerLevel', 300, 200, 3000);
+        const wheelDuration = wheelOption('durationMs', 120, 0, 600);
+        const wheelRespectsReducedMotion = wheelConfig?.respectReducedMotion === true;
+        const wheelMaxStep = wheelOption('maxStep', 0.5, 0.05, 0.5);
+        const placeTransition = typeof configData !== 'undefined' ? configData.travelMap?.placeTransition : null;
+        const placeDuration = Number.isFinite(placeTransition?.durationMs)
+            ? Math.max(0, Math.min(1200, placeTransition.durationMs)) : 320;
+        const placeRespectsReducedMotion = placeTransition?.respectReducedMotion === true;
+        const markerConfig = typeof configData !== 'undefined' ? configData.travelMap?.markers : null;
+        const markerOption = (key, fallback, min, max) => Number.isFinite(markerConfig?.[key])
+            ? Math.max(min, Math.min(max, markerConfig[key])) : fallback;
+        const markerResponsive = markerConfig?.responsive !== false;
+        const markerCompactBelow = markerOption('compactBelow', 600, 240, 1200);
         const detailConfig = typeof configData !== 'undefined' ? configData.travelMap?.detail : null;
         const detailEnabled = detailConfig?.enabled !== false;
         const detailMinZoom = Number.isFinite(detailConfig?.minZoom)
@@ -47,6 +63,7 @@
         const labelOption = (key, fallback, min, max) => Number.isFinite(labelConfig?.[key])
             ? Math.max(min, Math.min(max, labelConfig[key])) : fallback;
         const countryMinZoom = labelOption('countryMinZoom', 3, 0, 22);
+        const labelMotionSettleMs = labelOption('motionSettleMs', 40, 16, 300);
         const cityMinZoom = labelOption('cityMinZoom', 4, 0, 22);
         const cityFontSize = labelOption('cityFontSize', 15, 11, 20);
         const cityLineHeight = Math.ceil(cityFontSize * 1.6);
@@ -76,6 +93,7 @@
         let map = null;
         let countries = null;
         let provinceBorders = null;
+        let provinceRenderer = null;
         let provinceFeatures = null;
         let provinceRequest = null;
         const provinceWorldOffsets = new Set();
@@ -108,6 +126,111 @@
         let photoLayoutFrame = 0;
         let loading = false;
         let worldView = true;
+        let wheelActive = false;
+        let finishWheelZoom = () => {};
+        let placeFlight = null;
+        let labelsMoving = false;
+        let labelSettleTimer = 0;
+        let markerSizeKey = '';
+        let clusterIconSize = 32;
+        const labelAnchors = new Map();
+
+        function followMovingLabels(view) {
+            if (!map || !labelsMoving || wheelActive) return;
+            const zoom = view?.zoom ?? map.getZoom();
+            // Leaflet 1.9.4's native +/- animation supplies its destination view;
+            // flyTo and dragging supply ordinary move frames instead.
+            const origin = view?.center ? map._getNewPixelOrigin(view.center, zoom) : map.getPixelOrigin();
+            const paneOffset = map.containerPointToLayerPoint([0, 0]).multiplyBy(-1);
+            const cityBoxes = [];
+            const countryLabels = [];
+            const canvasBox = canvas.getBoundingClientRect();
+            const pinBoxes = [...canvas.querySelectorAll('.travel-pin, .travel-cluster')].flatMap(pin => {
+                if (Number(getComputedStyle(pin).opacity) === 0) return [];
+                const box = (pin.querySelector('svg') || pin).getBoundingClientRect();
+                return [{ pin, rectangle: { left: box.left - canvasBox.left, top: box.top - canvasBox.top,
+                    right: box.right - canvasBox.left, bottom: box.bottom - canvasBox.top } }];
+            });
+            // Freeze placement decisions, not screen coordinates. This small pass
+            // projects existing anchors without measuring text or searching polygons.
+            const anchors = [...labelAnchors].sort(([, a], [, b]) =>
+                Number(b.marker?.options.travelEntry === selected) - Number(a.marker?.options.travelEntry === selected));
+            for (const [node, anchor] of anchors) {
+                const point = map.project(anchor.coordinates, zoom).subtract(origin).add(anchor.offset);
+                L.DomUtil.setPosition(node, point);
+                const screenPoint = point.add(paneOffset);
+                if (!anchor.marker) {
+                    const scale = map.getZoomScale(zoom, anchor.zoom);
+                    node.style.setProperty('--travel-label-motion-scale', scale);
+                    countryLabels.push({ node, rectangle: {
+                        left: screenPoint.x - anchor.width * scale / 2, right: screenPoint.x + anchor.width * scale / 2,
+                        top: screenPoint.y - anchor.height * scale / 2, bottom: screenPoint.y + anchor.height * scale / 2
+                    } });
+                    continue;
+                }
+                const marker = anchor.marker;
+                const rectangle = { left: screenPoint.x, top: screenPoint.y,
+                    right: screenPoint.x + anchor.width, bottom: screenPoint.y + anchor.height };
+                const clustered = !marker.getElement()?.isConnected
+                    || (markerLayer.getVisibleParent && markerLayer.getVisibleParent(marker) !== marker);
+                node.hidden = !!clustered || cityBoxes.some(other => intersects(rectangle, other, 4))
+                    || pinBoxes.some(other => other.pin !== marker.getElement() && intersects(rectangle, other.rectangle, 1));
+                if (!node.hidden) cityBoxes.push(rectangle);
+            }
+            const placed = [...cityBoxes, ...pinBoxes.map(other => other.rectangle)];
+            for (const { node, rectangle } of countryLabels) {
+                node.hidden = placed.some(other => intersects(rectangle, other, 4));
+                if (!node.hidden) placed.push(rectangle);
+            }
+        }
+
+        function pauseMovingLabels() {
+            labelsMoving = true;
+            canvas.classList.add('is-map-moving');
+            if (labelFrame) cancelAnimationFrame(labelFrame);
+            labelFrame = 0;
+            clearTimeout(labelSettleTimer);
+        }
+
+        function settleMapLabels() {
+            clearTimeout(labelSettleTimer);
+            // Sidebar resizing can emit moveend during a flight. Wait for a short
+            // quiet interval instead of rebuilding labels at those intermediate views.
+            labelSettleTimer = setTimeout(() => {
+                if (wheelActive || placeFlight) {
+                    settleMapLabels();
+                    return;
+                }
+                labelsMoving = false;
+                if (labelFrame) cancelAnimationFrame(labelFrame);
+                layoutMapLabels();
+                canvas.classList.remove('is-map-moving');
+            }, labelMotionSettleMs);
+        }
+
+        function stopPlaceFlight() {
+            if (!placeFlight) return;
+            placeFlight = null;
+            map.off('moveend', completePlaceFlight);
+            map.stop();
+        }
+
+        function completePlaceFlight() {
+            placeFlight = null;
+            map.off('moveend', completePlaceFlight);
+        }
+
+        function resumePlaceFlight() {
+            if (!placeFlight) return;
+            const remaining = placeFlight.until - performance.now();
+            if (remaining <= 0) {
+                const { coordinates, zoom } = placeFlight;
+                completePlaceFlight();
+                map.setView(coordinates, zoom, { animate: false });
+                return;
+            }
+            map.flyTo(placeFlight.coordinates, placeFlight.zoom, { duration: remaining / 1000, animate: true });
+        }
 
         function element(tag, className, text) {
             const node = document.createElement(tag);
@@ -413,7 +536,8 @@
 
         function layoutMapLabels() {
             labelFrame = 0;
-            if (!map) return;
+            if (!map || wheelActive || labelsMoving) return;
+            labelAnchors.clear();
             countryLabelNodes.forEach(node => { node.hidden = true; });
             cityLabelNodes.forEach(node => { node.hidden = true; });
             const size = map.getSize();
@@ -455,9 +579,8 @@
                     right: r.right - canvasRect.left, bottom: r.bottom - canvasRect.top });
             });
             const pins = [];
-            const clustering = !!canvas.querySelector('.leaflet-cluster-anim');
             forEachPin((marker, entry) => {
-                if (zoom < cityMinZoom || clustering) return;
+                if (zoom < cityMinZoom) return;
                 const pin = marker.getElement();
                 if (!pin || !visible(pin) || (markerLayer.getVisibleParent && markerLayer.getVisibleParent(marker) !== marker)) return;
                 const box = pinBoxes.find(item => item.node === pin);
@@ -517,6 +640,9 @@
                     node.classList.toggle('is-selected', entry === selected);
                     node.style.color = ink.color;
                     L.DomUtil.setPosition(node, map.containerPointToLayerPoint(L.point(x, y)));
+                    labelAnchors.set(node, { coordinates: marker.getLatLng(),
+                        offset: L.point(x, y).subtract(map.latLngToContainerPoint(marker.getLatLng())),
+                        width, height, zoom, marker });
                     node.hidden = false;
                     if (marker.isTooltipOpen()) marker.closeTooltip();
                     obstacles.push(rectangle);
@@ -581,7 +707,10 @@
                             node.style.fontSize = `${fontSize}px`;
                             node.style.fontWeight = countryWeight(fontSize);
                             node.style.opacity = countryOpacity;
+                            node.style.removeProperty('--travel-label-motion-scale');
                             L.DomUtil.setPosition(node, map.containerPointToLayerPoint(point));
+                            labelAnchors.set(node, { coordinates: map.containerPointToLatLng(point),
+                                offset: L.point(0, 0), width: labelWidth, height: labelHeight, zoom });
                             node.hidden = false;
                             placed.push(rectangle);
                             placedLabel = true;
@@ -594,10 +723,36 @@
         }
 
         function scheduleMapLabels() {
-            if (!map || labelFrame) return;
+            if (!map || labelFrame || labelsMoving) return;
             labelFrame = requestAnimationFrame(layoutMapLabels);
         }
 
+
+        function updateMarkerSizes() {
+            const compact = markerResponsive && canvas.clientWidth < markerCompactBelow;
+            const width = compact ? markerOption('compactPinWidth', 20, 16, 48) : markerOption('pinWidth', 24, 16, 48);
+            const height = width * 36 / 28;
+            const clusterSize = compact ? markerOption('compactClusterSize', 28, 24, 56) : markerOption('clusterSize', 32, 24, 56);
+            const key = `${width}:${clusterSize}`;
+            if (key === markerSizeKey) return;
+            markerSizeKey = key;
+            clusterIconSize = clusterSize;
+            canvas.style.setProperty('--travel-pin-width', `${width}px`);
+            canvas.style.setProperty('--travel-pin-height', `${height}px`);
+            canvas.style.setProperty('--travel-cluster-font-size', `${Math.max(11, Math.min(14, clusterSize * 0.4))}px`);
+            pinIcon = L.divIcon({
+                className: 'travel-pin', iconSize: [width, height], iconAnchor: [width / 2, height * 35 / 36], tooltipAnchor: [0, -height * 30 / 36],
+                html: '<svg viewBox="0 0 28 36" aria-hidden="true"><path d="M14 34S2 23 2 14a12 12 0 1 1 24 0c0 9-12 20-12 20Z"/><circle cx="14" cy="14" r="4"/></svg>'
+            });
+            forEachPin((marker, entry) => {
+                marker.setIcon(pinIcon);
+                const pin = marker.getElement();
+                pin?.classList.toggle('is-selected', selected === entry);
+                pin?.setAttribute('aria-pressed', String(selected === entry));
+            });
+            markerLayer?.refreshClusters?.();
+            scheduleMapLabels();
+        }
 
         function forEachPin(callback) {
             markers.forEach((copies, entry) => copies.forEach(marker => callback(marker, entry)));
@@ -651,7 +806,7 @@
             // A buffer covers ordinary dragging; detailed geometry outside it is
             // kept in memory, not projected into five invisible world copies.
             detailRenderBounds = resolution === '10m' ? map.getBounds().pad(0.8) : null;
-            countryLabelNodes.forEach(node => { node.hidden = true; });
+            if (!labelsMoving) countryLabelNodes.forEach(node => { node.hidden = true; });
             countries.clearLayers();
             countryLabelRecords.length = 0;
             countryRenderRecords.length = 0;
@@ -661,7 +816,7 @@
         }
 
         function updateMapResolution() {
-            if (!map || !baseCountryFeatures) return;
+            if (!map || !baseCountryFeatures || wheelActive) return;
             const threshold = currentResolution === '10m' ? detailMinZoom - 0.5 : detailMinZoom;
             const wantsDetail = detailEnabled && (currentResolution === '10m' ? map.getZoom() > threshold : map.getZoom() >= threshold);
             if (!wantsDetail) {
@@ -718,7 +873,7 @@
         function addProvinceWorld(offset) {
             if (!provinceFeatures || provinceWorldOffsets.has(offset)) return;
             L.geoJSON(provinceFeatures, {
-                pane: 'travelProvinceBorders', interactive: false,
+                pane: 'travelProvinceBorders', renderer: provinceRenderer, interactive: false,
                 coordsToLatLng: coordinates => L.latLng(coordinates[1], coordinates[0] + offset),
                 style: { className: 'travel-province-border', weight: 0.9, opacity: 0.7, dashArray: '3 3', fill: false }
             }).addTo(provinceBorders);
@@ -726,12 +881,13 @@
         }
 
         function updateProvinceBorders() {
-            if (!map || !provinceBorders || !provinceBordersEnabled) return;
+            if (!map || !provinceBorders || !provinceBordersEnabled || wheelActive) return;
             if (map.getZoom() < provinceMinZoom) {
                 if (map.hasLayer(provinceBorders)) map.removeLayer(provinceBorders);
                 return;
             }
             if (!map.hasLayer(provinceBorders)) provinceBorders.addTo(map);
+            if (provinceFeatures) worldOffsets.forEach(addProvinceWorld);
             if (provinceRequest) return;
             // An optional, local overlay: its failure must never hide the atlas or pins.
             provinceRequest = (async () => {
@@ -741,7 +897,7 @@
                     const response = await fetch(new URL('assets/maps/china-province-borders.geo.json', root), { signal: controller.signal });
                     if (!response.ok) throw new Error(`Province borders: ${response.status}`);
                     provinceFeatures = await response.json();
-                    worldOffsets.forEach(addProvinceWorld);
+                    if (!wheelActive) worldOffsets.forEach(addProvinceWorld);
                 } catch (error) {
                     console.warn('Travel province borders could not load:', error.message);
                 } finally { clearTimeout(timeout); }
@@ -798,6 +954,8 @@
         }
 
         function selectPlace(entry, pan = true, anchorLongitude = map?.getCenter().lng) {
+            finishWheelZoom();
+            stopPlaceFlight();
             selected = entry;
             forEachPin((marker, candidate) => {
                 const pin = marker.getElement();
@@ -815,11 +973,12 @@
                 if (horizontalWrap && Number.isFinite(anchorLongitude)) {
                     coordinates[1] += 360 * Math.round((anchorLongitude - coordinates[1]) / 360);
                 }
-                // The sidebar may resize as soon as its photo loads. Leaflet stops
-                // an in-flight pan during invalidateSize, so establish the target
-                // first and let the column transition keep the visual movement smooth.
-                const resizingPhotoColumns = adaptivePhotoLayout && !matchMedia('(max-width: 900px)').matches;
-                map.setView(coordinates, Math.max(map.getZoom(), 3.5), { animate: !resizingPhotoColumns && !reducedMotion.matches });
+                const zoom = Math.max(map.getZoom(), 3.5);
+                if (placeDuration > 0 && !(placeRespectsReducedMotion && reducedMotion.matches)) {
+                    placeFlight = { coordinates, zoom, until: performance.now() + placeDuration };
+                    map.on('moveend', completePlaceFlight);
+                    resumePlaceFlight();
+                } else map.setView(coordinates, zoom, { animate: false });
             }
         }
 
@@ -832,6 +991,8 @@
 
         function fitWorld() {
             if (!map) return;
+            finishWheelZoom();
+            stopPlaceFlight();
             worldView = true;
             map.fitBounds(worldBounds, { padding: [14, 14], animate: false });
         }
@@ -839,7 +1000,8 @@
         function createMap() {
             if (!window.L) throw new Error('Map library unavailable');
             map = L.map(canvas, {
-                minZoom: 0, maxZoom: 7, zoomSnap: 0.25, zoomDelta: 0.5,
+                minZoom: 0, maxZoom: 7, zoomSnap: 0, zoomDelta: 0.5,
+                renderer: L.svg({ padding: 0.5 }),
                 scrollWheelZoom: false, zoomAnimation: !reducedMotion.matches,
                 fadeAnimation: !reducedMotion.matches, markerZoomAnimation: !reducedMotion.matches,
                 worldCopyJump: horizontalWrap,
@@ -854,10 +1016,18 @@
             const provincePane = map.createPane('travelProvinceBorders');
             provincePane.style.zIndex = '405';
             provincePane.style.pointerEvents = 'none';
+            provinceRenderer = L.svg({ pane: 'travelProvinceBorders', padding: 0.5 });
             provinceBorders = L.featureGroup();
             map.on('zoomend', updateProvinceBorders);
             map.on('move zoomend resize', scheduleMapResolution);
-            map.on('move zoomend resize', scheduleMapLabels);
+            map.on('movestart zoomstart', pauseMovingLabels);
+            map.on('zoomanim', followMovingLabels);
+            map.on('move resize', () => {
+                pauseMovingLabels();
+                followMovingLabels();
+                settleMapLabels();
+            });
+            map.on('moveend zoomend', settleMapLabels);
             new MutationObserver(scheduleMapLabels).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
             document.fonts?.ready.then(scheduleMapLabels);
             document.fonts?.addEventListener('loadingdone', scheduleMapLabels);
@@ -874,31 +1044,116 @@
             };
             zoomLabels();
             window.addEventListener('site:languagechange', zoomLabels);
-            // Wheel zoom stays anchored to the pointer; modified gestures remain available to the browser.
+            // Leaflet is pinned to 1.9.4. Its movement hooks (also used by flyTo)
+            // transform the SVG each frame and reproject paths once at the end,
+            // instead of doing a full setView/reset for every fraction of a level.
             let wheelTarget = null;
             let wheelPoint;
-            let wheelTime = 0;
+            let wheelAnchor;
+            let wheelFrom = 0;
+            let wheelStarted = 0;
+            let wheelLastFrame = 0;
+            let wheelSegmentZoom = 0;
             let wheelFrame = 0;
+            let queuedWheelStep = 0;
+            let queuedWheelPoint = null;
+            let waitingForZoom = false;
+            const clampZoom = value => Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), value));
+            finishWheelZoom = () => {
+                if (wheelFrame) cancelAnimationFrame(wheelFrame);
+                wheelFrame = 0;
+                wheelTarget = null;
+                queuedWheelStep = 0;
+                queuedWheelPoint = null;
+                if (!wheelActive) return;
+                wheelActive = false;
+                map._moveEnd(true);
+                updateProvinceBorders();
+                updateMapResolution();
+                if (labelFrame) cancelAnimationFrame(labelFrame);
+                layoutMapLabels();
+                canvas.classList.remove('is-wheel-zooming');
+            };
+            const animateWheel = now => {
+                wheelFrame = 0;
+                if (!wheelActive || wheelTarget === null) return;
+                const progress = Math.min(1, (now - wheelStarted) / wheelDuration);
+                const desired = wheelFrom + (wheelTarget - wheelFrom) * (1 - (1 - progress) ** 3);
+                const maxChange = Math.min(40, Math.max(1, now - wheelLastFrame)) * 0.004;
+                const current = map.getZoom();
+                const next = clampZoom(Math.max(current - maxChange, Math.min(current + maxChange, desired)));
+                wheelLastFrame = now;
+                const centre = map.unproject(map.project(wheelAnchor, next).subtract(wheelPoint.subtract(map.getSize().divideBy(2))), next);
+                map._move(map._limitCenter(centre, next, map.options.maxBounds), next);
+                if (Math.abs(next - wheelSegmentZoom) >= 0.4
+                    || (currentResolution === '10m' && !detailRenderBounds.contains(map.getBounds()))) {
+                    // Keep SVG clipping margins covered during a long gesture;
+                    // reproject in segments rather than on every animation frame.
+                    map._moveEnd(true);
+                    if (currentResolution === '10m' && !detailRenderBounds.contains(map.getBounds().pad(0.1))) {
+                        renderCountryDataset(detailedCountryFeatures, '10m');
+                    }
+                    wheelAnchor = map.containerPointToLatLng(wheelPoint);
+                    wheelSegmentZoom = map.getZoom();
+                    map._moveStart(true);
+                }
+                if (progress === 1 && Math.abs(next - wheelTarget) < 0.00001) finishWheelZoom();
+                else wheelFrame = requestAnimationFrame(animateWheel);
+            };
+            const applyWheelStep = (step, point) => {
+                worldView = false;
+                if (!wheelActive && clampZoom(map.getZoom() + step) === map.getZoom()) return;
+                if ((wheelRespectsReducedMotion && reducedMotion.matches) || wheelDuration === 0) {
+                    finishWheelZoom();
+                    map.setZoomAround(point, clampZoom(map.getZoom() + step), { animate: false });
+                    return;
+                }
+                if (!wheelActive) {
+                    map._stop();
+                    wheelTarget = map.getZoom();
+                    wheelActive = true;
+                    canvas.classList.add('is-wheel-zooming');
+                    map._moveStart(true);
+                    wheelLastFrame = performance.now();
+                    wheelSegmentZoom = map.getZoom();
+                }
+                wheelTarget = clampZoom(wheelTarget + step);
+                wheelPoint = point;
+                wheelAnchor = map.containerPointToLatLng(point);
+                wheelFrom = map.getZoom();
+                wheelStarted = performance.now();
+                if (!wheelFrame) wheelFrame = requestAnimationFrame(animateWheel);
+            };
             canvas.addEventListener('wheel', event => {
-                if (event.ctrlKey || event.metaKey || !event.deltaY) return;
+                stopPlaceFlight();
+                if (event.ctrlKey || event.metaKey) { finishWheelZoom(); return; }
+                if (!event.deltaY) return;
                 event.preventDefault();
-                const now = performance.now();
-                if (wheelTarget === null || now - wheelTime > 180) wheelTarget = map.getZoom();
                 const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? canvas.clientHeight : 1;
-                wheelTarget = Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), wheelTarget - event.deltaY * unit * 0.005));
-                wheelPoint = map.mouseEventToContainerPoint(event);
-                wheelTime = now;
-                if (!wheelFrame) wheelFrame = requestAnimationFrame(() => {
-                    wheelFrame = 0;
-                    worldView = false;
-                    map.setZoomAround(wheelPoint, Math.round(wheelTarget * 4) / 4, { animate: false });
-                });
+                const step = Math.max(-wheelMaxStep, Math.min(wheelMaxStep, -event.deltaY * unit / wheelPixelsPerLevel));
+                const point = map.mouseEventToContainerPoint(event);
+                if (map._animatingZoom) {
+                    queuedWheelStep += step;
+                    queuedWheelPoint = point;
+                    if (!waitingForZoom) {
+                        waitingForZoom = true;
+                        map.once('zoomend', () => {
+                            waitingForZoom = false;
+                            const pending = queuedWheelStep, pendingPoint = queuedWheelPoint;
+                            queuedWheelStep = 0;
+                            queuedWheelPoint = null;
+                            if (pendingPoint) applyWheelStep(pending, pendingPoint);
+                        });
+                    }
+                } else applyWheelStep(step, point);
             }, { passive: false });
+            ['pointerdown', 'keydown', 'click'].forEach(type => canvas.addEventListener(type, () => {
+                finishWheelZoom();
+                stopPlaceFlight();
+            }, { capture: true }));
+            reducedMotion.addEventListener('change', () => { if (wheelRespectsReducedMotion) finishWheelZoom(); });
             fitWorld();
-            pinIcon = L.divIcon({
-                className: 'travel-pin', iconSize: [28, 36], iconAnchor: [14, 35], tooltipAnchor: [0, -30],
-                html: '<svg viewBox="0 0 28 36" aria-hidden="true"><path d="M14 34S2 23 2 14a12 12 0 1 1 24 0c0 9-12 20-12 20Z"/><circle cx="14" cy="14" r="4"/></svg>'
-            });
+            updateMarkerSizes();
             markerLayer = typeof L.markerClusterGroup === 'function' ? L.markerClusterGroup({
                 maxClusterRadius: 36, showCoverageOnHover: false,
                 animate: !reducedMotion.matches, spiderfyDistanceMultiplier: 1.5,
@@ -909,7 +1164,7 @@
                     const current = selected && cluster.getAllChildMarkers().some(marker => marker.options.travelEntry === selected);
                     return L.divIcon({
                         className: `travel-cluster${current ? ' is-selected' : ''}`,
-                        html: String(count), iconSize: [36, 36], iconAnchor: [18, 18]
+                        html: String(count), iconSize: [clusterIconSize, clusterIconSize], iconAnchor: [clusterIconSize / 2, clusterIconSize / 2]
                     });
                 }
             }) : L.featureGroup();
@@ -925,6 +1180,7 @@
                 if (Math.abs(longitude - center.lng) > 1e-7 || Math.abs(latitude - center.lat) > 1e-7) {
                     // All copies share the same content, so recentering is visually continuous.
                     map.setView([latitude, longitude], map.getZoom(), { animate: false });
+                    updateMapResolution();
                 }
             });
             map.on('dragstart zoomstart', event => { if (event.type === 'dragstart' || event.originalEvent) worldView = false; });
@@ -932,11 +1188,20 @@
             map.on('zoomend', () => { if (!fitting) worldView = false; });
             let fitting = false;
             const resize = () => {
+                finishWheelZoom();
+                // Sidebar resizing changes the pixel frame and emits moveend.
+                // Keep the destination alive and resume with the same deadline.
+                if (placeFlight) map.off('moveend', completePlaceFlight);
                 fitting = true;
-                map.invalidateSize({ pan: true, animate: false, debounceMoveend: true });
+                map.invalidateSize({ pan: true, animate: false, debounceMoveend: false });
+                updateMarkerSizes();
                 ensureWorldCopies();
                 if (worldView) fitWorld();
                 fitting = false;
+                if (placeFlight) {
+                    map.on('moveend', completePlaceFlight);
+                    resumePlaceFlight();
+                }
             };
             new ResizeObserver(resize).observe(canvas);
             fitting = true;

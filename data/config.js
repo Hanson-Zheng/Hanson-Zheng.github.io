@@ -47,6 +47,24 @@ const configData = {
         "worldLayout": "pacific", // "pacific": Eurasia left, Americas right; "atlantic": previous layout.
         "showSummary": false, // true: show the place/country counts above the map.
         "showDates": false, // Keep visits undated; set true to display an optional entry date.
+        "wheelZoom": {
+            "pixelsPerLevel": 300, // 越小越快；常见一格滚轮 120 单位，约缩放 0.4 级。200 接近最初速度。
+            "durationMs": 120, // 短暂缓动，兼顾速度与柔和；0 为直接缩放。
+            "respectReducedMotion": false, // 地图滚轮保留跟手过渡；设 true 可遵循系统减少动态效果。
+            "maxStep": 0.5 // 单个滚轮事件的最大缩放幅度，防止设备上报大数值时突然跳远。
+        },
+        "placeTransition": {
+            "durationMs": 320, // 点击图钉后的平移/缩放缓动；0 为立即定位。
+            "respectReducedMotion": false // true：遵循系统减少动态效果；false：保留短暂的位置过渡。
+        },
+        "markers": { // 图钉与数字聚合圆点，单位 CSS px；不随屏幕 DPI 放大。
+            "responsive": true, // false：始终使用 pinWidth / clusterSize。
+            "compactBelow": 600, // 地图区域窄于此宽度时使用 compact 尺寸。
+            "pinWidth": 24, // 图钉宽度，高度保持原比例；原先是 28。
+            "compactPinWidth": 20,
+            "clusterSize": 32, // 数字圆点直径；原先是 36。
+            "compactClusterSize": 28
+        },
         "detail": { // 分级底图：全景用 50m，放大后按需加载 10m。
             "enabled": true, // false: 始终使用 50m。
             "minZoom": 4.5 // 切换到 10m 的缩放级别；缩小半级后恢复 50m，避免反复切换。
@@ -62,6 +80,7 @@ const configData = {
             "maxStoryShare": 0.46 // 横图最多占整个地图/相册区域的比例。
         },
         "labels": { // Zoom levels: larger numbers reveal labels later.
+            "motionSettleMs": 40, // 地图停稳后重新避让文字的等待时间，毫秒；移动时文字持续跟随。
             "countryMinZoom": 3,
             "cityMinZoom": 4,
             "cityFontSize": 15,
