@@ -43,6 +43,8 @@ const configData = {
         "cardPublicationStyle": "badge" // "badge": venue/year DOI links only; "full": include paper titles. Cards only.
     },
     "travelMap": {
+        "aviationEnabled": false, // false：关闭飞友地图、隐藏切换并使用旅行模式；true：开启。机场数据维护在 data/aviation.js。
+        "defaultMode": "places", // "places" 或 "aviation"；优先恢复访客上次选择。
         "horizontalWrap": true, // Repeat the world horizontally, including countries and photo pins.
         "worldLayout": "pacific", // "pacific": Eurasia left, Americas right; "atlantic": previous layout.
         "showSummary": false, // true: show the place/country counts above the map.
@@ -94,7 +96,23 @@ const configData = {
             "countryOpacity": 0.28,
             "countryMaxFontSize": 64
         },
-        "colors": { // 地图配色：海洋、未到访陆地、国界、已到访、选中/悬停、普通及选中图钉。
+        "aviationColors": { // 飞友模式独立配色；未列出的颜色沿用下面的 colors。
+            "light": {
+                "border": "#c9c3b7",
+                "visited": "#d9c9a6",
+                "selected": "#b99962",
+                "selectedBorder": "#816036",
+                "provinceBorder": "#937b55"
+            },
+            "dark": {
+                "border": "#566174",
+                "visited": "#685b43",
+                "selected": "#aa8955",
+                "selectedBorder": "#e8c584",
+                "provinceBorder": "#c5ad82"
+            }
+        },
+        "colors": { // 旅行地图配色；同时作为飞友模式未单独指定颜色的默认值。
             "light": {
                 "ocean": "#e4eff9",
                 "land": "#faf8f3",

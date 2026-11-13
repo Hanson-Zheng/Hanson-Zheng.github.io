@@ -43,7 +43,13 @@
                     <!-- <h3 id="travel-title" lang="en">Places & moments</h3> -->
                     <h3 id="travel-title" data-i18n="life.tagline">Beyond the lab, into the world.</h3>
                 </div>
-                <p class="travel-summary" id="travel-summary" hidden></p>
+                <div class="travel-heading-tools">
+                    <p class="travel-summary" id="travel-summary" hidden></p>
+                    <div class="travel-mode-switch" id="travel-mode-switch" role="group" aria-label="Map view" data-i18n-aria-label="life.mapMode" hidden>
+                        <button type="button" data-map-mode="places" aria-controls="travel-map travel-story" aria-pressed="true"><i class="fas fa-globe" aria-hidden="true"></i><span data-i18n="life.placesMode">Places</span></button>
+                        <button type="button" data-map-mode="aviation" aria-controls="travel-map travel-story" aria-pressed="false"><i class="fas fa-plane" aria-hidden="true"></i><span data-i18n="life.aviationMode">Aviation</span></button>
+                    </div>
+                </div>
             </div>
             <div class="travel-atlas">
                 <div class="travel-map-wrap">
@@ -124,6 +130,7 @@
     <script src="js/i18n.js"></script>
     <script src="data/life.js"></script>
     <script src="data/travel.js"></script>
+    <script src="data/aviation.js"></script>
     <script src="assets/images/card-images.js"></script>
     <script src="assets/vendor/leaflet/1.9.4/leaflet.js"></script>
     <script src="assets/vendor/leaflet-markercluster/1.5.3/leaflet.markercluster.js"></script>

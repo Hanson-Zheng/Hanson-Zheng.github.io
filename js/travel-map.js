@@ -7,12 +7,15 @@
         // Theme-specific variables let palette changes follow the shared theme toggle.
         const atlas = canvas.closest('.travel-atlas');
         const palette = typeof configData !== 'undefined' ? configData.travelMap?.colors : null;
-        for (const theme of ['light', 'dark']) {
-            for (const key of ['ocean', 'land', 'border', 'visited', 'selected', 'selectedBorder', 'provinceBorder', 'pin', 'selectedPin']) {
-                const color = palette?.[theme]?.[key];
-                if (atlas && typeof color === 'string' && CSS.supports('color', color)) {
-                    const variable = key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
-                    atlas.style.setProperty(`--travel-${theme}-${variable}`, color);
+        const aviationPalette = typeof configData !== 'undefined' ? configData.travelMap?.aviationColors : null;
+        for (const [scope, colors] of [['', palette], ['aviation-', aviationPalette]]) {
+            for (const theme of ['light', 'dark']) {
+                for (const key of ['ocean', 'land', 'border', 'visited', 'selected', 'selectedBorder', 'provinceBorder', 'pin', 'selectedPin']) {
+                    const color = colors?.[theme]?.[key];
+                    if (atlas && typeof color === 'string' && CSS.supports('color', color)) {
+                        const variable = key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+                        atlas.style.setProperty(`--travel-${scope}${theme}-${variable}`, color);
+                    }
                 }
             }
         }
@@ -80,12 +83,40 @@
         canvas.style.setProperty('--travel-city-line-height', `${cityLineHeight}px`);
         const countryOpacity = labelOption('countryOpacity', 0.28, 0, 1);
         const countryMaxFontSize = labelOption('countryMaxFontSize', 64, 18, 120);
-        const entries = (typeof travelData === 'undefined' || !Array.isArray(travelData) ? [] : travelData)
+        const validEntries = source => (Array.isArray(source) ? source : [])
             .filter(entry => entry && typeof entry.place === 'string' && entry.place.trim()
                 && typeof entry.country === 'string' && Array.isArray(entry.coordinates)
                 && entry.coordinates.length === 2 && entry.coordinates.every(Number.isFinite)
                 && Math.abs(entry.coordinates[0]) <= 85 && Math.abs(entry.coordinates[1]) <= 180)
             .slice().sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+        const datasets = {
+            places: validEntries(typeof travelData === 'undefined' ? [] : travelData),
+            aviation: validEntries(typeof aviationData === 'undefined' ? [] : aviationData)
+                .filter(entry => /^[A-Z]{3}$/.test(entry.iata) && entry.id === entry.iata)
+        };
+        const aviationEnabled = (typeof configData === 'undefined' || configData.travelMap?.aviationEnabled !== false)
+            && datasets.aviation.length > 0;
+        let currentMode = typeof configData !== 'undefined' && configData.travelMap?.defaultMode === 'aviation' ? 'aviation' : 'places';
+        try {
+            const stored = localStorage.getItem('siteLifeMapMode');
+            if (stored === 'aviation' || stored === 'places') currentMode = stored;
+        } catch { /* A blocked preference store does not affect the map. */ }
+        if (!aviationEnabled) currentMode = 'places';
+        let entries = datasets[currentMode];
+        const selectionByMode = new Map();
+        const modeSwitch = document.getElementById('travel-mode-switch');
+        const airportCity = entry => `${SiteI18n.value(entry, 'place')} ${entry.iata}`;
+        // Keep the official name in data/tooltips; use a compact name on the map.
+        const airportLabel = entry => {
+            const custom = SiteI18n.value(entry, 'airportShort');
+            if (custom) return custom.trim();
+            return SiteI18n.value(entry, 'airport')
+                .replace(/\s*(?:International\s+)?Airport\s*$/i, '')
+                .replace(/(?:国际)?机场\s*$/, '').trim();
+        };
+        const entryName = entry => currentMode === 'aviation'
+            ? [airportCity(entry), SiteI18n.value(entry, 'airport')].filter(Boolean).join(' · ')
+            : SiteI18n.value(entry, 'place');
         // One highlight group for mainland China, Hong Kong, Macao and Taiwan.
         const chinaRegions = new Set([
             'china', 'mainland china', 'hong kong', 'hong kong, china', 'hong kong sar',
@@ -419,6 +450,14 @@
             const heading = element('div', 'travel-story-heading');
             const location = element('div');
             location.append(element('p', 'travel-country-name'), element('h4', ''));
+            const airportHeading = element('div', 'travel-airport-heading');
+            const plane = element('i', 'fas fa-plane');
+            plane.setAttribute('aria-hidden', 'true');
+            const airportCopy = element('div');
+            airportCopy.append(element('h4', 'travel-airport-city'), element('p', 'travel-airport-name'));
+            airportHeading.append(plane, airportCopy);
+            airportHeading.hidden = true;
+            location.append(airportHeading);
             const time = element('time');
             time.hidden = true;
             heading.append(location, time);
@@ -452,7 +491,13 @@
             photos = preparePhotos(entry);
             photoIndex = 0;
             SiteI18n.content(story.querySelector('.travel-country-name'), entry, 'country');
-            SiteI18n.content(story.querySelector('.travel-story-heading h4'), entry, 'place');
+            const isAirport = currentMode === 'aviation';
+            story.classList.toggle('is-aviation', isAirport);
+            const placeHeading = story.querySelector('.travel-story-heading > div > h4');
+            SiteI18n.content(placeHeading, entry, 'place');
+            placeHeading.hidden = isAirport;
+            story.querySelector('.travel-airport-heading').hidden = !isAirport;
+            updateAirportHeading();
             SiteI18n.content(story.querySelector('.travel-story-title'), entry, 'title', { hideEmpty: true });
             SiteI18n.content(story.querySelector('.travel-description'), entry, 'description', { hideEmpty: true });
             story.querySelector('.travel-copy').scrollTop = 0;
@@ -490,14 +535,48 @@
         function labelPin(marker, entry) {
             const pin = marker.getElement();
             if (!pin) return;
-            SiteI18n.attr(pin, 'aria-label', 'life.showPhotos', { place: SiteI18n.value(entry, 'place'), country: SiteI18n.value(entry, 'country') });
+            SiteI18n.attr(pin, 'aria-label', 'life.showPhotos', { place: entryName(entry), country: SiteI18n.value(entry, 'country') });
             SiteI18n.content(pin, {
-                label: `${entry.place}, ${entry.country}`,
-                labelZh: entry.placeZh || entry.countryZh ? `${entry.placeZh || entry.place}, ${entry.countryZh || entry.country}` : undefined
+                label: currentMode === 'aviation' ? `${entry.place} ${entry.iata} · ${entry.airport || entry.country}` : `${entry.place}, ${entry.country}`,
+                labelZh: currentMode === 'aviation' ? `${entry.placeZh || entry.place} ${entry.iata} · ${entry.airportZh || entry.airport || entry.countryZh || entry.country}`
+                    : entry.placeZh || entry.countryZh ? `${entry.placeZh || entry.place}, ${entry.countryZh || entry.country}` : undefined
             }, 'label', { attribute: 'title' });
         }
+        function pinTooltip(entry) {
+            const node = element('span');
+            if (currentMode === 'aviation') {
+                node.className = 'travel-airport-label';
+                node.append(element('span', 'airport-city', airportCity(entry)));
+                const name = airportLabel(entry);
+                if (name) node.append(element('span', 'airport-name', name));
+            } else node.textContent = SiteI18n.value(entry, 'place');
+            return node;
+        }
+        function updateAirportHeading() {
+            if (!selected || currentMode !== 'aviation') return;
+            const heading = story.querySelector('.travel-airport-city');
+            if (!heading) return;
+            heading.textContent = airportCity(selected);
+            heading.lang = SiteI18n.language;
+            const name = story.querySelector('.travel-airport-name');
+            const city = SiteI18n.value(selected, 'place');
+            let label = airportLabel(selected);
+            // Do not repeat the city immediately after its own IATA code.
+            if (label.toLowerCase() === city.toLowerCase()) label = '';
+            else if (label.toLowerCase().startsWith(`${city.toLowerCase()} `)) label = label.slice(city.length).trim();
+            else if (SiteI18n.language === 'zh-CN' && label.startsWith(city)) label = label.slice(city.length).trim();
+            name.textContent = label;
+            name.hidden = !label;
+            name.lang = SiteI18n.language;
+            name.title = SiteI18n.value(selected, 'airport');
+        }
         window.addEventListener('site:languagechange', () => {
-            forEachPin((marker, entry) => labelPin(marker, entry));
+            forEachPin((marker, entry) => {
+                labelPin(marker, entry);
+                marker.setTooltipContent(pinTooltip(entry));
+            });
+            updateAirportHeading();
+            updateModeInterface();
             scheduleMapLabels();
             if (!selected) return;
             SiteI18n.text(announcement, 'life.placeAnnouncement', { place: SiteI18n.value(selected, 'place'), country: SiteI18n.value(selected, 'country'), count: photos.length });
@@ -677,13 +756,15 @@
             pins.sort((a, b) => Number(b.entry === selected) - Number(a.entry === selected)
                 || a.point.distanceTo(size.divideBy(2)) - b.point.distanceTo(size.divideBy(2)));
             for (const { marker, entry, pin, pinRectangle } of pins) {
-                const name = SiteI18n.value(entry, 'place');
-                const width = Math.ceil(textWidth(name, cityFontSize, entry === selected ? 600 : 500));
-                const height = cityLineHeight;
+                const isAirport = currentMode === 'aviation';
+                const name = isAirport ? entry.iata : SiteI18n.value(entry, 'place');
+                const width = isAirport ? Math.ceil(textWidth(name, 14, 600, 14 * 0.045)) + 2
+                    : Math.ceil(textWidth(name, cityFontSize, entry === selected ? 600 : 500));
+                const height = isAirport ? 24 : cityLineHeight;
                 // Measure the visible icon, including its selected scale. Each
                 // candidate stays 5px from it; never send a city name diagonally away.
                 const centreX = (pinRectangle.left + pinRectangle.right) / 2;
-                const centreY = pinRectangle.top + (pinRectangle.bottom - pinRectangle.top) * 0.4;
+                const centreY = pinRectangle.top + (pinRectangle.bottom - pinRectangle.top) * (isAirport ? 0.5 : 0.4);
                 const positions = [
                     { side: 'right', x: pinRectangle.right + 5, y: centreY - height / 2 },
                     { side: 'left', x: pinRectangle.left - 5 - width, y: centreY - height / 2 },
@@ -718,7 +799,17 @@
                     const ink = cityInkForSurfaces(backgrounds, surfaceColors.ocean);
                     if (ink.contrast < 4) continue;
                     const node = labelNode(cityLabelNodes, marker, cityLabelPane, 'travel-city-label');
-                    node.firstElementChild.textContent = name;
+                    node.classList.toggle('is-airport', isAirport);
+                    const copy = node.firstElementChild;
+                    if (isAirport) {
+                        copy.className = 'travel-airport-code';
+                        copy.textContent = name;
+                        node.style.width = `${width}px`;
+                    } else {
+                        copy.className = '';
+                        copy.textContent = name;
+                        node.style.removeProperty('width');
+                    }
                     node.lang = SiteI18n.language;
                     node.dataset.placeId = entry.id;
                     node.dataset.side = side;
@@ -816,9 +907,10 @@
         function updateMarkerSizes() {
             const compact = markerResponsive && canvas.clientWidth < markerCompactBelow;
             const width = compact ? markerOption('compactPinWidth', 20, 16, 48) : markerOption('pinWidth', 24, 16, 48);
-            const height = width * 36 / 28;
+            const isAirport = currentMode === 'aviation';
+            const height = isAirport ? width : width * 36 / 28;
             const clusterSize = compact ? markerOption('compactClusterSize', 28, 24, 56) : markerOption('clusterSize', 32, 24, 56);
-            const key = `${width}:${clusterSize}`;
+            const key = `${currentMode}:${width}:${clusterSize}`;
             if (key === markerSizeKey) return;
             markerSizeKey = key;
             clusterIconSize = clusterSize;
@@ -826,11 +918,14 @@
             canvas.style.setProperty('--travel-pin-height', `${height}px`);
             canvas.style.setProperty('--travel-cluster-font-size', `${Math.max(11, Math.min(14, clusterSize * 0.4))}px`);
             pinIcon = L.divIcon({
-                className: 'travel-pin', iconSize: [width, height], iconAnchor: [width / 2, height * 35 / 36], tooltipAnchor: [0, -height * 30 / 36],
-                html: '<svg viewBox="0 0 28 36" aria-hidden="true"><path d="M14 34S2 23 2 14a12 12 0 1 1 24 0c0 9-12 20-12 20Z"/><circle cx="14" cy="14" r="4"/></svg>'
+                className: `travel-pin${isAirport ? ' is-airport' : ''}`, iconSize: [width, height],
+                iconAnchor: [width / 2, isAirport ? height / 2 : height * 35 / 36], tooltipAnchor: [0, -height * 30 / 36],
+                html: isAirport ? '<svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13"/><path d="M13 5h2l1 7 7 4v2l-7-2v5l2 1v1l-4-1-4 1v-1l2-1v-5l-7 2v-2l7-4Z"/></svg>'
+                    : '<svg viewBox="0 0 28 36" aria-hidden="true"><path d="M14 34S2 23 2 14a12 12 0 1 1 24 0c0 9-12 20-12 20Z"/><circle cx="14" cy="14" r="4"/></svg>'
             });
             forEachPin((marker, entry) => {
                 marker.setIcon(pinIcon);
+                labelPin(marker, entry);
                 const pin = marker.getElement();
                 pin?.classList.toggle('is-selected', selected === entry);
                 pin?.setAttribute('aria-pressed', String(selected === entry));
@@ -877,9 +972,10 @@
                         countryTooltipNodes.set(record.key, SiteI18n.content(element('span', ''), { name: label, nameZh }, 'name', { keepDetached: true }));
                     }
                     layer.bindTooltip(countryTooltipNodes.get(record.key), { sticky: true });
-                    if (visited.has(countryKey(feature.properties.name))) {
-                        layer.on('click', event => selectPlace(entries.find(entry => countryKey(entry.country) === countryKey(feature.properties.name)), true, event.latlng?.lng));
-                    }
+                    layer.on('click', event => {
+                        const entry = entries.find(candidate => countryKey(candidate.country) === countryKey(feature.properties.name));
+                        if (entry) selectPlace(entry, true, event.latlng?.lng);
+                    });
                 }
             }).addTo(countries);
         }
@@ -1017,18 +1113,12 @@
             })();
         }
 
-        function ensureWorldCopies() {
-            // Reuse a bounded pool of copies; resizing never duplicates an existing world.
-            const radius = horizontalWrap ? Math.max(2, Math.ceil(map.getSize().x / 512)) : 0;
-            for (let world = -radius; world <= radius; world += 1) {
-                const offset = world * 360;
-                if (worldOffsets.has(offset)) continue;
-                worldOffsets.add(offset);
-                entries.forEach(entry => {
+        function addPinsForWorld(offset) {
+            entries.forEach(entry => {
                     const coordinates = displayCoordinates(entry.coordinates);
                     coordinates[1] += offset;
                     const marker = L.marker(coordinates, { icon: pinIcon, title: `${entry.place}, ${entry.country}`, keyboard: true, autoPanOnFocus: true, travelEntry: entry });
-                    marker.bindTooltip(SiteI18n.content(element('span', ''), entry, 'place', { keepDetached: true }), { direction: 'top' });
+                    marker.bindTooltip(pinTooltip(entry), { direction: 'top' });
                     marker.on('add remove move', scheduleMapLabels);
                     marker.on('tooltipopen', () => {
                         const cityLabel = cityLabelNodes.get(marker);
@@ -1049,7 +1139,17 @@
                     if (!markers.has(entry)) markers.set(entry, new Set());
                     markers.get(entry).add(marker);
                     markerLayer.addLayer(marker);
-                });
+            });
+        }
+
+        function ensureWorldCopies() {
+            // Reuse a bounded pool of copies; resizing never duplicates an existing world.
+            const radius = horizontalWrap ? Math.max(2, Math.ceil(map.getSize().x / 512)) : 0;
+            for (let world = -radius; world <= radius; world += 1) {
+                const offset = world * 360;
+                if (worldOffsets.has(offset)) continue;
+                worldOffsets.add(offset);
+                addPinsForWorld(offset);
                 addCountryWorld(offset);
                 addProvinceWorld(offset);
             }
@@ -1060,6 +1160,7 @@
             countries?.eachLayer(group => group.eachLayer(layer => {
                 const key = countryKey(layer.feature.properties.name);
                 const isSelected = !!selected && key === countryKey(selected.country);
+                layer.getElement()?.classList.toggle('is-visited', visited.has(key));
                 layer.getElement()?.classList.toggle('is-selected', isSelected);
                 if (isSelected) layer.bringToFront();
             }));
@@ -1067,9 +1168,11 @@
         }
 
         function selectPlace(entry, pan = true, anchorLongitude = map?.getCenter().lng) {
+            if (!entry) return;
             finishWheelZoom();
             stopPlaceFlight();
             selected = entry;
+            selectionByMode.set(currentMode, entry.id);
             forEachPin((marker, candidate) => {
                 const pin = marker.getElement();
                 pin?.classList.toggle('is-selected', candidate === entry);
@@ -1113,10 +1216,68 @@
         }
 
         const summary = document.getElementById('travel-summary');
-        if (summary) {
-            SiteI18n.text(summary, 'life.summary', { places: entries.length, countries: visited.size });
-            summary.hidden = !(typeof configData !== 'undefined' && configData.travelMap?.showSummary === true);
+        function updateModeInterface() {
+            atlas.dataset.mode = currentMode;
+            if (modeSwitch) {
+                modeSwitch.hidden = !aviationEnabled;
+                modeSwitch.querySelectorAll('button').forEach(button => {
+                    button.setAttribute('aria-pressed', String(button.dataset.mapMode === currentMode));
+                });
+            }
+            SiteI18n.attr(canvas, 'aria-label', currentMode === 'aviation' ? 'life.aviationMap' : 'life.map');
+            SiteI18n.attr(story, 'aria-label', currentMode === 'aviation' ? 'life.airportSelected' : 'life.selected');
+            const legend = document.querySelector('.travel-map-legend [data-i18n]');
+            if (legend) SiteI18n.text(legend, currentMode === 'aviation' ? 'life.airportLegend' : 'life.legend');
+            if (summary) {
+                SiteI18n.text(summary, currentMode === 'aviation' ? 'life.airportSummary' : 'life.summary', { places: entries.length, countries: visited.size });
+                summary.hidden = !(typeof configData !== 'undefined' && configData.travelMap?.showSummary === true);
+            }
         }
+        function switchMode(mode) {
+            if (mode === currentMode || !datasets[mode] || (mode === 'aviation' && !aviationEnabled)) return;
+            finishWheelZoom();
+            stopPlaceFlight();
+            focusAfterLayout = null;
+            clearTimeout(layoutFinishTimer);
+            const previous = selected;
+            const saved = selectionByMode.get(mode);
+            currentMode = mode;
+            entries = datasets[mode];
+            selected = null;
+            visited.clear();
+            entries.forEach(entry => visited.add(countryKey(entry.country)));
+            // Reuse geographic layers and the map. Only its pin dataset changes.
+            markerLayer?._processQueue?.();
+            markerLayer?._noanimationUnspiderfy?.();
+            expandedCluster = null;
+            markerLayer?.clearLayers();
+            markers.clear();
+            cityLabelNodes.forEach(node => node.remove());
+            cityLabelNodes.clear();
+            labelAnchors.clear();
+            if (map) {
+                worldView = false;
+                updateMarkerSizes();
+                worldOffsets.forEach(addPinsForWorld);
+            }
+            updateModeInterface();
+            const next = entries.find(entry => entry.id === saved)
+                || entries.find(entry => entry.place === previous?.place)
+                || entries[0];
+            if (next) selectPlace(next, false);
+            else {
+                photoRequest++;
+                photos = [];
+                selected = activePhoto = null;
+                story.replaceChildren(SiteI18n.element('p', 'travel-no-places', 'life.soon'));
+                updateCountries();
+            }
+            try { localStorage.setItem('siteLifeMapMode', currentMode); } catch { /* Optional preference. */ }
+        }
+        modeSwitch?.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => switchMode(button.dataset.mapMode));
+        });
+        updateModeInterface();
         if (entries.length) selectPlace(entries[0], false);
 
         function fitWorld() {
@@ -1338,7 +1499,7 @@
                 spiderLegPolylineOptions: { color: 'var(--travel-pin)', weight: 1.2, opacity: 0.65 },
                 iconCreateFunction(cluster) {
                     const count = cluster.getChildCount();
-                    cluster.options.title = SiteI18n.t('life.nearby', { count });
+                    cluster.options.title = SiteI18n.t(currentMode === 'aviation' ? 'life.nearbyAirports' : 'life.nearby', { count });
                     const current = selected && cluster.getAllChildMarkers().some(marker => marker.options.travelEntry === selected);
                     return L.divIcon({
                         className: `travel-cluster${current ? ' is-selected' : ''}${expandedCluster === cluster ? ' is-expanded' : ''}`,

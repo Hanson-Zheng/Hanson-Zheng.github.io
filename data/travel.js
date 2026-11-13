@@ -316,17 +316,17 @@ const travelData = [
         "country": "Czechia",
         "countryZh": "捷克",
         "coordinates": [50.0865, 14.4107],
-        "title": "Prague Castle above the Vltava",
-        "titleZh": "河畔城堡",
-        "description": "Prague Castle and the city above the Vltava River.",
-        "descriptionZh": "伏尔塔瓦河畔，布拉格城堡与城市的灯火。",
+        "title": "Across the Vltava",
+        "titleZh": "沃尔塔瓦河对岸",
+        "description": "Prague Castle above the riverside rooftops, across the Vltava.",
+        "descriptionZh": "隔着沃尔塔瓦河，望向红屋顶上的布拉格城堡。",
         "photos": [
             {
-                "src": "images/life/prague/prague-castle-vltava.jpg",
-                "alt": "Illuminated Prague Castle above the rooftops near the Vltava River",
-                "altZh": "伏尔塔瓦河附近的屋顶上方，灯光映照着布拉格城堡",
-                "caption": "Prague Castle and the Vltava, Prague.",
-                "captionZh": "布拉格城堡与伏尔塔瓦河。"
+                "src": "images/life/prague/prague-castle-across-vltava.jpg",
+                "alt": "Prague Castle above red-roofed buildings on the opposite bank of the Vltava River under a cloudy sky",
+                "altZh": "多云天空下，沃尔塔瓦河对岸的红屋顶和布拉格城堡",
+                "caption": "Prague Castle across the Vltava.",
+                "captionZh": "沃尔塔瓦河对岸的布拉格城堡。"
             }
         ]
     },

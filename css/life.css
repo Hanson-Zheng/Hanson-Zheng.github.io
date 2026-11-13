@@ -7,6 +7,12 @@
 .travel-heading h3 { font-size: clamp(0.875rem, 5vw, 1.35rem); font-weight: 600; letter-spacing: -0.025em; }
 .travel-heading p { margin-top: 8px; color: var(--light-text); font-size: 0.9rem; }
 .travel-heading .travel-summary { flex: none; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.travel-heading-tools { display: flex; align-items: center; flex: none; gap: 18px; }
+.travel-mode-switch { display: flex; padding: 3px; gap: 3px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-alt); }
+.travel-mode-switch[hidden] { display: none; }
+.travel-mode-switch button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 38px; padding: 6px 14px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: var(--light-text); font-family: inherit; font-size: 0.78rem; font-weight: 500; line-height: 1.4; cursor: pointer; transition: color 140ms, background 140ms; }
+.travel-mode-switch button[aria-pressed="true"] { background: var(--bg-color); border-color: var(--accent-border); color: var(--accent-color); box-shadow: 0 1px 4px #0f172a08; }
+.travel-mode-switch button:hover { color: var(--accent-color); }
 .travel-atlas {
     --travel-ocean: var(--travel-light-ocean, #e4eff9);
     --travel-land: var(--travel-light-land, #faf8f3);
@@ -41,6 +47,20 @@
     --travel-cluster-bg: #15233a;
     --travel-cluster-text: var(--travel-pin);
 }
+.travel-atlas[data-mode="aviation"] {
+    --travel-stroke: var(--travel-aviation-light-border, #c9c3b7);
+    --travel-visited: var(--travel-aviation-light-visited, #d9c9a6);
+    --travel-selected: var(--travel-aviation-light-selected, #b99962);
+    --travel-selected-border: var(--travel-aviation-light-selected-border, #816036);
+    --travel-province-border: var(--travel-aviation-light-province-border, #937b55);
+}
+[data-theme="dark"] .travel-atlas[data-mode="aviation"] {
+    --travel-stroke: var(--travel-aviation-dark-border, #566174);
+    --travel-visited: var(--travel-aviation-dark-visited, #685b43);
+    --travel-selected: var(--travel-aviation-dark-selected, #aa8955);
+    --travel-selected-border: var(--travel-aviation-dark-selected-border, #e8c584);
+    --travel-province-border: var(--travel-aviation-dark-province-border, #c5ad82);
+}
 .life-page { padding-top: calc(var(--nav-height) + 40px); }
 .life-brewing-caption { white-space: pre-line; }
 .travel-map-wrap { position: relative; min-width: 0; min-height: 0; isolation: isolate; background: var(--travel-ocean); }
@@ -63,8 +83,15 @@
 .travel-country-label.is-visited { color: #fff; }
 [data-theme="dark"] .travel-country-label { color: #e0e9f4; }
 [data-theme="dark"] .travel-country-label.is-visited { color: #241b18; }
+.travel-atlas[data-mode="aviation"] .travel-country-label.is-visited { color: #5f4b2c; }
+[data-theme="dark"] .travel-atlas[data-mode="aviation"] .travel-country-label.is-visited { color: #fff0d0; }
 .travel-city-label { width: max-content; height: var(--travel-city-line-height, 24px); color: var(--primary-color); font-size: var(--travel-city-font-size, 15px); font-weight: 500; line-height: var(--travel-city-line-height, 24px); white-space: nowrap; text-shadow: none; }
 .travel-city-label.is-selected { font-weight: 600; }
+.travel-city-label.is-airport { height: 24px; font-size: 14px; font-weight: 600; line-height: 24px; letter-spacing: 0.045em; text-align: center; }
+.travel-airport-label { display: flex; flex-direction: column; align-items: center; width: 100%; line-height: 20px; }
+.travel-airport-label > span { display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.travel-airport-label .airport-city { font-size: 13px; font-weight: 600; }
+.travel-airport-label .airport-name { font-size: 11px; font-weight: 400; }
 .is-wheel-zooming .travel-country-label, .is-wheel-zooming .travel-city-label { visibility: hidden; }
 .travel-world-button, .travel-map-note { position: absolute; z-index: 1; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); }
 .travel-world-button { left: 14px; top: 14px; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font: inherit; font-size: 0.75rem; cursor: pointer; box-shadow: 0 3px 12px #0f172a08; }
@@ -86,6 +113,11 @@
 .travel-pin.is-selected path { fill: var(--travel-selected-pin); stroke: var(--bg-color); stroke-width: 2; }
 .travel-pin.is-selected circle { fill: #172033; }
 .travel-pin:hover svg, .travel-pin.is-selected svg { transform: scale(1.12); }
+.travel-pin.is-airport svg { transform-origin: center; }
+.travel-pin.is-airport circle { fill: var(--bg-color); stroke: var(--travel-pin); stroke-width: 1.5; }
+.travel-pin.is-airport path { fill: var(--travel-pin); stroke: none; }
+.travel-pin.is-airport.is-selected circle { fill: var(--travel-selected-pin); stroke: var(--bg-color); }
+.travel-pin.is-airport.is-selected path { fill: #172033; stroke: none; }
 .travel-pin:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 4px; border-radius: 8px; }
 .travel-cluster { display: grid; place-items: center; border: 2px solid var(--travel-pin); border-radius: 50%; background: var(--travel-cluster-bg); color: var(--travel-cluster-text); font: 600 var(--travel-cluster-font-size, 12.8px)/1 Inter, sans-serif; font-variant-numeric: tabular-nums; box-shadow: 0 2px 7px #0f172a26; }
 .travel-cluster.is-selected { border-color: var(--travel-selected-pin); color: var(--travel-selected-pin); box-shadow: 0 0 0 3px var(--bg-color), 0 2px 7px #0f172a40; }
@@ -102,6 +134,15 @@
 .travel-country-name { color: var(--light-text); font-size: 0.72rem; margin-bottom: 5px; }
 .travel-story-heading h4 { color: var(--primary-color); font-size: 1.55rem; line-height: 1.25; font-weight: 600; letter-spacing: -0.035em; }
 .travel-story-heading time { flex: none; color: var(--light-text); font-size: 0.72rem; }
+.travel-airport-heading { display: flex; align-items: center; justify-content: flex-start; gap: 10px; width: 100%; min-width: 0; }
+.travel-airport-heading[hidden] { display: none; }
+.travel-airport-heading > i { flex: none; font-size: 20px; color: var(--accent-color); }
+.travel-airport-heading > div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 10px; min-width: 0; text-align: left; }
+.travel-story.is-aviation .travel-story-heading > div { width: 100%; min-width: 0; }
+.travel-story.is-aviation .travel-country-name { text-align: left; margin-bottom: 5px; }
+.travel-story-heading .travel-airport-heading h4 { flex: none; font-size: 1.2rem; line-height: 1.4; letter-spacing: -0.025em; }
+.travel-airport-name { min-width: 0; color: var(--text-color); font-size: 0.85rem; line-height: 1.5; overflow-wrap: anywhere; }
+.travel-airport-name[hidden] { display: none; }
 .travel-figure { min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) 32px 40px; gap: 8px; }
 .travel-figure.is-single-photo { grid-template-rows: minmax(0, 1fr) 0 40px; }
 .travel-media { position: relative; min-height: 0; }
@@ -140,6 +181,7 @@
     .travel-story.is-single-photo { height: calc(var(--travel-mobile-stage-height, var(--travel-mobile-photo-height, 300px)) + 328px); }
     .travel-heading { align-items: start; flex-direction: column; gap: 2px; }
     .travel-heading .travel-summary { margin-top: 5px; }
+    .travel-heading-tools { margin-top: 12px; flex-wrap: wrap; gap: 8px; }
     .travel-section { margin-top: 32px; }
     .travel-map-note { flex-direction: column; align-items: flex-start; gap: 2px; }
     .travel-map-help { padding-left: 0; border-left: 0; }
