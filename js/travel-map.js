@@ -104,15 +104,23 @@
         if (!aviationEnabled) currentMode = 'places';
         let entries = datasets[currentMode];
         const selectionByMode = new Map();
+        const aviationInitialView = typeof configData !== 'undefined' ? configData.travelMap?.aviationInitialView : null;
+        const initialEntry = mode => mode === 'aviation'
+            ? datasets.aviation.find(entry => entry.iata === String(aviationInitialView?.airport || 'SHA').toUpperCase()) || datasets.aviation[0]
+            : datasets[mode][0];
         const modeSwitch = document.getElementById('travel-mode-switch');
         const airportCity = entry => `${SiteI18n.value(entry, 'place')} ${entry.iata}`;
-        // Keep the official name in data/tooltips; use a compact name on the map.
+        // Full names stay in data/native titles; popup and gallery use the short name.
         const airportLabel = entry => {
             const custom = SiteI18n.value(entry, 'airportShort');
             if (custom) return custom.trim();
-            return SiteI18n.value(entry, 'airport')
+            let label = SiteI18n.value(entry, 'airport')
                 .replace(/\s*(?:International\s+)?Airport\s*$/i, '')
                 .replace(/(?:国际)?机场\s*$/, '').trim();
+            const city = SiteI18n.value(entry, 'place');
+            if (city && label.toLowerCase().startsWith(`${city.toLowerCase()} `)) label = label.slice(city.length).trim();
+            else if (city && SiteI18n.language === 'zh-CN' && label !== city && label.startsWith(city)) label = label.slice(city.length).trim();
+            return label;
         };
         const entryName = entry => currentMode === 'aviation'
             ? [airportCity(entry), SiteI18n.value(entry, 'airport')].filter(Boolean).join(' · ')
@@ -820,7 +828,7 @@
                         offset: L.point(x, y).subtract(map.latLngToContainerPoint(marker.getLatLng())),
                         width, height, zoom, marker });
                     node.hidden = false;
-                    if (marker.isTooltipOpen()) marker.closeTooltip();
+                    if (!isAirport && marker.isTooltipOpen()) marker.closeTooltip();
                     obstacles.push(rectangle);
                     break;
                 }
@@ -1122,7 +1130,7 @@
                     marker.on('add remove move', scheduleMapLabels);
                     marker.on('tooltipopen', () => {
                         const cityLabel = cityLabelNodes.get(marker);
-                        if (cityLabel && !cityLabel.hidden) marker.closeTooltip();
+                        if (currentMode !== 'aviation' && cityLabel && !cityLabel.hidden) marker.closeTooltip();
                     });
                     marker.on('click', () => selectPlace(entry, true, marker.getLatLng().lng));
                     marker.on('add', () => {
@@ -1262,6 +1270,7 @@
             }
             updateModeInterface();
             const next = entries.find(entry => entry.id === saved)
+                || (mode === 'aviation' ? initialEntry(mode) : null)
                 || entries.find(entry => entry.place === previous?.place)
                 || entries[0];
             if (next) selectPlace(next, false);
@@ -1272,13 +1281,25 @@
                 story.replaceChildren(SiteI18n.element('p', 'travel-no-places', 'life.soon'));
                 updateCountries();
             }
+            if (next && mode === 'aviation' && !saved) focusInitialAirport(next);
             try { localStorage.setItem('siteLifeMapMode', currentMode); } catch { /* Optional preference. */ }
         }
         modeSwitch?.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', () => switchMode(button.dataset.mapMode));
         });
         updateModeInterface();
-        if (entries.length) selectPlace(entries[0], false);
+        if (entries.length) selectPlace(initialEntry(currentMode), false);
+
+        function focusInitialAirport(entry) {
+            if (!map) return;
+            finishWheelZoom();
+            stopPlaceFlight();
+            worldView = false;
+            const coordinates = displayCoordinates(entry.coordinates);
+            const zoom = Number.isFinite(aviationInitialView?.zoom) ? aviationInitialView.zoom : 6;
+            focusAfterLayout = coordinates;
+            map.setView(coordinates, Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), zoom)), { animate: false });
+        }
 
         function fitWorld() {
             if (!map) return;
@@ -1565,6 +1586,7 @@
                 fitting = false;
             });
             if (selected) selectPlace(selected, false);
+            if (selected && currentMode === 'aviation') focusInitialAirport(selected);
         }
 
         async function loadCountries() {

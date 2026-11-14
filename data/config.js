@@ -9,7 +9,7 @@ const configData = {
     "greeting": "Hello,|this is", // A pipe keeps the desktop line break; mobile joins the greeting.
     "greetingZh": "嗨，",
     "name": "Zheng Yumin",
-    "nameZh": "郑煜旻", // 暂用的中文姓名，可在这里修改。
+    "nameZh": "哈哈哈", 
     "title": "Ph.D. Candidate | Nanyang Technological University",
     "titleZh": "博士研究生 | 南洋理工大学",
     "introduction": "Welcome to my homepage!",
@@ -45,6 +45,10 @@ const configData = {
     "travelMap": {
         "aviationEnabled": false, // false：关闭飞友地图、隐藏切换并使用旅行模式；true：开启。机场数据维护在 data/aviation.js。
         "defaultMode": "places", // "places" 或 "aviation"；优先恢复访客上次选择。
+        "aviationInitialView": {
+            "airport": "SHA", // 飞友地图首次打开的机场三字码；同次浏览切回时保留后来选择。
+            "zoom": 6 // 初始缩放级别（0–7）；不影响后续手动缩放。
+        },
         "horizontalWrap": true, // Repeat the world horizontally, including countries and photo pins.
         "worldLayout": "pacific", // "pacific": Eurasia left, Americas right; "atlantic": previous layout.
         "showSummary": false, // true: show the place/country counts above the map.

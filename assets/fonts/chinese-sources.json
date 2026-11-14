@@ -47,8 +47,8 @@
       "file": "assets/fonts/source-han-sans/source-han-sans-cn-vf-ui.woff2",
       "kind": "interface glyph subset",
       "source": "local/font-originals/source-han-sans/source-han-sans-cn-vf.woff2",
-      "bytes": 350636,
-      "sha256": "f518650ef2254d1b14fb0d871847cee8560e788f45710a200a2d93be3260899d"
+      "bytes": 367716,
+      "sha256": "38f19e128a55b1385122f2a2122bb1e44778fca224dba2cc83571f15e2602802"
     },
     {
       "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-regular.woff2",
@@ -61,8 +61,8 @@
       "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-regular-ui.woff2",
       "kind": "interface glyph subset",
       "source": "local/font-originals/lxgw-wenkai/LXGWWenKai-Regular.ttf",
-      "bytes": 281492,
-      "sha256": "5717891db0fd6c11573ee8f13b93c28b00ff6fc672eaa23c18dd5c75da74c150"
+      "bytes": 297476,
+      "sha256": "953b512b90b1d161c8a550a17bc63681839856aaa64a7f4e53cd88fbda46ddd3"
     },
     {
       "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-medium.woff2",
@@ -75,8 +75,8 @@
       "file": "assets/fonts/lxgw-wenkai/lxgwwenkai-medium-ui.woff2",
       "kind": "interface glyph subset",
       "source": "local/font-originals/lxgw-wenkai/LXGWWenKai-Medium.ttf",
-      "bytes": 282336,
-      "sha256": "d7a218d403608ebcf2bb853989d66cdc022e4667159a2d24263156ee074a25c4"
+      "bytes": 298820,
+      "sha256": "91693ccfcbc8f9bdde64b023b95ceba713ea7c696d68e23b3c450ce32a19887b"
     }
   ]
 }

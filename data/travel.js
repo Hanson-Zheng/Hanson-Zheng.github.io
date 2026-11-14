@@ -1697,5 +1697,29 @@ const travelData = [
                 "captionZh": "苏州虎丘，望苏台前。"
             }
         ]
+    },
+    {
+        "id": "yulin",
+        "place": "Yulin",
+        "placeZh": "榆林",
+        "country": "China",
+        "countryZh": "中国",
+        "coordinates": [
+            38.3341,
+            109.7267
+        ],
+        "title": "Zhenbeitai under a blue sky",
+        "titleZh": "镇北台的蓝天",
+        "description": "Zhenbeitai in Yulin, with stone steps leading up the grassy slope under a wide blue sky.",
+        "descriptionZh": "镇北台前，沿着草坡铺开的石阶向上，头顶是一片蓝天白云。",
+        "photos": [
+            {
+                "src": "images/life/yulin/zhenbeitai-under-blue-skies.jpg",
+                "alt": "Zhenbeitai in Yulin above a grassy slope and stone steps, beneath a blue sky streaked with clouds",
+                "altZh": "榆林镇北台前的草坡和石阶，上方是铺着白云的蓝天",
+                "caption": "Zhenbeitai, Yulin.",
+                "captionZh": "榆林，镇北台。"
+            }
+        ]
     }
 ];
