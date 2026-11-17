@@ -28,6 +28,16 @@
 :is(.directory-project-arrow, .project-card-arrow) {
     transition: transform var(--card-motion-duration) var(--card-motion-easing);
 }
+:is(.directory-project-arrow, .project-card-arrow) svg {
+    display: block;
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.75;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+}
 :is(.directory-card, .pub-item, .news-card, .project-card):focus-within {
     border-color: var(--card-hover-border);
     box-shadow: var(--card-hover-shadow);

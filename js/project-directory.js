@@ -84,7 +84,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const title = SiteI18n.content(element('h3', 'directory-project-title'), project.card.title ? project.card : project, 'title');
             title.id = `directory-title-${project.folder}`;
             link.setAttribute('aria-labelledby', title.id);
-            const arrow = element('span', 'directory-project-arrow', '→');
+            const arrow = element('span', 'directory-project-arrow');
+            arrow.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
             arrow.setAttribute('aria-hidden', 'true');
             titleRow.append(title, arrow);
             link.append(titleRow);

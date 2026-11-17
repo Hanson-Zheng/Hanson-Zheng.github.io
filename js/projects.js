@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         SiteI18n.content(title, project.card.title ? project.card : project, 'title');
         const arrow = document.createElement('span');
         arrow.className = 'project-card-arrow';
-        arrow.textContent = '↗';
+        arrow.innerHTML = '<svg viewBox="0 0 24 24" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg>';
         arrow.setAttribute('aria-hidden', 'true');
         caption.append(meta, title, arrow);
         link.append(cover, caption);
