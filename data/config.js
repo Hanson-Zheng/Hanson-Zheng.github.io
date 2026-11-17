@@ -145,9 +145,9 @@ const configData = {
         // { "icon": "fab fa-twitter", "url": "#", "label": "Twitter" },
         // { "icon": "fab fa-github", "url": "#", "label": "GitHub" },
         // { "icon": "fab fa-linkedin", "url": "#", "label": "LinkedIn" },
+        { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/", "label": "Lee's group @ NTU", "labelZh": "Lee 课题组 · 南洋理工大学" },
         { "icon": "fas fa-envelope", "url": "mailto:yumin004@e.ntu.edu.sg", "label": "Email", "labelZh": "电子邮箱" },
         { "icon": "fab fa-orcid", "url": "https://orcid.org/0000-0002-2341-1967", "label": "ORCID", "labelZh": "ORCID" },
-        { "icon": "fas fa-people-group", "url": "https://blogs.ntu.edu.sg/sunwoo/", "label": "Lee's group @ NTU", "labelZh": "Lee 课题组 · 南洋理工大学" },
         { "icon": "fas fa-graduation-cap", "url": "https://scholar.google.com/citations?user=Oi2eZTwAAAAJ&hl=en", "label": "Google Scholar", "labelZh": "谷歌学术" }
     ],
     "aboutMe": [

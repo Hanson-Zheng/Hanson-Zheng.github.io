@@ -26,6 +26,17 @@
 .pub-authors .author-name { display: inline-block; }
 .pub-authors .author-dagger, .pub-authors .author-corresponding { margin-left: 0.08em; font-size: 0.72em; line-height: 0; vertical-align: super; font-weight: 400; }
 
+/* Peer-review service sits between the publication list and citation metrics. */
+.reviewing-card { padding: 20px; margin-bottom: 28px; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-color); }
+.reviewing-card > h3 { margin-bottom: 20px; font-size: 1.15rem; }
+.reviewing-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px 32px; }
+.reviewing-group { min-width: 0; }
+.reviewing-group h4 { margin-bottom: 4px; color: var(--light-text); font-size: 0.8rem; font-weight: 600; line-height: 1.5; }
+.reviewing-venue { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: baseline; gap: 12px; padding: 12px 0; font-size: 0.875rem; line-height: 1.6; }
+.reviewing-venue + .reviewing-venue { border-top: 1px solid var(--border-color); }
+.reviewing-abbreviation { color: var(--accent-color); font-weight: 700; }
+.reviewing-name { color: var(--text-color); overflow-wrap: anywhere; }
+
 /* Collection layout and search controls live in collections.css. */
 .pub-layout .pub-content { min-width: 0; }
 .pub-search-reset:focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }

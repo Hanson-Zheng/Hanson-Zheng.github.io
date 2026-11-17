@@ -67,7 +67,7 @@
 .project-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .project-frame-number { position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; justify-content: center; min-width: 34px; min-height: 30px; padding: 6px 8px; color: #fff; font-family: inherit; font-size: 0.8125rem; font-weight: 600; line-height: 1; letter-spacing: 0.03em; font-variant-numeric: lining-nums tabular-nums; border: 1px solid rgba(255, 255, 255, 0.32); border-radius: 6px; background: rgba(15, 23, 42, 0.48); backdrop-filter: blur(8px); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1); }
 .project-card-caption { position: relative; flex: 1; min-height: 96px; padding: 12px 34px 12px 14px; }
-.project-meta { color: var(--accent-color); font-size: 0.65rem; font-weight: 700; line-height: 1.5; margin-bottom: 6px; }
+.project-meta { color: var(--accent-color); font-size: 0.75rem; font-weight: 700; line-height: 1.5; margin-bottom: 6px; }
 .project-card-caption h3 { color: var(--primary-color); font-size: 1rem; line-height: 1.4; font-weight: 600; letter-spacing: -0.02em; }
 .project-card-arrow { position: absolute; right: 12px; bottom: 8px; color: var(--accent-color); font-size: 1.1rem; line-height: 1; }
 .project-pagination { display: flex; justify-content: center; gap: 4px; margin-top: 12px; }
@@ -176,7 +176,6 @@
     .project-control { width: 36px; height: 36px; }
     .project-film { padding-left: 12px; padding-right: 12px; border-radius: 12px; }
     .project-card-caption h3 { font-size: 1.05rem; }
-    .project-meta { font-size: 0.7rem; }
     .project-section.has-images { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "media"; gap: 24px; }
     .project-section[data-image-position="top"] { grid-template-areas: "media" "copy"; }
     .project-section-images[data-columns="2"] { grid-template-columns: minmax(0, 1fr); gap: 24px; }

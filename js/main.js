@@ -511,7 +511,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (years.length === 0) {
             pubListContainer.replaceChildren(SiteI18n.element('p', '', 'publications.none'));
-            return;
         }
 
         years.forEach(year => {
@@ -576,6 +575,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pubListContainer.appendChild(yearGroup);
         });
 
+        renderPeerReview();
+
         const citationSection = document.createElement('section');
         citationSection.id = 'citation-metrics';
         citationSection.className = 'citation-card';
@@ -596,6 +597,52 @@ document.addEventListener('DOMContentLoaded', () => {
         pubListContainer.appendChild(citationSection);
     }
 
+    function renderPeerReview() {
+        const source = typeof reviewingData === 'undefined' ? {} : reviewingData;
+        const groups = ['journals', 'conferences'].map(key => ({
+            key,
+            entries: (Array.isArray(source?.[key]) ? source[key] : []).filter(entry =>
+                typeof entry?.abbreviation === 'string' && entry.abbreviation.trim()
+                && typeof entry.name === 'string' && entry.name.trim())
+        })).filter(group => group.entries.length);
+        if (!groups.length) return;
+
+        const section = document.createElement('section');
+        section.id = 'peer-review';
+        section.className = 'reviewing-card';
+        const title = SiteI18n.element('h3', '', 'publications.peerReview');
+        title.id = 'peer-review-title';
+        section.setAttribute('aria-labelledby', title.id);
+        const grid = document.createElement('div');
+        grid.className = 'reviewing-groups';
+        groups.forEach(group => {
+            const column = document.createElement('section');
+            column.className = 'reviewing-group';
+            const heading = SiteI18n.element('h4', '', group.key === 'journals'
+                ? 'publications.reviewJournals' : 'publications.reviewConferences');
+            heading.id = `reviewing-${group.key}`;
+            column.setAttribute('aria-labelledby', heading.id);
+            const list = document.createElement('ul');
+            group.entries.forEach(entry => {
+                const item = document.createElement('li');
+                item.className = 'reviewing-venue';
+                const abbreviation = document.createElement('span');
+                abbreviation.className = 'reviewing-abbreviation';
+                abbreviation.textContent = entry.abbreviation;
+                abbreviation.lang = 'en';
+                const name = document.createElement('span');
+                name.className = 'reviewing-name';
+                SiteI18n.content(name, entry, 'name');
+                item.append(abbreviation, name);
+                list.appendChild(item);
+            });
+            column.append(heading, list);
+            grid.appendChild(column);
+        });
+        section.append(title, grid);
+        pubListContainer.appendChild(section);
+    }
+
     function setupPublicationSearch(pubs) {
         const input = document.getElementById('publication-search');
         const form = input?.closest('form');
@@ -606,6 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const emptyState = document.getElementById('publication-search-empty');
         const yearNavigation = document.getElementById('publication-years');
         const citationSection = document.getElementById('citation-metrics');
+        const reviewingSection = document.getElementById('peer-review');
         const pubContent = pubListContainer.closest('.pub-content');
         const items = [...pubListContainer.querySelectorAll('.pub-item')];
         const entries = pubs.map((pub, index) => {
@@ -665,12 +713,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 group.hidden = ![...group.querySelectorAll('.pub-item')].some(item => !item.hidden);
             });
             if (citationSection) citationSection.hidden = searching;
+            if (reviewingSection) reviewingSection.hidden = searching;
             clearButton.hidden = input.value.length === 0;
             status.hidden = !searching;
             SiteI18n.text(status, 'publications.results', { count: matches.length, total: pubs.length });
             emptyState.hidden = !searching || matches.length > 0;
             yearNavigation.hidden = matches.length === 0;
-            generateYearBookmarks(matches, { includeCitation: !searching, showCounts: searching });
+            generateYearBookmarks(matches, { includeCitation: !searching, includeReviewing: !searching, showCounts: searching });
 
             // A sticky desktop search may be used far down the page. Bring results into view.
             // Mobile keeps the field in place while the on-screen keyboard is open.
@@ -860,7 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    function generateYearBookmarks(pubs, { includeCitation = true, showCounts = false } = {}) {
+    function generateYearBookmarks(pubs, { includeCitation = true, includeReviewing = true, showCounts = false } = {}) {
         if (!yearFiltersContainer) return;
         yearFiltersContainer.innerHTML = '';
         const years = [...new Set(pubs.map(getPublicationYear))].sort((a, b) => b - a);
@@ -871,6 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const link = document.createElement('a');
             link.href = `#${targetId}`;
             if (year === 'citation-metrics') SiteI18n.text(link, 'publications.metrics');
+            else if (year === 'peer-review') SiteI18n.text(link, 'publications.peerReview');
             else link.textContent = label;
             if (showCounts && count) {
                 const countLabel = document.createElement('span');
@@ -892,13 +942,14 @@ document.addEventListener('DOMContentLoaded', () => {
             yearFiltersContainer.appendChild(li);
         }
         years.forEach(year => addBookmark(String(year), `year-${year}`, year, pubs.filter(pub => getPublicationYear(pub) === year).length));
+        if (includeReviewing && document.getElementById('peer-review')) addBookmark('Peer Review', 'peer-review', 'peer-review');
         if (includeCitation && document.getElementById('citation-metrics')) addBookmark('Citation Metrics', 'citation-metrics', 'citation-metrics');
         updatePublicationBookmarks();
     }
 
     function updatePublicationBookmarks() {
         if (!yearFiltersContainer) return;
-        const sections = [...pubListContainer.querySelectorAll('.pub-year-group, #citation-metrics')].filter(section => !section.hidden);
+        const sections = [...pubListContainer.querySelectorAll('.pub-year-group, #peer-review, #citation-metrics')].filter(section => !section.hidden);
         let current = sections[0]?.id || '';
         sections.forEach(section => {
             if (section.getBoundingClientRect().top <= 150) current = section.id;
